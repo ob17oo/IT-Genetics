@@ -2,7 +2,7 @@
 import { MOCK_MISSIONS as missionData } from "@/shared/constants"
 export default function MissionsContent(){
     return (
-        <section className="flex flex-col gap-6 overflow-hidden scroll-smooth">
+        <section className="flex flex-col gap-6 scroll-smooth">
             <section className="flex flex-col gap-3">
                 { missionData.map((mission) => (
                     <section className="p-6 border border-yellow-500/30 rounded-3xl flex flex-col gap-6" key={mission.title}>

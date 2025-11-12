@@ -6,7 +6,7 @@ export default function AchievmentsContent() {
   return (
     <section className="grid grid-cols-3 gap-6">
         {achievmentsData.map((achievment) => (
-            <section className={`border border-yellow-500/30 rounded-2xl p-6 flex flex-col items-center justify-center gap-3 ${achievment.unlocked ? 'opacity-100' : 'opacity-50'}`} key={achievment.id}>
+            <section className={`border border-yellow-500/30 rounded-2xl p-6 flex flex-col items-center justify-center gap-3 transition-all duration-300 ease-in-out hover:scale-105 ${achievment.unlocked ? 'opacity-100' : 'opacity-50'}`} key={achievment.id}>
                 <section className="relative flex justify-center items-center w-[50px] h-[50px] rounded-full bg-yellow-200">
                     <p className="text-2xl">{achievment.icon}</p>
                 </section>
@@ -15,7 +15,13 @@ export default function AchievmentsContent() {
                 </section>
                 <section className="flex gap-3">
                     <span className={`px-3 py-2 rounded-full border border-yellow-200 text-lg text-white `}>{achievment.category}</span>
-                    <span className={`px-3 py-2 rounded-full text-lg text-white ${achievment.rarity === 'Обычно' ? 'bg-gray-400' : achievment.rarity === 'Необычное' ? 'bg-green-400' : achievment.rarity === 'Редкое' ?  'bg-blue-400' : achievment.rarity === 'Эпическое' ? 'bg-purple-400' : 'bg-orange-400' }`}>{achievment.rarity}</span>
+                    <span className={`px-3 py-2 rounded-full text-lg text-white ${
+                        achievment.rarity === 'Обычно' 
+                        ? 'bg-gray-400' : achievment.rarity === 'Необычное' 
+                        ? 'bg-green-400' : achievment.rarity === 'Редкое' 
+                        ?  'bg-blue-400' : achievment.rarity === 'Эпическое' 
+                        ? 'bg-purple-400' : 'bg-orange-400' }`}>{achievment.rarity}
+                    </span>
                 </section>
                 <section>
                     <p className="text-yellow-200 text-[14px] text-center">{achievment.description}</p>

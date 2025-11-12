@@ -4,6 +4,7 @@ import AchievmentsContent from "@/features/achivments/ui/achievments-content"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
+import ShopContent from "@/features/shop/ui/shop-content"
 
 interface GameDialogProps{
     isOpen: boolean,
@@ -33,6 +34,8 @@ export default function GameDialog( {isOpen, onClose}: GameDialogProps){
                 return <MissionsContent />
             case 'Достижения':
                 return <AchievmentsContent />
+            case 'Магазин':
+                return <ShopContent />
             default:
                 return <h2 className="text-yellow-500 text-lg text-center">Окно не найдено</h2>
         }
