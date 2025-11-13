@@ -8,6 +8,7 @@ import React, { ChangeEvent, useState } from "react";
 export default function LoginPage() {
   const { login } = useAuthStore();
   const router = useRouter();
+  const [error, setError] = useState('')
   const [formData, setFormData] = useState({
     name: "",
     surName: "",
@@ -15,10 +16,21 @@ export default function LoginPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setError('')
     if (formData.name.trim() && formData.surName.trim()) {
       login(formData.name, formData.surName);
     }
-    router.push("/game");
+    
+    try {
+      login(formData.name, formData.surName); // ← Только имя и фамилия
+      router.push("/game");
+    } catch (err) {
+      if(err instanceof Error){
+        setError(err.message)
+      } else {
+        setError('Произошла ошибка')
+      }
+    }
   };
 
   return (

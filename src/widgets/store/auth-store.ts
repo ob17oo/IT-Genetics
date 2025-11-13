@@ -1,4 +1,5 @@
 import { SkillsType, UserType } from "@/shared/types/userType";
+import { error } from "console";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -16,7 +17,6 @@ interface AuthStore {
     }) => void,
     login: (name: string, surName: string) => void,
     logOut: () => void,
-    // updateUser: (updates: Partial<UserType>) => void,
 }
 
 export const useAuthStore = create<AuthStore>()(
@@ -44,33 +44,18 @@ export const useAuthStore = create<AuthStore>()(
                 })
             },
             login: (name: string, surName:string) => {
-                const mockUser: UserType = {
-                    id: Math.random().toString(36).substring(2, 9),
-                    name: name,
-                    surName: surName,
-                    level: "Джуниор",
-                    dreamLevel: "Тим лид",
-                    dream: "Стать опытным разработчиком",
-                    dna: 150,
-                    experience: 1,
-                    skills: [
-                        {
-                            type: "Hard" as const,
-                            name: "JavaScript" as const,
-                            level: 2
-                        },
-                        {
-                            type: "Soft", 
-                            name: "Коммуникабельность",
-                            level: 3
-                        }
-                    ],
-                    specialization: "Frontend"
-                };
-                set({
-                    user: mockUser,
+                const currentState = get()
+                if(!currentState.user){
+                    throw new Error('Пользователь не найден')
+                }
+                if(currentState.user.name === name && currentState.user?.surName === surName){
+                    set({
                     isAuthenticated: true
                 })
+                } else {
+                    throw new Error('Пользователь не авторизован')
+                }
+                
             },
             logOut: () => {
                 set({
