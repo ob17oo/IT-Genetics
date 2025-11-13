@@ -1,12 +1,25 @@
 'use client'
 import AccentButton from "@/shared/ui/Buttons/accent-button";
 import DefaultButton from "@/shared/ui/Buttons/default-button";
+import { useAuthStore } from "@/widgets/store/auth-store";
+import { url } from "inspector";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 
 export default function HomePage() {
     const router = useRouter()
+    const { isAuthenticated, user, logOut } = useAuthStore()
+
+    const handleRouting = () => {
+        if(isAuthenticated && user){
+            router.push('/game')
+        } else {
+            router.push('/login')
+        }
+    }
+
     return (
         <section className="min-w-screen min-h-screen flex flex-col gap-6 items-center justify-center">
             <section className="flex flex-col gap-3 items-center">
@@ -19,7 +32,7 @@ export default function HomePage() {
                 </section>
             </section>
             <section className="flex flex-col gap-3">
-                <AccentButton  type="button" onClick={() => router.push('/game')}>
+                <AccentButton  type="button" onClick={handleRouting}>
                     <Image src="static/Play.svg" alt="Play" width={26} height={26} /> 
                     Играть
                 </AccentButton>

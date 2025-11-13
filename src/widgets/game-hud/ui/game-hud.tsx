@@ -1,11 +1,21 @@
 'use client'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import GameDialog from "./game-dialog";
 import Image from "next/image";
-import { MOCK_PLAYER as playerData } from "@/shared/constants";
+import { useAuthStore } from "@/widgets/store/auth-store";
 
 export default function GameHud(){
-    const [isOpen, setIsOpen] = useState(false)
+    const { user } = useAuthStore()
+    const [loading , setLoading] = useState(true)
+    const [isOpen, setIsOpen] = useState(false);
+
+    useEffect(() => {
+      const timer = setTimeout(() => {
+        setLoading(false)
+      }, 1000)
+      return () => clearTimeout(timer)
+    }, [])
+    console.log(user)
     return (
       <section className="absolute top-0 left-0 right-0 h-auto">
         <section className="flex justify-between p-3 items-start">
@@ -15,7 +25,7 @@ export default function GameHud(){
           </section>
           <section className="pointer-events-auto flex items-center gap-2">
             <section className="py-2 px-4 rounded-full flex gap-2 items-center justify-center bg-green-400/70">
-                <p className="text-white">{playerData.dna}</p>
+                <p className="text-white">{ user ? user.dna : 0}</p>
                 <section className="relative overflow-hidden w-7 h-7 bg-green-500 rounded-full flex justify-center items-center">
                     <Image src="/static/dna.svg" alt="dna" width={18} height={18} />
                 </section>

@@ -1,43 +1,65 @@
+import { useAuthStore } from "@/widgets/store/auth-store"
 import Image from "next/image"
+import { useRouter } from "next/navigation"
+import { useEffect } from "react"
 
-import { MOCK_PLAYER as playerData } from "@/shared/constants"
+// import { MOCK_PLAYER as playerData } from "@/shared/constants"
 
 export default function ProfileContent(){
-    const softSkills = playerData.skills.filter((skill) => skill.type === 'Soft')
-    const hardSkills = playerData.skills.filter((skill) => skill.type === 'Hard')
+    const { user, isAuthenticated, logOut } = useAuthStore()
+    const router = useRouter()
+    
+    useEffect(() => {
+        if (!user) {
+          router.push("/login");
+        }
+
+    },[user, router])
+
+    if(!user){
+        return null
+    }
+
+    const handleLogOut = () => {
+        logOut()
+        router.push('/')
+    }
+
+    const softSkills = user.skills.filter((skill) => skill.type === 'Soft')
+    const hardSkills = user.skills.filter((skill) => skill.type === 'Hard')
     return (
         <section className="flex flex-col gap-6">
             <section className="border border-yellow-500/30 rounded-3xl p-6 flex items-center gap-6">
                 <section className="relative w-[100px] h-[100px] rounded-full overflow-hidden">
-                    <Image src={playerData.avatar} alt={playerData.name} fill />
+                    <Image src="/static/playerAvatar.png" alt="avatar" fill />
                 </section>
                 <section>
                     <span className="text-white/50 text-[14px]">Имя разработчика:</span>
-                    <p className="text-lg text-yellow-500">{playerData.name}</p>
+                    <p className="text-lg text-yellow-500">{user.name}</p>
                 </section>
                 <section>
                     <span className="text-white/50 text-[14px]">Фамилия разработчика:</span>
-                    <p className="text-lg text-yellow-500">{playerData.surName}</p>
+                    <p className="text-lg text-yellow-500">{user.surName}</p>
                 </section>
                 <section>
                     <span className="text-white/50 text-[14px]">Опыт работы:</span>
-                    <p className="text-lg text-yellow-500">{playerData.expirience} месяца</p>
+                    <p className="text-lg text-yellow-500">{user.experience} мес.</p>
                 </section>
             </section>
 
             <section className="border border-yellow-500/30 rounded-3xl p-6 flex justify-between ">
                 <section>
                     <span className="text-white/50 text-[14px]">О чем мечтает:</span>
-                    <p className="text-yellow-500 text-lg">{playerData.dream}</p>
+                    <p className="text-yellow-500 text-lg">{user.dream}</p>
                 </section>
                 <section className="flex flex-col gap-3">
                     <section>
                         <span className="text-white/50 text-[14px]">Актуальный грейд:</span>
-                        <p className="text-yellow-500 text-lg">{playerData.level}</p>
+                        <p className="text-yellow-500 text-lg">{user.level}</p>
                     </section>
                     <section>
                         <span className="text-white/50 text-[14px]">Желаемый грейд:</span>
-                        <p className="text-yellow-500 text-lg">{playerData.dreamLevel}</p>
+                        <p className="text-yellow-500 text-lg">{user.dreamLevel}</p>
                     </section>
                 </section>
             </section>
@@ -90,6 +112,9 @@ export default function ProfileContent(){
                         ))}
                     </section>
                 </section>
+            </section>
+            <section>
+                <button type="button" onClick={handleLogOut} className="text-yellow-200 px-5 py-3 rounded-3xl border border-yellow-500/30">Выйти из аккаунта</button>
             </section>
         </section>
     )
