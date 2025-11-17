@@ -30,8 +30,8 @@ export function CharacterController() {
 
   const [, get] = useKeyboardControls();
   // Настройки управления — ближе к демо из репозитория
-  const WALK_SPEED = 1.6;
-  const RUN_SPEED = 3.2;
+  const WALK_SPEED = 2;
+  const RUN_SPEED = 4;
   const ROTATION_SPEED = 0.012; // чуть быстрее поворот контейнера по A/D
   const CAMERA_LERP = 0.25; // камера догоняет быстрее, остаётся позади
   const CHAR_ROT_LERP = 0.2; // персонаж быстрее выравнивается
@@ -132,16 +132,16 @@ export function CharacterController() {
       colliders={false}
       lockRotations
       ref={(api) => { rb.current = (api as unknown as RigidApi) }}
-      position={[0, 0.2, 0]}
+      position={[0, 0.1, 0]}
       mass={60}
       canSleep={false}
       gravityScale={1}
     >
       <group ref={container}>
         {/* Точка, куда смотрит камера (впереди персонажа) */}
-        <group ref={cameraTarget} position-z={1.5} />
+        <group ref={cameraTarget} position-z={2} />
         {/* Узел позиции камеры — «штанга»: выше и позади */}
-        <group ref={cameraBoom} position-y={4} position-z={-4} />
+        <group ref={cameraBoom} position-y={4} position-z={-5} />
         {/* Персонаж */}
       <group ref={character}>
           <Character scale={1} animation={animation} />

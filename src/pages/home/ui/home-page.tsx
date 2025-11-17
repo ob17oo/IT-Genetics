@@ -2,15 +2,12 @@
 import AccentButton from "@/shared/ui/Buttons/accent-button";
 import DefaultButton from "@/shared/ui/Buttons/default-button";
 import { useAuthStore } from "@/widgets/store/auth-store";
-import { url } from "inspector";
-import Image from "next/image";
+;import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-
 
 export default function HomePage() {
     const router = useRouter()
-    const { isAuthenticated, user, logOut } = useAuthStore()
+    const { isAuthenticated, user } = useAuthStore()
 
     const handleRouting = () => {
         if(isAuthenticated && user){
@@ -36,7 +33,7 @@ export default function HomePage() {
                     <Image src="static/Play.svg" alt="Play" width={26} height={26} /> 
                     Играть
                 </AccentButton>
-                <DefaultButton  type="button" onClick={() => router.push('/setting')}>
+                <DefaultButton type="button" onClick={() => router.push('/setting')}>
                     <Image src="static/Setting.svg" alt="Setting" width={24} height={24} />
                     Настройки
                 </DefaultButton>

@@ -1,140 +1,99 @@
-'use client'
+"use client";
 import { TableObject } from "@/entities/objects/ui/table-object";
 import { Canvas } from "@react-three/fiber";
 import "@/shared/lib/preload-models";
 import GameHud from "@/widgets/game-hud/ui/game-hud";
 import { CharacterController } from "@/entities/characters/third-person-character/character-controller";
-import { Physics, RigidBody, CuboidCollider, MeshCollider } from "@react-three/rapier";
+import {
+  Physics,
+  RigidBody,
+  CuboidCollider,
+  MeshCollider,
+} from "@react-three/rapier";
 import { Suspense } from "react";
 import SceneLoader from "@/shared/ui/Loader/scene-loader";
+import FloorTexture from "../../textures/floor-texture";
+import WallObject from "@/entities/objects/ui/wall-object";
+import { OrbitControls } from "@react-three/drei";
 
-export function OfficeScene(){
-      return (
-      <section className="w-full h-screen relative">
-        <SceneLoader />
-        <Canvas shadows camera={{ position: [0, 1.7, 10], fov: 75 }}>
-          <Suspense fallback={null}>
-            <Physics gravity={[0, -20, 0]}>
-              <color attach="background" args={["#1E1E1E"]} />
 
-              <ambientLight intensity={1} />
+const TABLE_POSITIONS: [number,number,number][] = [
+  [-13, 0, 14], [-7, 0, 14], [-1, 0, 14],
+  [-13, 0, 4], [-7, 0, 4], [-1, 0, 4],
+  [-13, 0, -6], [-7, 0, -6], [-1, 0, -6],
+]
 
-              <directionalLight
-                position={[10, 10, 5]}
-                intensity={2}
-                castShadow
-              />
+interface WallPosition{
+  position: [number, number, number];
+  size: [number, number, number];
+  collider: [number, number, number];
+}
 
-              {/* Пол (fixed + явный коллайдер) */}
-              <RigidBody type="fixed">
-                <mesh
-                  rotation={[-Math.PI / 2, 0, 0]}
-                  position={[0, -1, 0]}
-                  receiveShadow
-                  userData={{ isFloor: true }}
-                >
-                  <planeGeometry args={[40, 80]} />
-                  <meshStandardMaterial color="#986B41" />
-                </mesh>
-                {/* halfExtents: [width/2, thickness/2, depth/2] */}
-                <CuboidCollider args={[20, 0.1, 40]} position={[0, -1, 0]} />
-              </RigidBody>
+const WALL_POSITION: WallPosition[] = [
+  { position: [20, 4, 0], size: [0.3, 50, 10], collider: [0.15, 4, 5] },
+  { position: [-20, 4, 0], size: [0.3, 50, 10], collider: [0.15, 4, 5] },
+  { position: [0, 4, -25], size: [40, 0.3, 10], collider: [20, 4, 0.15] },
+  { position: [-7.6, 4, 25], size: [25, 0.3, 10], collider: [12.5, 4, 0.15] },
+]
 
-              {/* Стена справа */}
-              <RigidBody type="fixed">
-                <mesh rotation={[0, 0, 0]} position={[15, 4, 0]} receiveShadow>
-                  <boxGeometry args={[0.3, 10, 40]} />
-                  <meshStandardMaterial color="#E8E8E8" />
-                </mesh>
-                <CuboidCollider args={[0.15, 5, 20]} position={[15, 4, 0]} />
-              </RigidBody>
-              {/* Стена слева */}
-              <RigidBody type="fixed">
-                <mesh rotation={[0, 0, 0]} position={[-20, 4, 0]} receiveShadow>
-                  <boxGeometry args={[0.3, 10, 40]} />
-                  <meshStandardMaterial color="#E8E8E8" />
-                </mesh>
-                <CuboidCollider args={[0.15, 5, 20]} position={[-20, 4, 0]} />
-              </RigidBody>
-              {/* Задняя стена */}
-              <RigidBody type="fixed">
-                <mesh rotation={[0, 0, 0]} position={[0, 4, -20]} receiveShadow>
-                  <boxGeometry args={[40, 10, 0.3]} />
-                  <meshStandardMaterial color="#E8E8E8" />
-                </mesh>
-                <CuboidCollider args={[20, 5, 0.15]} position={[0, 4, -20]} />
-              </RigidBody>
+export function OfficeScene() {
+  return (
+    <section className="w-full h-screen relative">
+      <SceneLoader />
+      <Canvas shadows camera={{ position: [0, 1.7, 10], fov: 75 }}>
+        <Suspense fallback={null}>
+          <Physics gravity={[0, -20, 0]}>
+            <color attach="background" args={["#1E1E1E"]} />
 
-              {/* Передняя стена (дальняя) */}
-              <RigidBody type="fixed">
-                <mesh position={[-7.6, 4, 20]} receiveShadow>
-                  <boxGeometry args={[25, 10, 0.3]} />
-                  <meshStandardMaterial color="#E8E8E8" />
-                </mesh>
-                <CuboidCollider
-                  args={[12.5, 5, 0.15]}
-                  position={[-7.6, 4, 20]}
-                />
-              </RigidBody>
+            <ambientLight intensity={1} />
 
-              <group>
-                <group>
-                  <RigidBody type="fixed">
-                    <MeshCollider type="trimesh">
-                      <TableObject position={[-13, 0, 14]} />
-                    </MeshCollider>
-                  </RigidBody>
-                  <RigidBody type="fixed">
-                    <MeshCollider type="trimesh">
-                      <TableObject position={[-7, 0, 14]} />
-                    </MeshCollider>
-                  </RigidBody>
-                  <RigidBody type="fixed">
-                    <MeshCollider type="trimesh">
-                      <TableObject position={[-1, 0, 14]} />
-                    </MeshCollider>
-                  </RigidBody>
+            <directionalLight
+              position={[10, 10, 5]}
+              intensity={1.5}
+              castShadow
+            />
+
+            {/* Пол (fixed + явный коллайдер) */}
+            <RigidBody type="fixed">
+              <FloorTexture widthSize={40} heightSize={50} />
+              <CuboidCollider args={[20, 0.1, 25]} position={[0, -0.1, 0]} />
+            </RigidBody>
+
+           <RigidBody type="fixed">
+            {
+               WALL_POSITION.map((wall, i) => (
+                <group key={i}>
+                    <WallObject 
+                      color="#FFFFFF"
+                      widthSize={wall.size[0]}
+                      heightSize={wall.size[1]}
+                      depthSize={wall.size[2]}
+                      position={wall.position}
+                      recieveShadow={true}
+                    />
+                    <CuboidCollider args={wall.collider} position={wall.position} />
                 </group>
-                <group>
-                  <RigidBody type="fixed">
+               ))
+            }
+           </RigidBody>
+
+            {/* Столы */}
+            
+              {
+                TABLE_POSITIONS.map((pos , i) => (
+                  <RigidBody key={i} type="fixed">
                     <MeshCollider type="trimesh">
-                      <TableObject position={[-13, 0, 4]} />
+                      <TableObject position={pos} />
                     </MeshCollider>
                   </RigidBody>
-                  <RigidBody type="fixed">
-                    <MeshCollider type="trimesh">
-                      <TableObject position={[-7, 0, 4]} />
-                    </MeshCollider>
-                  </RigidBody>
-                  <RigidBody type="fixed">
-                    <MeshCollider type="trimesh">
-                      <TableObject position={[-1, 0, 4]} />
-                    </MeshCollider>
-                  </RigidBody>
-                </group>
-                <group>
-                  <RigidBody type="fixed">
-                    <MeshCollider type="trimesh">
-                      <TableObject position={[-13, 0, -6]} />
-                    </MeshCollider>
-                  </RigidBody>
-                  <RigidBody type="fixed">
-                    <MeshCollider type="trimesh">
-                      <TableObject position={[-7, 0, -6]} />
-                    </MeshCollider>
-                  </RigidBody>
-                  <RigidBody type="fixed">
-                    <MeshCollider type="trimesh">
-                      <TableObject position={[-1, 0, -6]} />
-                    </MeshCollider>
-                  </RigidBody>
-                </group>
-              </group>
-              <CharacterController />
-            </Physics>
-          </Suspense>
-        </Canvas>
-        <GameHud />
-      </section>
-    );
+                ))
+              }
+            <CharacterController />
+            <OrbitControls />
+          </Physics>
+        </Suspense>
+      </Canvas>
+      <GameHud />
+    </section>
+  );
 }

@@ -15,7 +15,6 @@ export default function GameHud(){
       }, 1000)
       return () => clearTimeout(timer)
     }, [])
-    console.log(user)
     return (
       <section className="absolute top-0 left-0 right-0 h-auto">
         <section className="flex justify-between p-3 items-start">

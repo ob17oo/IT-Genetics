@@ -11,9 +11,11 @@ import { useGLTF } from "@react-three/drei"
 // Мебель
 useGLTF.preload('/model/furniture/computer.glb')
 useGLTF.preload('/model/furniture/officechair.glb')
+useGLTF.preload('/model/furniture/officeDoor.glb')
 
 // Цветы
 useGLTF.preload('/model/furniture/flowerType1.glb')
 useGLTF.preload('/model/furniture/flowerType2.glb')
 useGLTF.preload('/model/furniture/flowerType3.glb')
+
 
