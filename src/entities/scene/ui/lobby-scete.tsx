@@ -3,6 +3,7 @@
 import OfficeDoorObject from "@/entities/objects/ui/officeDoor-object";
 import WalletObject from "@/entities/objects/ui/wall-object";
 import FloorTexture from "@/entities/textures/floor-texture";
+import GameHud from "@/widgets/game-hud/ui/game-hud";
 import { OrbitControls, Text } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { Physics, RigidBody } from "@react-three/rapier";
@@ -63,6 +64,7 @@ export default function LobbyScene(){
                 </Suspense>
                 <OrbitControls />
             </Canvas>
+            <GameHud />
         </section> 
     )
 }

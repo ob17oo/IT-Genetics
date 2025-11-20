@@ -1,4 +1,4 @@
-export interface AchievmentType {
+export interface Achievment {
     id: number,
     title: string,
     description: string,

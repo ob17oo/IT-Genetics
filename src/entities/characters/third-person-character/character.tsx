@@ -15,7 +15,6 @@ export function Character({ scale = 0.5, animation = 'idle' }: { scale?: number;
       idle: ['idle', 'stand'],
       walk: ['walk', 'walking'],
       run: ['run', 'running'],
-      dance: ['dance']
     }
     const aliases = containsMap[lower] ?? [lower]
     for (const alias of aliases) {

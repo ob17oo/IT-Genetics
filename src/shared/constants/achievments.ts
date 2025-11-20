@@ -1,13 +1,13 @@
-import { AchievmentType } from "../types/achievmentType";
+import { Achievment } from "../types/achievmentType";
 
-export const MOCK_ACHIEVMENTS: AchievmentType[] = [
+export const MOCK_ACHIEVMENTS: Achievment[] = [
   {
     id: 1,
     title: "Первый код",
     description: 'Написать свою первую программу "Hello World"',
     icon: "👨‍💻",
     reward: 50,
-    unlocked: true,
+    unlocked: false,
     progress: 100,
     category: "Кодинг",
     rarity: "Обычная",
@@ -18,7 +18,7 @@ export const MOCK_ACHIEVMENTS: AchievmentType[] = [
     description: "Сделать 100 коммитов в репозиторий",
     icon: "📚",
     reward: 100,
-    unlocked: true,
+    unlocked: false,
     progress: 100,
     category: "Инструменты",
     rarity: "Обычная",
@@ -106,7 +106,7 @@ export const MOCK_ACHIEVMENTS: AchievmentType[] = [
     description: "Помочь 5 начинающим разработчикам",
     icon: "🧠",
     reward: 280,
-    unlocked: true,
+    unlocked: false,
     progress: 100,
     category: "Сообщество",
     rarity: "Эпическое",
