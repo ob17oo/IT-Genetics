@@ -19,7 +19,11 @@ type RigidApi = {
   translation: () => { x: number; y: number; z: number }
 }
 
-export function CharacterController() {
+interface CharacterProps {
+  position?: [number,number,number]
+}
+
+export function CharacterController({position =[0, 5, 0] }: CharacterProps) {
   const { world, rapier } = useRapier()
   const rb = useRef<RigidApi | null>(null);
   const container = useRef<Group | null>(null);
@@ -132,8 +136,8 @@ export function CharacterController() {
       colliders={false}
       lockRotations
       ref={(api) => { rb.current = (api as unknown as RigidApi) }}
-      position={[0, 0.1, 0]}
       mass={60}
+      position={position}
       canSleep={false}
       gravityScale={1}
     >
@@ -148,7 +152,7 @@ export function CharacterController() {
         </group>
       </group>
       {/* Капсула персонажа: подгоняй размеры под свою модель */}
-      <CapsuleCollider args={[0, 0.3]} />
+      <CapsuleCollider args={[0.5, 0.3,]} position={[0 , 0.8, 0]} />
     </RigidBody>
   );
 }

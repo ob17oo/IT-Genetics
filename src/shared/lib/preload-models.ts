@@ -19,3 +19,8 @@ useGLTF.preload('/model/furniture/flowerType2.glb')
 useGLTF.preload('/model/furniture/flowerType3.glb')
 
 
+useGLTF.preload('model/furniture/sofa.glb')
+useGLTF.preload('model/furniture/coffeeTable.glb')
+useGLTF.preload('model/furniture/CHULAKOV_logotype.glb')
+useGLTF.preload('model/furniture/AdminTable.glb')
+useGLTF.preload('model/furniture/lobbySofa.glb')

@@ -6,7 +6,7 @@ import { useEffect } from "react"
 // import { MOCK_PLAYER as playerData } from "@/shared/constants"
 
 export default function ProfileContent(){
-    const { user, isAuthenticated, logOut } = useAuthStore()
+    const { user, logOut, updateSkillsLevel } = useAuthStore()
     const router = useRouter()
     
     useEffect(() => {
@@ -24,6 +24,8 @@ export default function ProfileContent(){
         logOut()
         router.push('/')
     }
+
+
 
     const softSkills = user.skills.filter((skill) => skill.type === 'Soft')
     const hardSkills = user.skills.filter((skill) => skill.type === 'Hard')
@@ -69,9 +71,10 @@ export default function ProfileContent(){
             <section className="border border-yellow-500/30  rounded-3xl p-6 flex justify-between">
                 <section className="w-[48%] flex flex-col gap-6">
                     <h2 className="text-yellow-500 text-lg ">Hard Skill – это технические инструменты и технологии, которые можно измерить и проверить. </h2>
-                    <section className="border border-yellow-500/30 rounded-3xl p-6">
+                    <section className="border border-yellow-500/30 rounded-3xl p-6 flex flex-col gap-4">
                         <p className="text-yellow-200 text-[14px]">Hard Skill, которые имеет твой разработчик:</p>
-                        { hardSkills.map((skill) => (
+                        <section className="flex flex-col gap-6">
+                            { hardSkills.map((skill) => (
                             <section key={skill.name}>
                                 <h2 className="text-yellow-500 text-lg">
                                     {skill.name}
@@ -84,17 +87,23 @@ export default function ProfileContent(){
                                             <p>{skill.level}</p>
                                         </section>
                                     </section>
+                                     <section className="flex gap-3">
+                                        <button onClick={() => updateSkillsLevel(skill.name, skill.level += 1)} className="text-yellow-200 text-lg opacity-50 transition-all duraiton-300 ease-in-out hover:opacity-100">Улучшить</button>
+                                        <button onClick={() => updateSkillsLevel(skill.name, 1 )} className="text-yellow-200 text-lg opacity-50 transition-all duraiton-300 ease-in-out hover:opacity-100">Сбросить</button>
+                                    </section>
                                 </h2>
                             </section>
                         ))}
+                        </section>
                     </section>
                 </section>
 
                 <section className="w-[48%] flex flex-col gap-6">
                     <h2 className="text-yellow-500 text-lg ">Soft Skill — личные качества и компетенции, которые определяют эффективность работы в команде</h2>
-                    <section className="border border-yellow-500/30 rounded-3xl p-6">
+                    <section className="border border-yellow-500/30 rounded-3xl p-6 flex flex-col gap-4">
                         <p className="text-yellow-200 text-[14px]">Soft Skill, которые имеет твой разработчик:</p>
-                        { softSkills.map((skill) => (
+                       <section className="flex flex-col gap-6">
+                             { softSkills.map((skill) => (
                             <section key={skill.name}>
                                 <h2 className="text-yellow-500 text-lg">
                                     {skill.name}
@@ -107,14 +116,19 @@ export default function ProfileContent(){
                                             <p>{skill.level}</p>
                                         </section>
                                     </section>
+                                    <section className="flex gap-3">
+                                        <button onClick={() => updateSkillsLevel(skill.name, skill.level += 1)} className="text-yellow-200 text-lg opacity-50 transition-all duraiton-300 ease-in-out hover:opacity-100">Улучшить</button>
+                                        <button onClick={() => updateSkillsLevel(skill.name, 1 )} className="text-yellow-200 text-lg opacity-50 transition-all duraiton-300 ease-in-out hover:opacity-100">Сбросить</button>
+                                    </section>
                                 </h2>
                             </section>
                         ))}
+                       </section>
                     </section>
                 </section>
             </section>
             <section>
-                <button type="button" onClick={handleLogOut} className="text-yellow-200 px-5 py-3 rounded-3xl border border-yellow-500/30">Выйти из аккаунта</button>
+                <button type="button" onClick={handleLogOut} className="text-yellow-200 px-5 py-3 rounded-3xl border border-yellow-500/30 transition-all duraiotn-300 ease-in-out opacity-50 hover:scale-105 hover:opacity-100">Выйти из аккаунта</button>
             </section>
         </section>
     )

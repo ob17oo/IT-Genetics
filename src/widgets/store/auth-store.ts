@@ -1,5 +1,4 @@
 import { SkillsType, UserType } from "@/shared/types/userType";
-import { error } from "console";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -17,6 +16,7 @@ interface AuthStore {
     }) => void,
     login: (name: string, surName: string) => void,
     logOut: () => void,
+    updateSkillsLevel: (skillName: string, level: number) => void,
 }
 
 export const useAuthStore = create<AuthStore>()(
@@ -63,9 +63,20 @@ export const useAuthStore = create<AuthStore>()(
                     isAuthenticated: false
                 })
             },
-            // updateUser: () => {
-
-            // }
+            updateSkillsLevel: (skillsName, level) => {
+                set(state => ({
+                    user: state.user ? {
+                        ...state.user,
+                        skills: state.user.skills.map(skill => 
+                            skill.name === skillsName 
+                            ? {
+                                ...skill,
+                                level: Math.min(level, 10),
+                            } : skill
+                        )
+                    } : null
+                }))
+            }
         }),
         {
             name: 'auth-storage'

@@ -1,13 +1,16 @@
 import { ComputerObject } from "./computer-object";
 import { ChairObject } from "./chair-object"
 import { ShelfObject } from "./shelf-object"
+import { CuboidCollider } from "@react-three/rapier";
+
 interface TableProps{
-    position: [number,number,number]
+    position?: [number,number,number]
 }
 
 export function TableObject({position}: TableProps){
     return (
       <group position={position}>
+        <CuboidCollider args={[3, 1.5, 1.75]} position={[0,0,0]} />
         <mesh position={[0, 1, 0]} castShadow>
           <boxGeometry args={[6, 0.1, 3.5]} />
           <meshStandardMaterial color="#DED1B6" />

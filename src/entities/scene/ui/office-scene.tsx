@@ -56,7 +56,7 @@ export function OfficeScene() {
             {/* Пол (fixed + явный коллайдер) */}
             <RigidBody type="fixed">
               <FloorTexture widthSize={40} heightSize={50} />
-              <CuboidCollider args={[20, 0.1, 25]} position={[0, -0.1, 0]} />
+              <CuboidCollider args={[20, 0.5, 25]} position={[0, -25, 0]} />
             </RigidBody>
 
            <RigidBody type="fixed">

@@ -8,11 +8,11 @@ interface FloorProps {
 }
 
 export default function FloorTexture({widthSize, heightSize,}: FloorProps) {
-    const baseTexture = useTexture('/textures/floorTexture.jpg')
+    const baseTexture = useTexture('/textures/floorTexture.webp')
     const floorTexture = useMemo(() => {
     const tex = baseTexture.clone()
     tex.wrapS = tex.wrapT = RepeatWrapping
-    tex.repeat.set(8, 16)
+    tex.repeat.set(8, 8)
     tex.needsUpdate = true
     return tex
   }, [baseTexture])
