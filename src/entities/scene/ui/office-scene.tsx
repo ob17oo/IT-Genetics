@@ -69,7 +69,7 @@ export function OfficeScene() {
                       heightSize={wall.size[1]}
                       depthSize={wall.size[2]}
                       position={wall.position}
-                      recieveShadow={true}
+                      receiveShadow={true}
                     />
                     <CuboidCollider args={wall.collider} position={wall.position} />
                 </group>
