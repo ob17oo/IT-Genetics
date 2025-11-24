@@ -1,40 +1,78 @@
 "use client";
-import { useMissionStore } from "@/widgets/store/mission-store";
-import { useState } from "react";
-export default function MissionsContent() {
-  const { getAllMissions,updateMissionProgress } = useMissionStore();
-  const mission = getAllMissions();
-  const [filter, setFilter] = useState(false);
 
-  const filtered = filter ? mission.filter((item) => item.completed) : mission;
+import { useMissionStore } from "@/widgets/store/mission-store";
+import { useMemo, useState } from "react";
+
+export default function MissionsContent() {
+  const { updateMissionProgress } = useMissionStore();
+  const mission = useMissionStore((state) => state.missions)
+  const [filter, setFilter] = useState('All');
+
+  const filteredMassive = useMemo(() => {
+    switch(filter){
+      case 'All':
+        return mission
+      case 'Completed':
+        return mission.filter((elem) => elem.completed)
+      case 'Main':
+        return mission.filter((elem) => elem.type === 'main')
+      case 'Side':
+        return mission.filter((elem) => elem.type === 'side')
+      default:
+        return mission
+    }
+  }, [filter,mission])
+
   return (
     <section className="flex flex-col gap-6 scroll-smooth">
       <h2 className="text-2xl text-yellow-200">Миссии</h2>
       <section className="flex gap-3">
         <button
-          onClick={() => setFilter(false)}
-          className={`text-[14px] text-yellow-200 py-3 px-4 rounded-3xl transition-all duraiton-300 ease-in-out border ${
-            filter
-              ? "border border-yellow-500/30"
-              : "border-transparent bg-yellow-500"
+          onClick={() => setFilter("All")}
+          className={`text-[14px] text-yellow-200 py-3 px-4 rounded-3xl transition-all duration-300 ease-in-out border ${
+            filter === "All"
+              ? "border-transparent bg-yellow-500"
+              : "border border-yellow-500/30"
           }`}
         >
           Все
         </button>
         <button
           disabled={mission.filter((item) => item.completed).length <= 0}
-          onClick={() => setFilter(true)}
-          className={`text-[14px] text-yellow-200 py-3 px-4 rounded-3xl transition-all duraiton-300 ease-in-out border ${
-            filter
+          onClick={() => setFilter("Completed")}
+          className={`text-[14px] text-yellow-200 py-3 px-4 rounded-3xl transition-all duration-300 ease-in-out border ${
+            filter === "Completed"
               ? "border-transparent bg-yellow-500"
               : "border border-yellow-500/30"
           }`}
         >
           Полученные
         </button>
-        </section>
+        <button
+          disabled={mission.filter((item) => item.type === "main").length <= 0}
+          onClick={() => setFilter("Main")}
+          className={`text-[14px] text-yellow-200 py-3 px-4 rounded-3xl transition-all duration-300 ease-in-out border ${
+            filter === "Main"
+              ? "border-transparent bg-yellow-500"
+              : "border border-yellow-500/30"
+          }`}
+        >
+          Основные
+        </button>
+        <button
+          disabled={mission.filter((item) => item.type === "side").length <= 0}
+          onClick={() => setFilter("Side")}
+          className={`text-[14px] text-yellow-200 py-3 px-4 rounded-3xl transition-all duration-300 ease-in-out border ${
+            filter === "Side"
+              ? "border-transparent bg-yellow-500"
+              : "border border-yellow-500/30"
+          }`}
+        >
+          Побочные
+        </button>
+      </section>
       <section className="flex flex-col gap-3">
-        {filtered.map((mission) => (
+        {filteredMassive.map((mission) => (
           <section
             className={`p-6 border border-yellow-500/30 rounded-3xl flex flex-col gap-6 ${
               mission.completed ? "opacity-100" : "opacity-50"
@@ -56,21 +94,27 @@ export default function MissionsContent() {
             <section className="flex items-center gap-3">
               <span
                 className={`text-[14px] px-4 py-3 rounded-full ${
-                  mission.difficulty === "Легкая"
+                  mission.difficulty === "easy"
                     ? "bg-green-500"
-                    : mission.difficulty === "Средняя"
+                    : mission.difficulty === "medium"
                     ? "bg-orange-500"
-                    : mission.difficulty === "Сложная"
+                    : mission.difficulty === "hard"
                     ? "bg-red-500"
                     : "bg-gray-500"
                 }`}
               >
-                {mission.difficulty}
+                {mission.difficulty === "easy"
+                  ? "Легкое"
+                  : mission.difficulty === "medium"
+                  ? "Среднее"
+                  : mission.difficulty === "hard"
+                  ? "Сложное"
+                  : "Эксперт"}
               </span>
               <span
                 className={`text-[14px] px-4 py-3 rounded-full border border-yellow-500/30 text-yellow-200`}
               >
-                {mission.type}
+                {mission.type === "main" ? "Основной" : "Побочный"}
               </span>
             </section>
             <section className="flex items-center gap-3">
@@ -87,8 +131,22 @@ export default function MissionsContent() {
               </span>
             </section>
             <section className="flex gap-3">
-                <button onClick={() => updateMissionProgress(mission.id , mission.progress += 10)} className="text-yellow-200 text-lg">Улучшить</button>
-                <button onClick={() => updateMissionProgress(mission.id , 0)} className="text-yellow-200 text-lg">Сбросить</button>
+              <button
+                onClick={() =>{
+                  const newProgress = Math.min(mission.progress + 10, 100);
+                  updateMissionProgress(mission.id, newProgress)
+                }
+                }
+                className="text-yellow-200 text-lg opacity-70 transition-all duration-300 ease-in-out hover:opacity-100"
+              >
+                Улучшить
+              </button>
+              <button
+                onClick={() =>updateMissionProgress(mission.id, 0)}
+                className="text-yellow-200 text-lg opacity-70 transition-all duration-300 ease-in-out hover:opacity-100"
+              >
+                Сбросить
+              </button>
             </section>
           </section>
         ))}

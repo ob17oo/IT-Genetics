@@ -3,9 +3,11 @@ import { useEffect, useState } from "react";
 import GameDialog from "./game-dialog";
 import Image from "next/image";
 import { useAuthStore } from "@/widgets/store/auth-store";
+import { useMissionStore } from "@/widgets/store/mission-store";
 
 export default function GameHud(){
     const { user } = useAuthStore()
+    const { getActiveMissions } = useMissionStore()
     const [loading , setLoading] = useState(true)
     const [isOpen, setIsOpen] = useState(false);
 
@@ -21,6 +23,9 @@ export default function GameHud(){
           <section className="pointer-events-none">
             <h3 className="text-lg text-white">IT Genetics</h3>
             <span className="text-[12px] text-yellow-500">v 1.0.0</span>
+          </section>
+          <section>
+            {}
           </section>
           <section className="pointer-events-auto flex items-center gap-2">
             <section className="py-2 px-4 rounded-full flex gap-2 items-center justify-center bg-green-400/70">

@@ -13,8 +13,9 @@ interface MissionStore {
     getMissionById: (id: number) => Mission | undefined;
     getCompletedMissions: () => Mission[];
     getActiveMissions: () => Mission[];
-    getAllMissions: () => Mission[]
+    getAllMissions: () => Mission[],
 
+    resetCookie: () => void
 }
 
 
@@ -30,7 +31,7 @@ export const useMissionStore = create<MissionStore>()(
                         mission.id === missionId 
                         ? {
                             ...mission,
-                            progress: Math.min(progress, 100),
+                            progress: Math.min(Math.max(0, progress), 100), 
                             completed: progress >= 100
                         } : mission
                     )
@@ -54,7 +55,13 @@ export const useMissionStore = create<MissionStore>()(
             getAllMissions: () => get().missions,
             getMissionById: (id) => get().missions.find(elem => elem.id === id),
             getCompletedMissions: () => get().missions.filter(elem => elem.completed),
-            getActiveMissions: () => get().missions.filter(elem => !elem.completed)
+            getActiveMissions: () => get().missions.filter(elem => !elem.completed),
+            resetCookie: () => {
+                set({
+                    missions: MOCK_MISSIONS,
+                    currentMission: null
+                })
+            }
         }),
         {
             name: 'mission-storage'
