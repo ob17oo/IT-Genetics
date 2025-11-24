@@ -1,5 +1,6 @@
 "use client";
 
+import { LobbyNPC } from "@/entities/characters/lobby-npc/lobby-npc";
 import { CharacterController } from "@/entities/characters/third-person-character/character-controller";
 import { AdminTableObject } from "@/entities/objects/ui/adminTable-object";
 import { ChairObject } from "@/entities/objects/ui/chair-object";
@@ -15,25 +16,26 @@ import GameHud from "@/widgets/game-hud/ui/game-hud";
 import { OrbitControls, useGLTF } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { CuboidCollider, Physics, RigidBody } from "@react-three/rapier";
-import { ImageConfigContext } from "next/dist/shared/lib/image-config-context.shared-runtime";
 import { Suspense, useMemo } from "react";
 
-interface LobbySofaProps{
+interface defaultGLBProps{
   scale?: number | [number,number,number],
   position?: [number,number,number],
-  rotation?: [number,number,number]
+  rotation?: [number,number,number],
+  name: string
 }
-function LobbySofa({scale = 0.1, position, rotation}: LobbySofaProps){
-  const {scene} = useGLTF('/model/furniture/lobbySofa.glb')
+
+function ItemRender({scale = 0.1, rotation, position, name}: defaultGLBProps){
+  const { scene } = useGLTF(`/model/furniture/${name}.glb`) 
   return (
-    <primitive object={scene} scale={scale} position={position} rotation={rotation} />
+    <primitive object={scene} rotation={rotation} position={position} scale={scale} />
   )
 }
 
 const WALL_CONFIGS = [
   {
-    position: [-7, 4, 7.5] as [number, number, number],
-    size: [14, 0.2, 10],
+    position: [-7, 3, 7.5] as [number, number, number],
+    size: [14, 0.2, 8],
     rotation: [0, 0, 0] as [number, number, number],
   },
   {
@@ -67,23 +69,33 @@ const WALL_CONFIGS = [
     rotation: [0, 0, 0] as [number, number, number],
   },
   {
-    position: [-14, 4, 8.5] as [number, number, number],
-    size: [0.2, 2.2, 10],
+    position: [-14, 3, 8.5] as [number, number, number],
+    size: [0.2, 2.2, 8],
     rotation: [0, 0, 0] as [number, number, number],
   },
   {
-    position: [-17, 4, 9.7] as [number, number, number],
-    size: [6.2, 0.2, 10],
+    position: [-10, 4, 9.7] as [number, number, number],
+    size: [20, 0.2, 10],
     rotation: [0, 0, 0] as [number, number, number],
   },
   {
-    position: [0, 4, 11] as [number, number, number],
-    size: [7.2, 0.2, 10],
+    position: [0, 4, 12.05] as [number, number, number],
+    size: [4.9, 0.2, 10],
+    rotation: [0, Math.PI / 2, 0] as [number, number, number],
+  },
+  {
+    position: [0, 3, 8.5] as [number, number, number],
+    size: [2.2, 0.2, 8],
     rotation: [0, Math.PI / 2, 0] as [number, number, number],
   },
   {
     position: [9, 4, 11] as [number, number, number],
     size: [7.2, 0.2, 10],
+    rotation: [0, Math.PI / 2, 0] as [number, number, number],
+  },
+  {
+    position: [8.7, 4, 8.9] as [number, number, number],
+    size: [3, 0.4, 10],
     rotation: [0, Math.PI / 2, 0] as [number, number, number],
   },
   {
@@ -118,6 +130,11 @@ const DOOR_CONFIGS = [
     position: [19.6, 1, 0] as [number, number, number],
     rotation: [0, Math.PI / 2, 0] as [number, number, number],
   },
+  {
+    position: [8.6,1,12] as [number,number,number],
+    rotation: [0,Math.PI / 2,0] as [number,number,number]
+
+  }
 ];
 
 const DIPLOMA_CONFIGS = [
@@ -147,16 +164,17 @@ const DIPLOMA_CONFIGS = [
     scale: 8 as number,
   },
   {
-    position: [15, 1.5, 7.1] as [number, number, number],
+    position: [15.5, 1.5, 7.1] as [number, number, number],
     rotation: [0, Math.PI, 0] as [number, number, number],
     scale: 8 as number,
   },
   {
-    position: [11.8, 1.5, 7.1] as [number, number, number],
+    position: [10.5, 1.5, 7.1] as [number, number, number],
     rotation: [0, Math.PI, 0] as [number, number, number],
     scale: 8 as number,
   },
 ];
+
 
 
 
@@ -236,6 +254,27 @@ export default function LobbyScene() {
             </RigidBody>
           </group>
 
+          <group>
+            <RigidBody type="fixed">
+                <mesh position={[0, 9,0]}>
+                  <boxGeometry args={[40,0.1,15]}/>
+                  <meshStandardMaterial color="#FFFFFF"/>
+                </mesh>
+            </RigidBody>
+            <RigidBody type="fixed">
+                <mesh position={[-17, 9,8.5]}>
+                  <boxGeometry args={[6 ,0.1, 2.5]}/>
+                  <meshStandardMaterial color="#FFFFFF"/>
+                </mesh>
+            </RigidBody>
+            <RigidBody type="fixed">
+                <mesh position={[4.5, 9,11]}>
+                  <boxGeometry args={[9,0.1,7]}/>
+                  <meshStandardMaterial color="#FFFFFF"/>
+                </mesh>
+            </RigidBody>
+          </group>
+
           {walls}
           {diplomas}
           {doors}
@@ -252,7 +291,7 @@ export default function LobbyScene() {
           </group>
 
           <RigidBody type="fixed">
-              <CoffeeTableObject scale={0.3} position={[15,-1,-0.5]} rotation={[0, Math.PI / 2, 0]}/>
+              <CoffeeTableObject scale={2.2} position={[16,-1,-1.2]} rotation={[0, Math.PI / 1, 0]}/>
               <CuboidCollider args={[0.8, 0.3, 0.8]} position={[15, 0.3, -0.5]} />
           </RigidBody>
 
@@ -266,8 +305,8 @@ export default function LobbyScene() {
           </RigidBody>
 
           <RigidBody type="fixed">
-              <LobbySofa scale={7} position={[-8, -1, 4.5]}/>
-               <CuboidCollider args={[1.2, 0.5, 0.8]} position={[-8, 0.25, 4.5]} />
+              <ItemRender name="graySofa" scale={1.3} position={[-8, -1, 4.5]}/>
+               <CuboidCollider args={[1.2, 0.5,0.8]} position={[-8, 0.25, 4.5]} />
           </RigidBody>
 
           <RigidBody type="fixed">
@@ -277,8 +316,29 @@ export default function LobbyScene() {
           <RigidBody type="fixed">
               <ComputerObject scale={0.0025} position={[-7.5, 1.9, -4.9]} rotation={[0, Math.PI / 1, 0]}/>
           </RigidBody>
+
+          <ItemRender name="InterCome" scale={0.03} position={[-7,2,-7.25]}/>
+          <ItemRender name="PaperStack" scale={0.025} position={[-10,0.5,-4.5]} rotation={[0,Math.PI / -4.5,0]}/>
+          <ItemRender name="magazineStack" scale={3.5} position={[15,0.35,0]} rotation={[0,Math.PI / -4.5,0]}/>
+          <ItemRender name="penaplastLogotype" scale={0.7} position={[-10.8,1.35,-3.6]} rotation={[0,Math.PI / 6,0]}/>
+          <ItemRender name="candyBowl" scale={0.0003} position={[-4.8,1.68,-3.6]} rotation={[0,Math.PI / 6,0]}/>
+          <ItemRender name="grassCarpet" scale={9} position={[-16,-1,-0.5]}/>
+          <RigidBody type="fixed" position={[-16,-0.9,1.5]}>
+            <ItemRender name="purpleSofa" scale={5}/>
+          </RigidBody>
+          <RigidBody type="fixed" position={[-16.5,-0.9,2]}>
+            <ItemRender name="yellowSofa" scale={5}/>
+          </RigidBody>
+          <RigidBody type="fixed">
+              <ItemRender name="fireCase" position={[16.5,-2,7.2]} scale={7} rotation={[0,Math.PI / 1,0]}/>
+          </RigidBody>
+          <RigidBody type="fixed"  position={[-19.5,-1,5]}>
+              <ItemRender name="LobbyBanner" scale={1.5} rotation={[0,Math.PI / -20,0]}/>
+          </RigidBody>
+
+          <LobbyNPC scale={1} path="lobby-npc" position={[-2.5,-1,-3.5]} rotation={[0,Math.PI / -4, 0]}/>
           <OrbitControls />
-          <CharacterController position={[0,0,0]} />
+          <CharacterController position={[-16,0,7]} rotationY={Math.PI / 2}/>
           </Physics>
         </Suspense>
       </Canvas>

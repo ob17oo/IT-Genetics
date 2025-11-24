@@ -14,23 +14,27 @@ const clampAngle = (a: number) => {
 };
 
 type RigidApi = {
-  linvel: () => { x: number; y: number; z: number }
-  setLinvel: (v: { x: number; y: number; z: number }, wake: boolean) => void
-  translation: () => { x: number; y: number; z: number }
-}
+  linvel: () => { x: number; y: number; z: number };
+  setLinvel: (v: { x: number; y: number; z: number }, wake: boolean) => void;
+  translation: () => { x: number; y: number; z: number };
+};
 
 interface CharacterProps {
-  position?: [number,number,number]
+  position?: [number, number, number];
+  rotationY?: number;
 }
 
-export function CharacterController({position =[0, 5, 0] }: CharacterProps) {
-  const { world, rapier } = useRapier()
+export function CharacterController({
+  position = [0, 5, 0],
+  rotationY = 0,
+}: CharacterProps) {
+  const { world, rapier } = useRapier();
   const rb = useRef<RigidApi | null>(null);
   const container = useRef<Group | null>(null);
   const character = useRef<Group | null>(null);
   const cameraTarget = useRef<Group | null>(null);
   const cameraBoom = useRef<Group | null>(null);
-  const [animation, setAnimation] = useState<'idle' | 'walk' | 'run'>('idle')
+  const [animation, setAnimation] = useState<"idle" | "walk" | "run">("idle");
 
   const [, get] = useKeyboardControls();
   // Настройки управления — ближе к демо из репозитория
@@ -40,12 +44,18 @@ export function CharacterController({position =[0, 5, 0] }: CharacterProps) {
   const CAMERA_LERP = 0.25; // камера догоняет быстрее, остаётся позади
   const CHAR_ROT_LERP = 0.2; // персонаж быстрее выравнивается
 
-  const rotationTarget = useRef(0);            // общий поворот контейнера
-  const characterRotationTarget = useRef(0);   // локальный поворот персонажа
+  const rotationTarget = useRef(rotationY); // общий поворот контейнера (инициализируем из props)
+  const characterRotationTarget = useRef(0); // локальный поворот персонажа
+  const initialized = useRef(false);
 
   useEffect(() => {
-    // click-to-steer отключен: управление только с клавиатуры
-  }, []);
+    // Инициализация начального поворота
+    rotationTarget.current = rotationY;
+    if (container.current) {
+      container.current.rotation.y = rotationY;
+    }
+    initialized.current = true;
+  }, [rotationY]);
 
   useFrame(({ camera }) => {
     if (rb.current) {
@@ -72,13 +82,17 @@ export function CharacterController({position =[0, 5, 0] }: CharacterProps) {
       // Двигаем вперёд/назад в локальном направлении
       if (movement.x !== 0 || movement.z !== 0) {
         characterRotationTarget.current = Math.atan2(movement.x, movement.z);
-        vel.x = Math.sin(rotationTarget.current + characterRotationTarget.current) * speed;
-        vel.z = Math.cos(rotationTarget.current + characterRotationTarget.current) * speed;
-        setAnimation(run ? 'run' : 'walk')
+        vel.x =
+          Math.sin(rotationTarget.current + characterRotationTarget.current) *
+          speed;
+        vel.z =
+          Math.cos(rotationTarget.current + characterRotationTarget.current) *
+          speed;
+        setAnimation(run ? "run" : "walk");
       } else {
         vel.x = 0;
         vel.z = 0;
-        setAnimation('idle')
+        setAnimation("idle");
       }
 
       // Поворачиваем модель персонажа мягко
@@ -91,14 +105,17 @@ export function CharacterController({position =[0, 5, 0] }: CharacterProps) {
 
       // Разрешаем гравитацию. При контакте с полом убираем отрицательный vy
       if (rapier && world && rb.current) {
-        const t = rb.current.translation()
-        const halfHeight = 0.6
-        const radius = 0.3
-        const footY = t.y - (halfHeight + radius - 0.01)
-        const ray = new rapier.Ray({ x: t.x, y: footY, z: t.z }, { x: 0, y: -1, z: 0 })
-        const hit = world.castRay(ray, 0.2, true)
+        const t = rb.current.translation();
+        const halfHeight = 0.6;
+        const radius = 0.3;
+        const footY = t.y - (halfHeight + radius - 0.01);
+        const ray = new rapier.Ray(
+          { x: t.x, y: footY, z: t.z },
+          { x: 0, y: -1, z: 0 }
+        );
+        const hit = world.castRay(ray, 0.2, true);
         if (hit && vel.y < 0) {
-          vel.y = 0
+          vel.y = 0;
         }
       }
       rb.current.setLinvel(vel, true);
@@ -135,7 +152,9 @@ export function CharacterController({position =[0, 5, 0] }: CharacterProps) {
     <RigidBody
       colliders={false}
       lockRotations
-      ref={(api) => { rb.current = (api as unknown as RigidApi) }}
+      ref={(api) => {
+        rb.current = api as unknown as RigidApi;
+      }}
       mass={60}
       position={position}
       canSleep={false}
@@ -145,14 +164,14 @@ export function CharacterController({position =[0, 5, 0] }: CharacterProps) {
         {/* Точка, куда смотрит камера (впереди персонажа) */}
         <group ref={cameraTarget} position-z={2} />
         {/* Узел позиции камеры — «штанга»: выше и позади */}
-        <group ref={cameraBoom} position-y={4} position-z={-5} />
+        <group ref={cameraBoom} position-y={4} position-z={-3.5} />
         {/* Персонаж */}
-      <group ref={character}>
+        <group ref={character}>
           <Character scale={1} animation={animation} />
         </group>
       </group>
       {/* Капсула персонажа: подгоняй размеры под свою модель */}
-      <CapsuleCollider args={[0.5, 0.3,]} position={[0 , 0.8, 0]} />
+      <CapsuleCollider args={[0.5, 0.3]} position={[0, 0.8, 0]} />
     </RigidBody>
   );
 }

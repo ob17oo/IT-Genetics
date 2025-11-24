@@ -5,7 +5,6 @@ import { useGLTF, useAnimations } from '@react-three/drei'
 export function Character({ scale = 0.5, animation = 'idle' }: { scale?: number; animation?: string }){
   const gltf = useGLTF('/model/character/character.glb')
   const { actions, names } = useAnimations(gltf.animations, gltf.scene)
-
   const resolveClipName = (key: string, available: string[]) => {
     if (!available || available.length === 0) return undefined
     const lower = key.toLowerCase()
