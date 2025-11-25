@@ -1,4 +1,4 @@
-'use client'
+"use client";
 interface WallProps {
   rotation?: [number, number, number];
   position?: [number, number, number];
@@ -9,11 +9,20 @@ interface WallProps {
   receiveShadow: boolean;
 }
 
-export default function WallObject({widthSize,heightSize,depthSize, rotation, position, color, receiveShadow}: WallProps){
-    return (
-        <mesh rotation={rotation} position={position} receiveShadow={receiveShadow}>
-            <boxGeometry args={[widthSize,depthSize,heightSize]} />
-            <meshStandardMaterial color={color} />
-        </mesh>
-    )
+export default function WallObject({
+  widthSize,
+  heightSize,
+  depthSize,
+  rotation,
+  position,
+  color,
+  receiveShadow,
+}: WallProps) {
+  return (
+    <mesh rotation={rotation} position={position} receiveShadow={receiveShadow}>
+      {/* ИСПРАВЛЕНО: правильный порядок аргументов */}
+      <boxGeometry args={[widthSize, heightSize, depthSize]} />
+      <meshStandardMaterial color={color} />
+    </mesh>
+  );
 }

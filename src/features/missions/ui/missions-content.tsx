@@ -23,6 +23,7 @@ export default function MissionsContent() {
     }
   }, [filter,mission])
 
+
   return (
     <section className="flex flex-col gap-6 scroll-smooth">
       <h2 className="text-2xl text-yellow-200">Миссии</h2>
@@ -70,7 +71,7 @@ export default function MissionsContent() {
         >
           Побочные
         </button>
-      </section>
+      </section> 
       <section className="flex flex-col gap-3">
         {filteredMassive.map((mission) => (
           <section
@@ -142,7 +143,9 @@ export default function MissionsContent() {
                 Улучшить
               </button>
               <button
-                onClick={() =>updateMissionProgress(mission.id, 0)}
+                onClick={() =>{
+                  updateMissionProgress(mission.id, 0)
+                }}
                 className="text-yellow-200 text-lg opacity-70 transition-all duration-300 ease-in-out hover:opacity-100"
               >
                 Сбросить

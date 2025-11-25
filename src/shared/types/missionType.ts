@@ -7,5 +7,6 @@ export interface Mission{
     completed: boolean,
     type: string,
     difficulty: string,
-    requires: number | null
+    requires: number | null,
+    relatedNPC?: number
 }

@@ -33,7 +33,7 @@ export default function ProfileContent(){
         <section className="flex flex-col gap-6">
             <section className="border border-yellow-500/30 rounded-3xl p-6 flex items-center gap-6">
                 <section className="relative w-[100px] h-[100px] rounded-full overflow-hidden">
-                    <Image src="/static/playerAvatar.png" alt="avatar" fill />
+                    <Image src="/static/playerAvatar.png" alt="avatar" fill  sizes="(max-width: 300px)"/>
                 </section>
                 <section>
                     <span className="text-white/50 text-[14px]">Имя разработчика:</span>
@@ -80,7 +80,7 @@ export default function ProfileContent(){
                                     {skill.name}
                                     <section className="flex items-center gap-2 p-2">
                                         <section className="w-full bg-gray-700 rounded-full h-2">
-                                            <section className={`bg-yellow-500 h-2 rounded-full`} style={{ width: `${(skill.level! / 10) * 100 }%` }}></section>
+                                            <section className={`h-2 rounded-full ${skill.level >= 5 && skill.level < 10 ? 'bg-orange-500' : skill.level >= 10 ? 'bg-green-500' : 'bg-yellow-500'}`} style={{ width: `${(skill.level! / 10) * 100 }%` }}></section>
                                         </section>
                                         <section className="flex items-center gap-1">
                                             <span>Уровень</span>
@@ -109,7 +109,7 @@ export default function ProfileContent(){
                                     {skill.name}
                                     <section className="flex items-center gap-2 p-2">
                                         <section className="w-full bg-gray-700 rounded-full h-2">
-                                            <section className={`bg-yellow-500 h-2 rounded-full`} style={{ width: `${(skill.level! / 10) * 100 }%` }}></section>
+                                            <section className={`h-2 rounded-full ${skill.level >= 5 && skill.level < 10 ? 'bg-orange-500' : skill.level >= 10 ? 'bg-green-500' : 'bg-yellow-500'}`} style={{ width: `${(skill.level! / 10) * 100 }%` }}></section>
                                         </section>
                                         <section className="flex items-center gap-1">
                                             <span>Уровень</span>

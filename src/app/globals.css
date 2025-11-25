@@ -7,3 +7,15 @@ body {
   background-color: #121212;
 }
 
+.npc-dialog-portal {
+  position: fixed !important;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+

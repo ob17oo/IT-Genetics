@@ -22,11 +22,13 @@ type RigidApi = {
 interface CharacterProps {
   position?: [number, number, number];
   rotationY?: number;
+  onPositionChange?: (position: Vector3) => void;
 }
 
 export function CharacterController({
   position = [0, 5, 0],
   rotationY = 0,
+  onPositionChange,
 }: CharacterProps) {
   const { world, rapier } = useRapier();
   const rb = useRef<RigidApi | null>(null);
@@ -35,6 +37,7 @@ export function CharacterController({
   const cameraTarget = useRef<Group | null>(null);
   const cameraBoom = useRef<Group | null>(null);
   const [animation, setAnimation] = useState<"idle" | "walk" | "run">("idle");
+  const lastReportedPosition = useRef<Vector3 | null>(null);
 
   const [, get] = useKeyboardControls();
   // Настройки управления — ближе к демо из репозитория
@@ -119,6 +122,23 @@ export function CharacterController({
         }
       }
       rb.current.setLinvel(vel, true);
+
+      if (onPositionChange) {
+        const translation = rb.current.translation();
+        const currentPosition = new Vector3(
+          translation.x,
+          translation.y,
+          translation.z
+        );
+        const previousPosition = lastReportedPosition.current;
+        if (
+          !previousPosition ||
+          previousPosition.distanceToSquared(currentPosition) > 0.0001
+        ) {
+          lastReportedPosition.current = currentPosition;
+          onPositionChange(currentPosition);
+        }
+      }
     }
 
     // Камера следует за контейнером: сначала поворот контейнера

@@ -1,6 +1,5 @@
 "use client";
 
-import { LobbyNPC } from "@/entities/characters/lobby-npc/lobby-npc";
 import { CharacterController } from "@/entities/characters/third-person-character/character-controller";
 import { AdminTableObject } from "@/entities/objects/ui/adminTable-object";
 import { ChairObject } from "@/entities/objects/ui/chair-object";
@@ -10,13 +9,15 @@ import { DiplomaStand } from "@/entities/objects/ui/diploma-object";
 import { LogotypeObject } from "@/entities/objects/ui/logotype-object";
 import OfficeDoorObject from "@/entities/objects/ui/officeDoor-object";
 import { SofaObject } from "@/entities/objects/ui/sofa-object";
-import WalletObject from "@/entities/objects/ui/wall-object";
+import WallObject from "@/entities/objects/ui/wall-object";
+import { LobbyNPC } from "@/entities/characters/lobby-npc/lobby-npc";
 import SceneLoader from "@/shared/ui/Loader/scene-loader";
 import GameHud from "@/widgets/game-hud/ui/game-hud";
 import { OrbitControls, useGLTF } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { CuboidCollider, Physics, RigidBody } from "@react-three/rapier";
-import { Suspense, useMemo } from "react";
+import { Suspense, useMemo, useState } from "react";
+import { Vector3 } from "three";
 
 interface defaultGLBProps{
   scale?: number | [number,number,number],
@@ -35,72 +36,72 @@ function ItemRender({scale = 0.1, rotation, position, name}: defaultGLBProps){
 const WALL_CONFIGS = [
   {
     position: [-7, 3, 7.5] as [number, number, number],
-    size: [14, 0.2, 8],
+    size: [14, 8, 0.2], // [width, depth, height]
     rotation: [0, 0, 0] as [number, number, number],
   },
   {
     position: [-20, 4, 0] as [number, number, number],
-    size: [0.2, 15, 10],
+    size: [0.2, 10, 15], // [width, depth, height]
     rotation: [0, 0, 0] as [number, number, number],
   },
   {
     position: [-10, 4, -7.5] as [number, number, number],
-    size: [20, 0.2, 10],
+    size: [20, 10, 0.2], // [width, depth, height]
     rotation: [0, 0, 0] as [number, number, number],
   },
   {
     position: [14.5, 4, 7.5] as [number, number, number],
-    size: [11, 0.2, 10],
+    size: [11, 10, 0.2], // [width, depth, height]
     rotation: [0, 0, 0] as [number, number, number],
   },
   {
     position: [14.5, 4, -7.5] as [number, number, number],
-    size: [11, 0.2, 10],
+    size: [11, 10, 0.2], // [width, depth, height]
     rotation: [0, 0, 0] as [number, number, number],
   },
   {
     position: [20, 4, 0] as [number, number, number],
-    size: [0.2, 15, 10],
+    size: [0.2, 10, 15], // [width, depth, height]
     rotation: [0, 0, 0] as [number, number, number],
   },
   {
     position: [-20, 4, 8.5] as [number, number, number],
-    size: [0.2, 2.2, 10],
+    size: [0.2, 10, 2.2], // [width, depth, height]
     rotation: [0, 0, 0] as [number, number, number],
   },
   {
     position: [-14, 3, 8.5] as [number, number, number],
-    size: [0.2, 2.2, 8],
+    size: [0.2, 8, 2.2], // [width, depth, height]
     rotation: [0, 0, 0] as [number, number, number],
   },
   {
     position: [-10, 4, 9.7] as [number, number, number],
-    size: [20, 0.2, 10],
+    size: [20, 10, 0.2], // [width, depth, height]
     rotation: [0, 0, 0] as [number, number, number],
   },
   {
     position: [0, 4, 12.05] as [number, number, number],
-    size: [4.9, 0.2, 10],
+    size: [4.9, 10, 0.2], // [width, depth, height]
     rotation: [0, Math.PI / 2, 0] as [number, number, number],
   },
   {
     position: [0, 3, 8.5] as [number, number, number],
-    size: [2.2, 0.2, 8],
+    size: [2.2, 8, 0.2], // [width, depth, height]
     rotation: [0, Math.PI / 2, 0] as [number, number, number],
   },
   {
     position: [9, 4, 11] as [number, number, number],
-    size: [7.2, 0.2, 10],
+    size: [7.2, 10, 0.2], // [width, depth, height]
     rotation: [0, Math.PI / 2, 0] as [number, number, number],
   },
   {
     position: [8.7, 4, 8.9] as [number, number, number],
-    size: [3, 0.4, 10],
+    size: [3, 10, 0.4], // [width, depth, height]
     rotation: [0, Math.PI / 2, 0] as [number, number, number],
   },
   {
     position: [4.5, 4, 14.5] as [number, number, number],
-    size: [9.2, 0.2, 10],
+    size: [9.2, 10, 0.2], // [width, depth, height]
     rotation: [0, 0, 0] as [number, number, number],
   },
 ];
@@ -179,22 +180,29 @@ const DIPLOMA_CONFIGS = [
 
 
 export default function LobbyScene() {
-  const walls = useMemo(() => (
+  const [playerPosition, setPlayerPosition] = useState<Vector3 | null>(null);
+  const walls = useMemo(
+    () =>
       WALL_CONFIGS.map((wall, index) => (
         <RigidBody key={`wall-${index}`} type="fixed">
-            <WalletObject color="#F2F2F2"
-              widthSize={wall.size[0]}
-              heightSize={wall.size[1]}
-              depthSize={wall.size[2]}
-              position={wall.position}
-              rotation={wall.rotation}
-              receiveShadow={true}
-            />
-            <CuboidCollider args={[wall.size[0] / 2, wall.size[1] / 2, wall.size[2] /2]} position={wall.position} rotation={wall.rotation}/>
+          <WallObject
+            color="#F2F2F2"
+            widthSize={wall.size[0]} // width
+            heightSize={wall.size[1]} // height (теперь третий элемент)
+            depthSize={wall.size[2]} // depth (теперь второй элемент)
+            position={wall.position}
+            rotation={wall.rotation}
+            receiveShadow={true}
+          />
+          <CuboidCollider
+            args={[wall.size[0] / 2, wall.size[2] / 2, wall.size[1] / 2]}
+            position={wall.position}
+            rotation={wall.rotation}
+          />
         </RigidBody>
-      ))
-    ),[])
-
+      )),
+    []
+  );
   const doors = useMemo(() => (
       DOOR_CONFIGS.map((door,index) => (
         <OfficeDoorObject 
@@ -336,9 +344,21 @@ export default function LobbyScene() {
               <ItemRender name="LobbyBanner" scale={1.5} rotation={[0,Math.PI / -20,0]}/>
           </RigidBody>
 
-          <LobbyNPC scale={1} path="lobby-npc" position={[-2.5,-1,-3.5]} rotation={[0,Math.PI / -4, 0]}/>
+          <LobbyNPC
+            scale={1}
+            path="lobby-npc"
+            position={[-2.5, -1, -3.5]}
+            rotation={[0, Math.PI / -4, 0]}
+            npcId={1}
+            npcName="Антон"
+            playerPosition={playerPosition}
+          />
           <OrbitControls />
-          <CharacterController position={[-16,0,7]} rotationY={Math.PI / 2}/>
+          <CharacterController
+            position={[-16, 0, 7]}
+            rotationY={Math.PI / 2}
+            onPositionChange={setPlayerPosition}
+          />
           </Physics>
         </Suspense>
       </Canvas>
