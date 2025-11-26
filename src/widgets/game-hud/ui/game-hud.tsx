@@ -1,24 +1,18 @@
 'use client'
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import GameDialog from "./game-dialog";
 import Image from "next/image";
 import { useAuthStore } from "@/widgets/store/auth-store";
-import { useMissionStore } from "@/widgets/store/mission-store";
+import { useMissionStore } from '@/widgets/store/mission-store'
 import { useNPCInteractionStore } from "@/widgets/store/npc-interaction-store";
 
 export default function GameHud(){
     const { user } = useAuthStore()
-    const { getActiveMissions } = useMissionStore()
+    const missions = useMissionStore(state => state.missions)
     const { showPrompt, promptMessage } = useNPCInteractionStore()
-    const [loading , setLoading] = useState(true)
     const [isOpen, setIsOpen] = useState(false);
+    const activeMissions = missions.filter(mission => !mission.completed)
 
-    useEffect(() => {
-      const timer = setTimeout(() => {
-        setLoading(false)
-      }, 1000)
-      return () => clearTimeout(timer)
-    }, [])
     return (
       <>
         <section className="absolute top-0 left-0 right-0 h-auto z-10">
@@ -26,9 +20,30 @@ export default function GameHud(){
             <section className="pointer-events-none">
               <h3 className="text-lg text-white">IT Genetics</h3>
               <span className="text-[12px] text-yellow-500">v 1.0.0</span>
-            </section>
-            <section>
-              {}
+              {activeMissions.length > 0 && (
+                <section className="mt-3 space-y-1 p-6 bg-black/70 rounded-2xl border border-yellow-500">
+                  <h4 className="text-xs uppercase tracking-[0.4em] text-yellow-500/70">
+                    Активные миссии
+                  </h4>
+                  <ul className="flex flex-col gap-1">
+                    {activeMissions.slice(0, 3).map((mission) => (
+                      <li 
+                        key={mission.id}
+                        className="flex items-center gap-2 text-[13px] text-yellow-100/80"
+                      >
+                        <span className="w-1.5 h-1.5 rounded-full bg-yellow-500" />
+                        <span className="truncate">{mission.title}</span>
+                        <span className="text-[11px] text-yellow-500/70">{mission.progress}%</span>
+                      </li>
+                    ))}
+                    {activeMissions.length > 3 && (
+                      <li className="text-[11px] text-yellow-500/70">
+                        + ещё {activeMissions.length - 3}
+                      </li>
+                    )}
+                  </ul>
+                </section>
+              )}
             </section>
             <section className="pointer-events-auto flex items-center gap-2">
               <section className="py-2 px-4 rounded-full flex gap-2 items-center justify-center bg-green-400/70">
@@ -55,6 +70,7 @@ export default function GameHud(){
             </section>
           </section>
         )}
+        
       </>
     );
 }

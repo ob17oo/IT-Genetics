@@ -43,7 +43,7 @@ export default function GameDialog( {isOpen, onClose}: GameDialogProps){
 
     return (
         <section className="fixed inset-0 z-50">
-            <section className="absolute inset-0 bg-black/80 backdrop-blur-md">
+            <section className="absolute inset-0 bg-black/80 backdrop-blur-md" onClick={onClose}>
                 <section className="flex justify-between w-full h-full p-6">
                     {/* Левый блок с фиксированной высотой и скроллом */}
                     <section className="bg-[#121212] rounded-3xl w-[83%] h-[95vh] border border-yellow-500/30 flex flex-col">

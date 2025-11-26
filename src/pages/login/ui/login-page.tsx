@@ -1,12 +1,14 @@
 "use client";
 import DefaultInput from "@/shared/ui/Input/default-input";
 import { useAuthStore } from "@/widgets/store/auth-store";
+import { useMissionStore } from '@/widgets/store/mission-store'
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { ChangeEvent, useState } from "react";
 
 export default function LoginPage() {
   const { login } = useAuthStore();
+  const  { resetCookie } = useMissionStore()
   const router = useRouter();
   const [error, setError] = useState('')
   const [formData, setFormData] = useState({
@@ -24,6 +26,8 @@ export default function LoginPage() {
     try {
       login(formData.name, formData.surName); // ← Только имя и фамилия
       router.push("/game");
+      resetCookie()
+      
     } catch (err) {
       if(err instanceof Error){
         setError(err.message)

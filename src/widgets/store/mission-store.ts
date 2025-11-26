@@ -22,13 +22,14 @@ interface MissionStore {
     completeMissionWithRewards: (missionId: number) => void
 }
 
+const createMissionSeed = () => MOCK_MISSIONS.map(m => ({...m}))
 
 export const useMissionStore = create<MissionStore>()(
     persist(
         (set,get) => ({
-            missions: MOCK_MISSIONS,
+            missions: [],
             currentMission: null,
-            availableMission: MOCK_MISSIONS,
+            availableMission: createMissionSeed(),
 
             updateMissionProgress: (missionId, progress) => {
                 set(state => ({
@@ -63,24 +64,23 @@ export const useMissionStore = create<MissionStore>()(
             getActiveMissions: () => get().missions.filter(elem => !elem.completed),
             resetCookie: () => {
                 set({
-                    missions: MOCK_MISSIONS,
-                    currentMission: null
+                    missions: [],
+                    currentMission: null,
+                    availableMission: createMissionSeed(), 
                 })
             },
             getAvailableMissions: () => get().availableMission,
 
             assignMission: (missionId) => {
-                set(state => {
-                    const mission = state.availableMission.find((elem) => elem.id === missionId)
-                    if(!mission){
-                        return state
-                    }
-                    return {
-                        availableMission: state.availableMission.filter(elem => elem.id !== missionId),
-                        missions: [...state.missions, {...mission, progress: 0, completed: false}]
-                    }
+                set((state) => {
+                  const mission = state.availableMission.find((m) => m.id === missionId)
+                  if (!mission) return state
+                  return {
+                    availableMission: state.availableMission.filter((m) => m.id !== missionId),
+                    missions: [...state.missions, { ...mission, progress: 0, completed: false }],
+                  }
                 })
-            },
+              },
             completeMissionWithRewards: (missionId) => {
                     const mission = get().missions.find((elem) => elem.id === missionId)
                     if(mission && !mission.completed){

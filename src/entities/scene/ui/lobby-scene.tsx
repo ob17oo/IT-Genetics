@@ -18,6 +18,7 @@ import { Canvas } from "@react-three/fiber";
 import { CuboidCollider, Physics, RigidBody } from "@react-three/rapier";
 import { Suspense, useMemo, useState } from "react";
 import { Vector3 } from "three";
+import MissionHud from "@/widgets/game-hud/ui/mission-hud";
 
 interface defaultGLBProps{
   scale?: number | [number,number,number],
@@ -181,6 +182,7 @@ const DIPLOMA_CONFIGS = [
 
 export default function LobbyScene() {
   const [playerPosition, setPlayerPosition] = useState<Vector3 | null>(null);
+  const [activeNPC, setActiveNPC] = useState<{ id: number; name: string } | null>(null);
   const walls = useMemo(
     () =>
       WALL_CONFIGS.map((wall, index) => (
@@ -350,8 +352,9 @@ export default function LobbyScene() {
             position={[-2.5, -1, -3.5]}
             rotation={[0, Math.PI / -4, 0]}
             npcId={1}
-            npcName="Антон"
+            npcName="Артем"
             playerPosition={playerPosition}
+            onInteract={(id, name) => setActiveNPC({ id, name })}
           />
           <OrbitControls />
           <CharacterController
@@ -363,6 +366,12 @@ export default function LobbyScene() {
         </Suspense>
       </Canvas>
       <GameHud />
+      <MissionHud 
+        npcId={activeNPC?.id ?? 0} 
+        npcName={activeNPC?.name ?? ''} 
+        isOpen={!!activeNPC} 
+        onClose={() => setActiveNPC(null)} 
+      />
     </section>
   );
 }
