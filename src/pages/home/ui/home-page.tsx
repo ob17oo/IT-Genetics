@@ -11,7 +11,7 @@ export default function HomePage() {
 
     const handleRouting = () => {
         if(isAuthenticated && user){
-            router.push('/game')
+            router.push('/lobby')
         } else {
             router.push('/login')
         }

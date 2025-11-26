@@ -25,7 +25,7 @@ export default function LoginPage() {
     
     try {
       login(formData.name, formData.surName); // ← Только имя и фамилия
-      router.push("/game");
+      router.push("/lobby");
       resetCookie()
       
     } catch (err) {
