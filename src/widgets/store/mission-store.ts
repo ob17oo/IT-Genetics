@@ -5,18 +5,12 @@ import { persist } from "zustand/middleware";
 
 interface MissionStore {
     missions: Mission[],
-    currentMission: Mission | null,
     availableMission: Mission[]
 
     updateMissionProgress: (missionId: number, progress: number) => void;
     completeMission: (missionId: number) => void;
-    getMissionById: (id: number) => Mission | undefined;
-    getCompletedMissions: () => Mission[];
     getActiveMissions: () => Mission[];
-    getAllMissions: () => Mission[],
-
     resetCookie: () => void
-
     getAvailableMissions: () => Mission[]
     assignMission: (missionid: number) => void,
     completeMissionWithRewards: (missionId: number) => void
@@ -28,7 +22,6 @@ export const useMissionStore = create<MissionStore>()(
     persist(
         (set,get) => ({
             missions: [],
-            currentMission: null,
             availableMission: createMissionSeed(),
 
             updateMissionProgress: (missionId, progress) => {
@@ -58,14 +51,10 @@ export const useMissionStore = create<MissionStore>()(
                 console.log(`✅ Миссия завершена: ${mission.title}`);
                 }
             },
-            getAllMissions: () => get().missions,
-            getMissionById: (id) => get().missions.find(elem => elem.id === id),
-            getCompletedMissions: () => get().missions.filter(elem => elem.completed),
             getActiveMissions: () => get().missions.filter(elem => !elem.completed),
             resetCookie: () => {
                 set({
                     missions: [],
-                    currentMission: null,
                     availableMission: createMissionSeed(), 
                 })
             },
@@ -87,7 +76,7 @@ export const useMissionStore = create<MissionStore>()(
                         set(state => ({
                             missions: state.missions.map(elem => 
                                 elem.id === missionId ?
-                                {...elem, progres: 100, completed: true} : elem
+                                {...elem, progress: 100, completed: true} : elem
                         )
                         }))   
                         return mission.reward

@@ -4,24 +4,26 @@ import { useMissionStore } from "@/widgets/store/mission-store";
 import { useMemo, useState } from "react";
 
 export default function MissionsContent() {
-  const { updateMissionProgress } = useMissionStore();
-  const mission = useMissionStore((state) => state.missions)
+  const missions = useMissionStore((state) => state.missions);
+  const availableMission = useMissionStore((state) => state.availableMission);
+  const updateMissionProgress = useMissionStore((state) => state.updateMissionProgress);
   const [filter, setFilter] = useState('All');
 
   const filteredMassive = useMemo(() => {
+    const allMissions = [...missions, ...availableMission];
     switch(filter){
       case 'All':
-        return mission
+        return allMissions
       case 'Completed':
-        return mission.filter((elem) => elem.completed)
+        return allMissions.filter((elem) => elem.completed)
       case 'Main':
-        return mission.filter((elem) => elem.type === 'main')
+        return allMissions.filter((elem) => elem.type === 'main')
       case 'Side':
-        return mission.filter((elem) => elem.type === 'side')
+        return allMissions.filter((elem) => elem.type === 'side')
       default:
-        return mission
+        return allMissions
     }
-  }, [filter,mission])
+  }, [filter, missions, availableMission])
 
 
   return (
@@ -39,7 +41,7 @@ export default function MissionsContent() {
           Все
         </button>
         <button
-          disabled={mission.filter((item) => item.completed).length <= 0}
+          disabled={filteredMassive.filter((item) => item.completed).length <= 0}
           onClick={() => setFilter("Completed")}
           className={`text-[14px] text-yellow-200 py-3 px-4 rounded-3xl transition-all duration-300 ease-in-out border ${
             filter === "Completed"
@@ -50,7 +52,7 @@ export default function MissionsContent() {
           Полученные
         </button>
         <button
-          disabled={mission.filter((item) => item.type === "main").length <= 0}
+          disabled={filteredMassive.filter((item) => item.type === "main").length <= 0}
           onClick={() => setFilter("Main")}
           className={`text-[14px] text-yellow-200 py-3 px-4 rounded-3xl transition-all duration-300 ease-in-out border ${
             filter === "Main"
@@ -61,7 +63,7 @@ export default function MissionsContent() {
           Основные
         </button>
         <button
-          disabled={mission.filter((item) => item.type === "side").length <= 0}
+          disabled={filteredMassive.filter((item) => item.type === "side").length <= 0}
           onClick={() => setFilter("Side")}
           className={`text-[14px] text-yellow-200 py-3 px-4 rounded-3xl transition-all duration-300 ease-in-out border ${
             filter === "Side"

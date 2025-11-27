@@ -6,13 +6,10 @@ interface NPCDialogProps {
   onClose: () => void;
 }
 export function NPCMissionDialog({ npcId, npcName, onClose }: NPCDialogProps) {
-  const {
-    availableMission,
-    assignMission,
-    getActiveMissions,
-    completeMission,
-  } = useMissionStore();
-  const missions = getActiveMissions();
+  const missions = useMissionStore((state) => state.missions.filter(elem => !elem.completed))
+  const assignMission = useMissionStore((state) => state.assignMission)
+  const completeMission = useMissionStore((state) => state.completeMission)
+  const availableMission = useMissionStore((state) => state.availableMission)
   const npcMission = availableMission.filter(
     (elem) => elem.relatedNPC === npcId
   );
@@ -65,7 +62,7 @@ export function NPCMissionDialog({ npcId, npcName, onClose }: NPCDialogProps) {
               )}
 
               {npcMission.map((mission) => {
-                const isActive = missions.some(({ id }) => id === mission.id);
+                const isActive = missions.some((elem) => elem.id === mission.id)
                 return (
                   <article
                     key={mission.id}
