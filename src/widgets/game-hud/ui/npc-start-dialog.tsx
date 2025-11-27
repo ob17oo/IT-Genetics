@@ -1,15 +1,12 @@
-import { useNPCInteraction } from "@/hooks/useNPCInteraction"
-import { useMissionStore } from "@/widgets/store/mission-store"
 import { useNPCInteractionStore } from "@/widgets/store/npc-interaction-store"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 
 interface NPCDialogProps {
-    npcId: number,
     npcName: string,
     onClose: () => void
 }
-export function NPCStartDialog({npcId,npcName, onClose}: NPCDialogProps){
+export function NPCStartDialog({npcName, onClose}: NPCDialogProps){
     const [step, setStep] = useState(0)
     const [fade, setFade] = useState(false)
     const { clearInteraction } = useNPCInteractionStore()

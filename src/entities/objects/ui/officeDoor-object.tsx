@@ -7,7 +7,7 @@ interface OfficeDoorObject{
 }
 
 export default function OfficeDoorObject({position, scale = 0.1, rotation}: OfficeDoorObject){
-    const { scene } = useGLTF('/model/furniture/officeDoor.glb')
+    const { scene } = useGLTF('/model/furniture/Office-Door.glb')
     return (
         <Clone object={scene} rotation={rotation} position={position} scale={Array.isArray(scale) ? scale : [scale, scale, scale]} />
     )

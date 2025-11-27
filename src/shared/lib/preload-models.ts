@@ -7,9 +7,9 @@ import { useGLTF } from "@react-three/drei"
 
 // ============ ОБЩИЕ МОДЕЛИ (для всех сцен) ============
 export const preloadCommonModels = () => {
-  useGLTF.preload('/model/furniture/officechair.glb')
+  useGLTF.preload('/model/furniture/Office-Chair.glb')
   useGLTF.preload('/model/furniture/computer.glb')
-  useGLTF.preload('/model/furniture/officeDoor.glb')
+  useGLTF.preload('/model/furniture/Office-Door.glb')
 }
 
 // ============ МОДЕЛИ ЛОББИ ============
@@ -37,7 +37,12 @@ export const preloadOfficeModels = () => {
   useGLTF.preload('/model/furniture/flowerType1.glb')
   useGLTF.preload('/model/furniture/flowerType2.glb')
   useGLTF.preload('/model/furniture/flowerType3.glb')
+  useGLTF.preload('/model/furniture/trashBucket.glb')
+  useGLTF.preload('/model/furniture/Office-Shelf.glb')
+  useGLTF.preload('/model/furniture/Office-Table.glb')
 }
 
 // Загружаем только общие модели при старте
 preloadCommonModels()
+preloadOfficeModels()
+preloadLobbyModels()

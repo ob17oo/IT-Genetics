@@ -15,11 +15,11 @@ export default function MissionHud({ npcId, npcName, isOpen, onClose, typeOfNPC 
     const renderType = () => {
         switch(typeOfNPC){
         case 'Start':
-            return <NPCStartDialog npcId={npcId} npcName={npcName} onClose={onClose} />
+            return <NPCStartDialog npcName={npcName} onClose={onClose} />
         case 'Mission':
             return <NPCMissionDialog npcId={npcId} npcName={npcName} onClose={onClose} />
         default:
-            return <NPCStartDialog npcId={npcId} npcName={npcName} onClose={onClose} />            
+            return <NPCStartDialog npcName={npcName} onClose={onClose} />            
 
     }
     }
