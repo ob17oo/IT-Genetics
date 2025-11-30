@@ -16,12 +16,14 @@ import { LobbyNPC } from "@/entities/characters/lobby-npc/lobby-npc";
 import { Vector3 } from "three";
 import MissionHud from "@/widgets/game-hud/ui/mission-hud";
 import { TableObject } from "@/entities/objects/ui/table-object";
+import OfficeDoorObject from "@/entities/objects/ui/officeDoor-object";
+import { WindowFrameObject } from "@/entities/objects/ui/windowFrame-object";
 
 
 interface WallPosition{
   position: [number, number, number];
   size: [number, number, number];
-  collider: [number, number, number];
+  collider?: [number, number, number];
   color: string,
   rotation?: [number,number,number]
 }
@@ -34,38 +36,55 @@ interface TablePosition {
 
 const TABLE_POSITIONS: TablePosition[] = [
   {
-    position: [-11, -1, 14] as [number, number, number],
+    position: [-11, -1, 13] as [number, number, number],
     scale: 4 as number,
     rotation: [0, 0, 0] as [number, number, number],
   },
   {
-    position: [-11, -1, 4] as [number, number, number],
+    position: [-11, -1, 2.5] as [number, number, number],
     scale: 4 as number,
     rotation: [0, 0, 0] as [number, number, number],
   },
   {
-    position: [-11, -1, -6] as [number, number, number],
+    position: [-11, -1, -7.5] as [number, number, number],
     scale: 4 as number,
     rotation: [0, 0, 0] as [number, number, number],
   },
   {
-    position: [-11, -1, -16] as [number, number, number],
+    position: [-11, -1, -17.5] as [number, number, number],
     scale: 4 as number,
     rotation: [0, 0, 0] as [number, number, number],
   },
 ];
 
 const WALL_POSITION: WallPosition[] = [
-  // { position: [15, 4, 0], size: [0.3, 40, 10], collider: [0.15, 4, 5], color: '#FFFFFF'},
-  // { position: [-15, 4, 0], size: [0.3, 40, 10], collider: [0.15, 4, 5], color: '#FFFFFF'},
   { position: [0, 4, -20], size: [30, 0.3, 10], collider: [20, 4, 0.15], color: '#FFFFFF'},
   { position: [-5.15, 4, 20], size: [20, 0.3, 10], collider: [12.5, 4, 0.15], color: '#FFFFFF'},
   {position: [10, 4, 20], size: [10,0.3,10], collider: [0,0,0], color: '#000000'},
   {position: [-15, 4 ,19.7], size: [0.5, 0.3, 10], collider: [0,0,0], color: '#FFFFFF', rotation: [0,Math.PI / 2,0]},
   {position: [15, 4 ,19.4], size: [1.4, 0.3, 10], collider: [0,0,0], color: '#FFFFFF', rotation: [0,Math.PI / 2,0]},
-  {position: [-15.4, 4 ,4.5], size: [1, 0.3, 10], collider: [0,0,0], color: '#FFFFFF', rotation: [0,0,0]},
-  {position: [-15, 7.2 , 8.8], size: [3.6, 0.3, 22.5], collider: [0,0,0], color: '#FFFFFF', rotation: [Math.PI / 2,Math.PI / 2,0]},
+  {position: [-15, 7.2 , 7], size: [3.6, 0.3, 26], collider: [0,0,0], color: '#FFFFFF', rotation: [Math.PI / 2,Math.PI / 2,0]},
   {position: [15, 7.2 , 9.8], size: [3.6, 0.3, 18.52], collider: [0,0,0], color: '#FFFFFF', rotation: [Math.PI / 2,Math.PI / 2,0]},
+  {position: [-19, 4, 20], size: [8, 0.3, 10], color: '#FFFFFF', rotation: [0, 0, 0] },
+  {position: [23, 4, 20], size: [16, 0.3, 10], color: '#FFFFFF', rotation: [0, 0, 0] },
+  {position: [31, 4, 14.6], size: [11.1, 0.3, 10], color: '#FFFFFF', rotation: [0, Math.PI / 2, 0] },
+  {position: [28.5, 4, 9], size: [5, 0.3, 10], color: '#FFFFFF', rotation: [0, 0, 0] },
+  {position: [26, 4, 1.15], size: [16, 0.3, 10], color: '#FFFFFF', rotation: [0, Math.PI / 2, 0] },
+  {position: [20.5, 4, -7], size: [11, 0.3, 10], color: '#FFFFFF', rotation: [0, 0, 0] },
+  {position: [15, 4, -3.15], size: [8, 0.3, 10], color: '#FFFFFF', rotation: [0, Math.PI / 2, 0] },
+  
+  
+  // Переговорные
+
+  // Стенки между переговорными
+  {position: [-18.85, 4, -6.95], size: [8, 0.4, 10], collider: [0,0,0], color: '#FFFFFF', rotation: [0,0,0]},
+  {position: [-18.85, 4 ,11.59], size: [8, 0.35, 10], collider: [0,0,0], color: '#FFFFFF', rotation: [0,0,0]},
+  {position: [-18.85, 4 ,2.57], size: [8, 0.4, 10], collider: [0,0,0], color: '#FFFFFF', rotation: [0,0,0]},
+
+  //Стенки с окнами
+  {position: [-22.8, 0.3, 15.8], size: [8.7, 0.3, 2.5], color: '#FFFFFF', rotation: [0, Math.PI / 2, 0] },
+  {position: [-22.8, 0.3, 7], size: [10, 0.3, 2.5], color: '#FFFFFF', rotation: [0, Math.PI / 2, 0] },
+  {position: [-22.8, 0.3, -2.26], size: [10, 0.3, 2.5], color: '#FFFFFF', rotation: [0, Math.PI / 2, 0] }
 ]
 
 interface OfficeShelfProps{
@@ -153,58 +172,113 @@ export function OfficeScene() {
             {tables}
 
             <RigidBody type="fixed">
-                <mesh position={[3.65,4,12]}>
+                <mesh position={[3.65,4,11.65]}>
                     <boxGeometry args={[1.5,10,1.5]}/>
                     <meshStandardMaterial color="#FFFFFFF"/>
                 </mesh>
             </RigidBody>
             <RigidBody type="fixed">
-                <mesh position={[-15.6,4,-3]}>
+                <mesh position={[-15.6,4,-6.5]}>
                     <boxGeometry args={[1.5,10,1.5]}/>
                     <meshStandardMaterial color="#FFFFFFF"/>
                 </mesh>
             </RigidBody>
             <RigidBody type="fixed">
-                <mesh position={[-15.6,4,12]}>
+                <mesh position={[-15.6,4,11.65]}>
                     <boxGeometry args={[1.5,10,1.5]}/>
                     <meshStandardMaterial color="#FFFFFFF"/>
                 </mesh>
             </RigidBody>
             <RigidBody type="fixed">
-                <mesh position={[3.65,4,-3]}>
+                <mesh position={[3.65,4,-6.5]}>
                     <boxGeometry args={[1.5,10,1.5]}/>
                     <meshStandardMaterial color="#FFFFFFF"/>
                 </mesh>
             </RigidBody>
             <RigidBody type="fixed">
-                <mesh position={[14.3,4,2.02]}>
+                <mesh position={[14.4,4,2.02]}>
                     <boxGeometry args={[1.5,10,3]}/>
                     <meshStandardMaterial color="#FFFFFFF"/>
                 </mesh>
             </RigidBody>
             <RigidBody type="fixed">
-                <ItemRender itemName="Office-Shelf" scale={3.5} position={[3,-1,10.05]} rotation={[0,Math.PI / 2,0]}/>
+                <ItemRender itemName="Office-Shelf" scale={3.5} position={[3,-1,9.7]} rotation={[0,Math.PI / 2,0]}/>
             </RigidBody>
             <RigidBody type="fixed">
-                <ItemRender itemName="trashBucket" scale={0.35} position={[3.4,-0.9,14.5]} rotation={[0,Math.PI / 2,0]}/>
+                <ItemRender itemName="trashBucket" scale={0.35} position={[3.4,-0.9,14]} rotation={[0,Math.PI / 2,0]}/>
             </RigidBody>
             <RigidBody type="fixed">
-                <ItemRender itemName="trashBucket" scale={0.35} position={[3.4,-0.9,1-6]} rotation={[0,Math.PI / 2,0]}/>
+                {/* <ItemRender itemName="trashBucket" scale={0.35} position={[3.4,-0.9,1-6.7]} rotation={[0,Math.PI / 2,0]}/> */}
             </RigidBody>
             <RigidBody type="fixed">
-                <ItemRender itemName="SurpriseGlassWall" scale={[6.65,8,8]} position={[-15.05, -1, 12.75]} rotation={[0,Math.PI / -2, 0]}/>
+                <ItemRender itemName="SurpriseGlassWall" scale={[7,8,8]} position={[-15.05, -1, 12.4]} rotation={[0,Math.PI / -2, 0]}/>
             </RigidBody>
             <RigidBody type="fixed">
-                <ItemRender itemName="ShockGlassWall" scale={[6.57,8,8]} position={[-15.05, -1, 4.6]} rotation={[0,Math.PI / -2, 0]}/>
+                <ItemRender itemName="ShockGlassWall" scale={[8.1,8,8]} position={[-15.05, -1, 2.75]} rotation={[0,Math.PI / -2, 0]}/>
             </RigidBody>
             <RigidBody type="fixed">
-                <ItemRender itemName="GlassWall" scale={[6.57,8,8]} position={[-15.05, -1, -2.27]} rotation={[0,Math.PI / -2, 0]}/>
+                <ItemRender itemName="GlassWall" scale={[8.1,8,8]} position={[-15.05, -1, -5.75]} rotation={[0,Math.PI / -2, 0]}/>
             </RigidBody>
             <RigidBody type="fixed">
                 <ItemRender itemName="DinerGlassWall" scale={[6.57,6.4,8]} position={[15.05, -1, 16]} rotation={[0,Math.PI / 2, 0]}/>
             </RigidBody>
+
+            {/* Переговорные */}
+
+            <mesh position={[-19,-1,6.4]}>
+                <boxGeometry args={[8, 0.1, 27.4]}/>
+                <meshStandardMaterial color="#E7E2BA" />
+            </mesh>
+            <mesh position={[20.5,-1,6.6]}>
+                <boxGeometry args={[11, 0.1, 27]}/>
+                <meshStandardMaterial color="#E7E2BA" />
+            </mesh>
+
+            <mesh position={[28.5,-1,14.5]}>
+                <boxGeometry args={[5, 0.1, 11]}/>
+                <meshStandardMaterial color="#E7E2BA" />
+            </mesh>
+
+            <OfficeDoorObject position={[-21.5,1,19.5]} rotation={[0,0,0]} scale={1}/>
+
+            <group>
+                <WindowFrameObject scale={[20,25,19]} position={[-22.8,1.6,18.8]}/>
+                <WindowFrameObject scale={[20,25,19]} position={[-22.8,1.6,16.8]}/>
+                <WindowFrameObject scale={[20,25,19]} position={[-22.8,1.6,14.8]}/>
+                <WindowFrameObject scale={[20,25,19]} position={[-22.8,1.6,12.8]}/>
+                <WindowFrameObject scale={[20,25,19]} position={[-22.75,5.65,18.8]} rotation={[0,0,Math.PI / -5]}/>
+                <WindowFrameObject scale={[20,25,19]} position={[-22.75,5.65,16.8]} rotation={[0,0,Math.PI / -5]}/>
+                <WindowFrameObject scale={[20,25,19]} position={[-22.75,5.65,14.8]} rotation={[0,0,Math.PI / -5]}/>
+                <WindowFrameObject scale={[20,25,19]} position={[-22.75,5.65,12.8]} rotation={[0,0,Math.PI / -5]}/>
+
+                <WindowFrameObject scale={[20,25,20.5]} position={[-22.8,1.6,10.3]}/>
+                <WindowFrameObject scale={[20,25,20.5]} position={[-22.8,1.6,8.15]}/>
+                <WindowFrameObject scale={[20,25,20.5]} position={[-22.8,1.6,6]}/>
+                <WindowFrameObject scale={[20,25,20.5]} position={[-22.8,1.6,3.85]}/>
+                <WindowFrameObject scale={[20,25,20.5]} position={[-22.75,5.65,10.3]} rotation={[0,0,Math.PI / -5]}/>
+                <WindowFrameObject scale={[20,25,20.6]} position={[-22.75,5.65,8.15]} rotation={[0,0,Math.PI / -5]}/>
+                <WindowFrameObject scale={[20,25,20.5]} position={[-22.75,5.65,6]} rotation={[0,0,Math.PI / -5]}/>
+                <WindowFrameObject scale={[20,25,20.5]} position={[-22.75,5.65,3.85]} rotation={[0,0,Math.PI / -5]}/>
+    
+                <WindowFrameObject scale={[20,25,21.5]} position={[-22.8,1.6,1.2]}/>
+                <WindowFrameObject scale={[20,25,21.5]} position={[-22.8,1.6,-1.05]}/>
+                <WindowFrameObject scale={[20,25,21.5]} position={[-22.8,1.6,-3.3]}/>
+                <WindowFrameObject scale={[20,25,21.5]} position={[-22.8,1.6, -5.55]}/>
+                <WindowFrameObject scale={[20,25,21.5]} position={[-22.75,5.65,1.2]} rotation={[0,0,Math.PI / -5]}/>
+                <WindowFrameObject scale={[20,25,21.5]} position={[-22.75,5.65,-1.05]} rotation={[0,0,Math.PI / -5]}/>
+                <WindowFrameObject scale={[20,25,21.5]} position={[-22.75,5.65,-3.3]} rotation={[0,0,Math.PI / -5]}/>
+                <WindowFrameObject scale={[20,25,21.5]} position={[-22.75,5.65,-5.55]} rotation={[0,0,Math.PI / -5]}/>
+{/* 
+                <WindowFrameObject scale={[20,25,21]} position={[-23,1.6,1.2]}/>
+                <WindowFrameObject scale={[20,25,21]} position={[-23,1.6,-1.1]}/>
+                <WindowFrameObject scale={[20,25,21]} position={[-23,1.6,-3.4]}/>
+                <WindowFrameObject scale={[20,25,21]} position={[-23,1.6,-5.5]}/> */}
+
+
+            </group>
+
             <LobbyNPC path="lobby-npc" scale={1.15} position={[13,-1,16]} rotation={[0,Math.PI / -1.5,0]} npcId={1} npcName="Никита" playerPosition={playerPosition} onInteract={(id,name) => setActiveNPC({id,name})}/>
-            <CharacterController position={[0,0,0]} rotationY={0} onPositionChange={setPlayerPosition} />
+            {/* <CharacterController position={[0,0,0]} rotationY={0} onPositionChange={setPlayerPosition} /> */}
             <OrbitControls />
           </Physics>
         </Suspense>

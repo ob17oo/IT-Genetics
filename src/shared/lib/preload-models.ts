@@ -10,6 +10,7 @@ export const preloadCommonModels = () => {
   useGLTF.preload('/model/furniture/Office-Chair.glb')
   useGLTF.preload('/model/furniture/computer.glb')
   useGLTF.preload('/model/furniture/Office-Door.glb')
+  useGLTF.preload('/model/furniture/windowFrame.glb')
 }
 
 // ============ МОДЕЛИ ЛОББИ ============
