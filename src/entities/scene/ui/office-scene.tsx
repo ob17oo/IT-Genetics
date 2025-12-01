@@ -18,6 +18,7 @@ import MissionHud from "@/widgets/game-hud/ui/mission-hud";
 import { TableObject } from "@/entities/objects/ui/table-object";
 import OfficeDoorObject from "@/entities/objects/ui/officeDoor-object";
 import { WindowFrameObject } from "@/entities/objects/ui/windowFrame-object";
+import { positionGeometry } from "three/tsl";
 
 
 interface WallPosition{
@@ -65,26 +66,33 @@ const WALL_POSITION: WallPosition[] = [
   {position: [15, 4 ,19.4], size: [1.4, 0.3, 10], collider: [0,0,0], color: '#FFFFFF', rotation: [0,Math.PI / 2,0]},
   {position: [-15, 7.2 , 7], size: [3.6, 0.3, 26], collider: [0,0,0], color: '#FFFFFF', rotation: [Math.PI / 2,Math.PI / 2,0]},
   {position: [15, 7.2 , 9.8], size: [3.6, 0.3, 18.52], collider: [0,0,0], color: '#FFFFFF', rotation: [Math.PI / 2,Math.PI / 2,0]},
-  {position: [-19, 4, 20], size: [8, 0.3, 10], color: '#FFFFFF', rotation: [0, 0, 0] },
-  {position: [23, 4, 20], size: [16, 0.3, 10], color: '#FFFFFF', rotation: [0, 0, 0] },
-  {position: [31, 4, 14.6], size: [11.1, 0.3, 10], color: '#FFFFFF', rotation: [0, Math.PI / 2, 0] },
-  {position: [28.5, 4, 9], size: [5, 0.3, 10], color: '#FFFFFF', rotation: [0, 0, 0] },
-  {position: [26, 4, 1.15], size: [16, 0.3, 10], color: '#FFFFFF', rotation: [0, Math.PI / 2, 0] },
-  {position: [20.5, 4, -7], size: [11, 0.3, 10], color: '#FFFFFF', rotation: [0, 0, 0] },
-  {position: [15, 4, -3.15], size: [8, 0.3, 10], color: '#FFFFFF', rotation: [0, Math.PI / 2, 0] },
+  {position: [-19, 4, 20], size: [8, 0.3, 10], color: '#EFB100', rotation: [0, 0, 0] },
+  {position: [23, 4, 20], size: [16, 0.3, 10], color: '#EFB100', rotation: [0, 0, 0] },
+  {position: [31, 4, 14.6], size: [11.1, 0.3, 10], color: '#EFB100', rotation: [0, Math.PI / 2, 0] },
+  {position: [28.5, 4, 9], size: [5, 0.3, 10], color: '#EFB100', rotation: [0, 0, 0] },
+  {position: [26, 4, 1.15], size: [16, 0.3, 10], color: '#EFB100', rotation: [0, Math.PI / 2, 0] },
+  {position: [20.5, 4, -7], size: [11, 0.3, 10], color: '#EFB100', rotation: [0, 0, 0] },
+  {position: [14.9, 4, -3.15], size: [8, 0.15, 10], color: '#FFFFFF', rotation: [0, Math.PI / 2, 0] },
+  {position: [15.07, 4, -3.15], size: [8, 0.15, 10], color: '#EFB100', rotation: [0, Math.PI / 2, 0] },
   
   
   // Переговорные
 
   // Стенки между переговорными
-  {position: [-18.85, 4, -6.95], size: [8, 0.4, 10], collider: [0,0,0], color: '#FFFFFF', rotation: [0,0,0]},
-  {position: [-18.85, 4 ,11.59], size: [8, 0.35, 10], collider: [0,0,0], color: '#FFFFFF', rotation: [0,0,0]},
-  {position: [-18.85, 4 ,2.57], size: [8, 0.4, 10], collider: [0,0,0], color: '#FFFFFF', rotation: [0,0,0]},
+  {position: [-19.6, 4, -6.95], size: [6.5, 0.2, 10], collider: [0,0,0], color: '#008236', rotation: [0,0,0]},
+  {position: [-18.85, 4, -7.15], size: [8, 0.2, 10], collider: [0,0,0], color: '#FFFFFF', rotation: [0,0,0]},
 
+  {position: [-19.6, 4 ,11.69], size: [6.5, 0.175, 10], collider: [0,0,0], color: '#EFB100', rotation: [0,0,0]},
+  {position: [-19.6, 4 ,11.5], size: [6.5, 0.175, 10], collider: [0,0,0], color: '#193CB8', rotation: [0,0,0]},
+
+  {position: [-19, 4 ,2.68], size: [7.8, 0.2, 10], collider: [0,0,0], color: '#193CB8', rotation: [0,0,0]},
+  {position: [-19, 4 ,2.49], size: [7.8, 0.2, 10], collider: [0,0,0], color: '#008236', rotation: [0,0,0]},
+  {position: [-14.95, 4 ,2.59], size: [0.4, 0.2, 10], collider: [0,0,0], color: '#FFFFFF', rotation: [0,Math.PI / 2,0]},
+  
   //Стенки с окнами
-  {position: [-22.8, 0.3, 15.8], size: [8.7, 0.3, 2.5], color: '#FFFFFF', rotation: [0, Math.PI / 2, 0] },
-  {position: [-22.8, 0.3, 7], size: [10, 0.3, 2.5], color: '#FFFFFF', rotation: [0, Math.PI / 2, 0] },
-  {position: [-22.8, 0.3, -2.26], size: [10, 0.3, 2.5], color: '#FFFFFF', rotation: [0, Math.PI / 2, 0] }
+  {position: [-22.8, 0.3, 15.8], size: [8.7, 0.3, 2.5], color: '#efb100', rotation: [0, Math.PI / 2, 0] },
+  {position: [-22.8, 0.3, 7], size: [9, 0.3, 2.5], color: '#193cb8', rotation: [0, Math.PI / 2, 0] },
+  {position: [-22.8, 0.3, -2.26], size: [10, 0.3, 2.5], color: '#008236', rotation: [0, Math.PI / 2, 0] }
 ]
 
 interface OfficeShelfProps{
@@ -240,6 +248,9 @@ export function OfficeScene() {
             </mesh>
 
             <OfficeDoorObject position={[-21.5,1,19.5]} rotation={[0,0,0]} scale={1}/>
+            <ItemRender itemName="MeetingTable" scale={7} rotation={[0, Math.PI / 2,0]} position={[-22,-1,14]}/>
+            <ItemRender itemName="MeetingTable" scale={[7,7,6]} rotation={[0, 0,0]} position={[-22,-1,7.5]}/>
+            <ItemRender itemName="MeetingTable" scale={[7,7,6]} rotation={[0, Math.PI / 2,0]} position={[-22,-1,-1]}/>
 
             <group>
                 <WindowFrameObject scale={[20,25,19]} position={[-22.8,1.6,18.8]}/>
@@ -268,14 +279,18 @@ export function OfficeScene() {
                 <WindowFrameObject scale={[20,25,21.5]} position={[-22.75,5.65,-1.05]} rotation={[0,0,Math.PI / -5]}/>
                 <WindowFrameObject scale={[20,25,21.5]} position={[-22.75,5.65,-3.3]} rotation={[0,0,Math.PI / -5]}/>
                 <WindowFrameObject scale={[20,25,21.5]} position={[-22.75,5.65,-5.55]} rotation={[0,0,Math.PI / -5]}/>
-{/* 
-                <WindowFrameObject scale={[20,25,21]} position={[-23,1.6,1.2]}/>
-                <WindowFrameObject scale={[20,25,21]} position={[-23,1.6,-1.1]}/>
-                <WindowFrameObject scale={[20,25,21]} position={[-23,1.6,-3.4]}/>
-                <WindowFrameObject scale={[20,25,21]} position={[-23,1.6,-5.5]}/> */}
-
-
+                
             </group>
+
+            {/* Кухня */}
+
+            <ItemRender itemName="wallTV" scale={3} position={[14.7,8,-12]} rotation={[0,Math.PI / -2, 0]}/>
+            <ItemRender itemName="FourFirecase" scale={[120,120,30]} position={[14.85,0,-4.3]} rotation={[0,Math.PI / -2, 0]}/>
+
+            <ItemRender itemName="HangingLamp" scale={10} position={[21.1, 3, 17]} rotation={[0,Math.PI / -2, 0]}/>
+            <ItemRender itemName="HangingLamp" scale={10} position={[22.2, 3, 17]} rotation={[0,Math.PI / -2, 0]}/>
+            <ItemRender itemName="HangingLamp" scale={10} position={[23.3, 3, 17]} rotation={[0,Math.PI / -2, 0]}/>
+            <ItemRender itemName="HangingLamp" scale={10} position={[24.4, 3, 17]} rotation={[0,Math.PI / -2, 0]}/>
 
             <LobbyNPC path="lobby-npc" scale={1.15} position={[13,-1,16]} rotation={[0,Math.PI / -1.5,0]} npcId={1} npcName="Никита" playerPosition={playerPosition} onInteract={(id,name) => setActiveNPC({id,name})}/>
             {/* <CharacterController position={[0,0,0]} rotationY={0} onPositionChange={setPlayerPosition} /> */}

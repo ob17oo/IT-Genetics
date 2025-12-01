@@ -19,6 +19,7 @@ export const preloadLobbyModels = () => {
   useGLTF.preload('/model/furniture/AdminTable.glb')
   useGLTF.preload('/model/furniture/graySofa.glb')
   useGLTF.preload('/model/furniture/diplomaStand.glb')
+  useGLTF.preload('/model/furniture/fireCase.glb')
   useGLTF.preload('/model/furniture/sofa.glb')
   useGLTF.preload('/model/furniture/coffeeTable.glb')
   useGLTF.preload('/model/furniture/InterCome.glb')
@@ -29,7 +30,6 @@ export const preloadLobbyModels = () => {
   useGLTF.preload('/model/furniture/grassCarpet.glb')
   useGLTF.preload('/model/furniture/purpleSofa.glb')
   useGLTF.preload('/model/furniture/yellowSOfa.glb')
-  useGLTF.preload('/model/furniture/fireCase.glb')
   useGLTF.preload('/model/furniture/LobbyBanner.glb')
 }
 
@@ -41,6 +41,10 @@ export const preloadOfficeModels = () => {
   useGLTF.preload('/model/furniture/trashBucket.glb')
   useGLTF.preload('/model/furniture/Office-Shelf.glb')
   useGLTF.preload('/model/furniture/Office-Table.glb')
+  useGLTF.preload('/model/furniture/FourFirecase.glb')
+  useGLTF.preload('/model/furniture/hangingLamp.glb')
+  useGLTF.preload('/model/furniture/wallTV.glb')
+  useGLTF.preload('/model/furniture/MeetingTable.glb')
 }
 
 // Загружаем только общие модели при старте

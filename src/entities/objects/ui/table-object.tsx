@@ -18,6 +18,7 @@ export function TableObject({position, scale, rotation}: TableProps){
   return (
     <mesh position={position}>
       <Clone object={gltf.scene} scale={scale} rotation={rotation} />
+      
       <group>
         <ChairObject position={[-1, 0.1, -2.5]} scale={0.025} />
         <ChairObject position={[2.5, 0.1, -2.5]} scale={0.025} />
