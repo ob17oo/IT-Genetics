@@ -19,10 +19,16 @@ export default function WallObject({
   receiveShadow,
 }: WallProps) {
   return (
-    <mesh rotation={rotation} position={position} receiveShadow={receiveShadow}>
-      {/* ИСПРАВЛЕНО: правильный порядок аргументов */}
+    <mesh rotation={rotation} position={position} receiveShadow={receiveShadow} castShadow>
       <boxGeometry args={[widthSize, heightSize, depthSize]} />
-      <meshStandardMaterial color={color} />
+      <meshStandardMaterial 
+        color={color}
+        roughness={0.60}
+        metalness={0.02}
+        emissive={0x0d0d0d}
+        emissiveIntensity={0.12}
+        envMapIntensity={0.9}
+      />
     </mesh>
   );
 }
