@@ -45,6 +45,8 @@ export const preloadOfficeModels = () => {
   useGLTF.preload('/model/furniture/hangingLamp.glb')
   useGLTF.preload('/model/furniture/wallTV.glb')
   useGLTF.preload('/model/furniture/MeetingTable.glb')
+  useGLTF.preload('/model/furniture/DinnerBarChair.glb')
+  useGLTF.preload('/model/furniture/WaterStand.glb')
 }
 
 // Загружаем только общие модели при старте
