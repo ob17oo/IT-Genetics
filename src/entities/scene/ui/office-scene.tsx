@@ -57,21 +57,21 @@ const TABLE_POSITIONS: TablePosition[] = [
     scale: 4 as number,
     rotation: [0, 0, 0] as [number, number, number],
   },
-  // {
-  //   position: [5.1, -1, -19] as [number, number, number],
-  //   scale: 4 as number,
-  //   rotation: [0, 0, 0] as [number, number, number],
-  // },
+  {
+    position: [6.8, -1, -19] as [number, number, number],
+    scale: 4 as number,
+    rotation: [0, 0, 0] as [number, number, number],
+  },
   {
     position: [-11, -1, -29] as [number, number, number],
     scale: 4 as number,
     rotation: [0, 0, 0] as [number, number, number],
   },
-  // {
-  //   position: [5.1, -1, -29] as [number, number, number],
-  //   scale: 4 as number,
-  //   rotation: [0, 0, 0] as [number, number, number],
-  // },
+  {
+    position: [6.8, -1, -29] as [number, number, number],
+    scale: 4 as number,
+    rotation: [0, 0, 0] as [number, number, number],
+  },
 ];
 
 const WALL_POSITION: WallPosition[] = [
@@ -125,7 +125,10 @@ const WALL_POSITION: WallPosition[] = [
 
   //Задняяя часть
 
-  {position: [-19, 0.3, -11.7], size: [9,0.3, 2.5], color: '#FFFFFF', rotation: [0,Math.PI / 2, 0]}
+  {position: [-19, 0.3, -11.7], size: [9,0.3, 2.5], color: '#FFFFFF', rotation: [0,Math.PI / 2, 0]},
+  {position: [14.2, 0.3, -33.8], size: [23.5,0.3, 2.5], color: '#FFFFFF', rotation: [0,0, 0]},
+
+  {position: [26, 4, -25.05], size: [17.8,0.3, 10], color: '#FFFFFF', rotation: [0,Math.PI / 2, 0]}
 
 ]
 
@@ -259,20 +262,20 @@ export function OfficeScene() {
             </RigidBody>
 
             <RigidBody type="fixed">
-                <mesh position={[3.65,4,-29]}>
+                <mesh position={[3.65,4,-30]}>
                     <boxGeometry args={[1.5,10,1.5]}/>
                     <meshStandardMaterial color="#FFFFFFF"/>
                 </mesh>
             </RigidBody>
 
             <RigidBody type="fixed">
-                <mesh position={[3.65,4,-31]}>
+                <mesh position={[3.65,4,-32]}>
                     <boxGeometry args={[1.5,10,1.5]}/>
                     <meshStandardMaterial color="#FFFFFFF"/>
                 </mesh>
             </RigidBody>
             <RigidBody type="fixed">
-                <mesh position={[-18,4,-31]}>
+                <mesh position={[-18,4,-32]}>
                     <boxGeometry args={[1.5,10,1.5]}/>
                     <meshStandardMaterial color="#FFFFFFF"/>
                 </mesh>
@@ -286,6 +289,21 @@ export function OfficeScene() {
                     <meshStandardMaterial color="#FFFFFFF"/>
                 </mesh>
             </RigidBody>
+
+
+            <RigidBody type="fixed">
+                <mesh position={[26,4,-19]}>
+                    <boxGeometry args={[1.5,10,1.5]}/>
+                    <meshStandardMaterial color="#FFFFFFF"/>
+                </mesh>
+            </RigidBody>
+            <RigidBody type="fixed">
+                <mesh position={[26,4,-30]}>
+                    <boxGeometry args={[1.5,10,1.5]}/>
+                    <meshStandardMaterial color="#FFFFFFF"/>
+                </mesh>
+            </RigidBody>
+
             
             <RigidBody type="fixed">
                 <ItemRender itemName="Office-Shelf" scale={3.5} position={[3,-1,9.7]} rotation={[0,Math.PI / 2,0]}/>
@@ -440,10 +458,49 @@ export function OfficeScene() {
                 </mesh>
             </RigidBody>
 
-            <CurveWallObject depth={0} radius={16} height={2.5} arcAngle={Math.PI / 1.1} startAngle={0} position={[-5.6,0.3,-24.7]} rotation={[0,Math.PI / 1.3,0]} color="#FFFFFF"/>
+            <RigidBody type="fixed" position={[-22,-1,-25]}>
+                <mesh>
+                    <boxGeometry args={[1,0.1,9]}/>
+                    <meshStandardMaterial color="#E7E2BA"/>
+                </mesh>
+
+            </RigidBody>
+            <RigidBody type="fixed" position={[-8,-1,-37.5]}>
+                <mesh>
+                    <boxGeometry args={[18,0.1,3]}/>
+                    <meshStandardMaterial color="#E7E2BA"/>
+                </mesh>
+            </RigidBody>
+
+            <RigidBody type="fixed" position={[21.75,-1,-13.45]}>
+                <mesh>
+                    <boxGeometry args={[8.5,0.1,13.1]}/>
+                    <meshStandardMaterial color="#E7E2BA"/>
+                </mesh>
+            </RigidBody>
+
+            <RigidBody type="fixed" position={[23.75,-1,-26.9]}>
+                <mesh>
+                    <boxGeometry args={[4.5,0.1,13.8]}/>
+                    <meshStandardMaterial color="#E7E2BA"/>
+                </mesh>
+            </RigidBody>
+
+            <CurveWallObject 
+              radiusX={14}          // Ширина = 40 (широкий овал)
+              radiusZ={14}          // Глубина = 20 (узкий овал)
+              depth={0}
+              height={2.5}
+              arcAngle={Math.PI / 1}
+              startAngle={0}
+              position={[-8.2, 0.3, -24.9]}
+              rotation={[0, Math.PI / 1.4, 0]}
+              color="#FFFFFF"
+            />
+
 
             <LobbyNPC path="lobby-npc" scale={1.15} position={[13,-1,16]} rotation={[0,Math.PI / -1.5,0]} npcId={1} npcName="Никита" playerPosition={playerPosition} onInteract={(id,name) => setActiveNPC({id,name})}/>
-            {/* <CharacterController position={[0,0,0]} rotationY={0} onPositionChange={setPlayerPosition} /> */}
+            <CharacterController position={[0,0,0]} rotationY={0} onPositionChange={setPlayerPosition} />
             <OrbitControls />
           </Physics>
         </Suspense>
