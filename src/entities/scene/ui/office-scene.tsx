@@ -22,21 +22,16 @@ import CurveWallObject from "@/entities/objects/ui/curve-wall-object";
 
 
 
-interface WallPosition{
+interface MapItemProps {
   position: [number, number, number];
-  size: [number, number, number];
+  size?: [number, number, number];
   collider?: [number, number, number];
-  color: string,
+  color?: string,
   rotation?: [number,number,number]
+  scale?: number | [number,number,number]
 }
 
-interface TablePosition {
-  position: [number,number,number],
-  scale: number | [number,number,number],
-  rotation?: [number,number,number]
-}
-
-const TABLE_POSITIONS: TablePosition[] = [
+const TABLE_POSITIONS: MapItemProps[] = [
   {
     position: [-11, -1, 13] as [number, number, number],
     scale: 4 as number,
@@ -74,7 +69,7 @@ const TABLE_POSITIONS: TablePosition[] = [
   },
 ];
 
-const WALL_POSITION: WallPosition[] = [
+const WALL_POSITION: MapItemProps[] = [
   { position: [-4.35, 4, 20], size: [21.5, 0.3, 10], collider: [12.5, 4, 0.15], color: '#FFFFFF'},
   {position: [11.88, 4, 20], size: [10.95,0.3,10], collider: [0,0,0], color: '#000000'},
   {position: [-17.4, 4 ,19.7], size: [0.5, 0.3, 10], collider: [0,0,0], color: '#FFFFFF', rotation: [0,Math.PI / 2,0]},
@@ -126,11 +121,230 @@ const WALL_POSITION: WallPosition[] = [
   //Задняяя часть
 
   {position: [-19, 0.3, -11.7], size: [9,0.3, 2.5], color: '#FFFFFF', rotation: [0,Math.PI / 2, 0]},
+  {position: [-19, 5.5, -15.77], size: [0.85, 0.3, 7.9], color: '#FFFFFF', rotation: [0, Math.PI / 2, 0]},
+  {position: [3, 5.5, -33.8], size: [0.85, 0.3, 7.9], color: '#FFFFFF', rotation: [0, 0, 0]},
+
   {position: [14.2, 0.3, -33.8], size: [23.5,0.3, 2.5], color: '#FFFFFF', rotation: [0,0, 0]},
 
-  {position: [26, 4, -25.05], size: [17.8,0.3, 10], color: '#FFFFFF', rotation: [0,Math.PI / 2, 0]}
+  {position: [26, 4, -25.05], size: [17.8,0.3, 10], color: '#FFFFFF', rotation: [0,Math.PI / 2, 0]},
 
 ]
+
+const WINDOW_POSITIONS: MapItemProps[] = [
+  {
+    position: [-19.8, 1.6, -17],
+    rotation: [0, 0.6, 0],
+    scale: [20, 25, 19]
+  },
+  {
+    position: [-20.84, 1.6, -18.8],
+    rotation: [0, 0.45, 0],
+    scale: [20, 25, 19]
+  },
+  {
+    position: [-21.61, 1.6, -20.75],
+    rotation: [0, 0.30, 0],
+    scale: [20, 25, 19]
+  },
+  {
+    position: [-22.07, 1.6, -22.79],
+    rotation: [0, 0.15, 0],
+    scale: [20, 25, 19]
+  },
+  {
+    position: [-22.23, 1.6, -24.87],
+    rotation: [0, 0, 0],
+    scale: [20, 25, 19]
+  },
+  {
+    position: [-22.08, 1.6, -26.95],
+    rotation: [0, -0.15, 0],
+    scale: [20, 25, 19]
+  },
+  {
+    position: [-21.62, 1.6, -28.99],
+    rotation: [0, -0.3, 0],
+    scale: [20, 25, 19]
+  },
+  {
+    position: [-20.85, 1.6, -30.94],
+    rotation: [0, -0.45, 0],
+    scale: [20, 25, 19]
+  },
+  {
+    position: [-19.8, 1.6, -32.75],
+    rotation: [0, -0.6, 0],
+    scale: [20, 25, 19]
+  },
+  {
+    position: [-18.5, 1.6, -34.38],
+    rotation: [0, -0.75, 0],
+    scale: [20, 25, 19]
+  },
+  {
+    position: [-16.98, 1.6, -35.79],
+    rotation: [0, -0.9, 0],
+    scale: [20, 25, 19]
+  },
+  {
+    position: [-15.26, 1.6, -36.97],
+    rotation: [0, -1.05, 0],
+    scale: [20, 25, 19]
+  },
+  {
+    position: [-13.37, 1.6, -37.87],
+    rotation: [0, -1.2, 0],
+    scale: [20, 25, 19]
+  },
+  {
+    position: [-11.37, 1.6, -38.48],
+    rotation: [0, -1.35, 0],
+    scale: [20, 25, 19]
+  },
+  {
+    position: [-9.31, 1.6, -38.79],
+    rotation: [0, -1.5, 0],
+    scale: [20, 25, 19]
+  },
+  {
+    position: [-7.23, 1.6, -38.8],
+    rotation: [0, -1.65, 0],
+    scale: [20, 25, 19]
+  },
+  {
+    position: [-5.17, 1.6, -38.48],
+    rotation: [0, -1.8, 0],
+    scale: [20, 25, 19]
+  },
+  {
+    position: [-3.17, 1.6, -37.85],
+    rotation: [0, -1.95, 0],
+    scale: [20, 25, 19]
+  },
+  {
+    position: [-1.29, 1.6, -36.93],
+    rotation: [0, -2.1, 0],
+    scale: [20, 25, 19]
+  },
+  {
+    position: [0.44, 1.6, -35.75],
+    rotation: [0, -2.25, 0],
+    scale: [20, 25, 19]
+  },
+  {
+    position: [1.9, 1.6, -34.4],
+    rotation: [0, -2.4, 0],
+    scale: [20, 25, 18.5]
+  },
+  
+  //Верхняя часть
+
+  {
+    position: [-19.8, 5.5, -17],
+    rotation: [0, 0.6, 0],
+    scale: [20, 25, 19]
+  },
+  {
+    position: [-20.84, 5.5, -18.8],
+    rotation: [0, 0.45, 0],
+    scale: [20, 25, 19]
+  },
+  {
+    position: [-21.61, 5.5, -20.75],
+    rotation: [0, 0.30, 0],
+    scale: [20, 25, 19]
+  },
+  {
+    position: [-22.07, 5.5, -22.79],
+    rotation: [0, 0.15, 0],
+    scale: [20, 25, 19]
+  },
+  {
+    position: [-22.23, 5.5, -24.87],
+    rotation: [0, 0, 0],
+    scale: [20, 25, 19]
+  },
+  {
+    position: [-22.08, 5.5, -26.95],
+    rotation: [0, -0.15, 0],
+    scale: [20, 25, 19]
+  },
+  {
+    position: [-21.62, 5.5, -28.99],
+    rotation: [0, -0.3, 0],
+    scale: [20, 25, 19]
+  },
+  {
+    position: [-20.85, 5.5, -30.94],
+    rotation: [0, -0.45, 0],
+    scale: [20, 25, 19]
+  },
+  {
+    position: [-19.8, 5.5, -32.75],
+    rotation: [0, -0.6, 0],
+    scale: [20, 25, 19]
+  },
+  {
+    position: [-18.5, 5.5, -34.38],
+    rotation: [0, -0.75, 0],
+    scale: [20, 25, 19]
+  },
+  {
+    position: [-16.98, 5.5, -35.79],
+    rotation: [0, -0.9, 0],
+    scale: [20, 25, 19]
+  },
+  {
+    position: [-15.26, 5.5, -36.97],
+    rotation: [0, -1.05, 0],
+    scale: [20, 25, 19]
+  },
+  {
+    position: [-13.37, 5.5, -37.87],
+    rotation: [0, -1.2, 0],
+    scale: [20, 25, 19]
+  },
+  {
+    position: [-11.37, 5.5, -38.48],
+    rotation: [0, -1.35, 0],
+    scale: [20, 25, 19]
+  },
+  {
+    position: [-9.31, 5.5, -38.79],
+    rotation: [0, -1.5, 0],
+    scale: [20, 25, 19]
+  },
+  {
+    position: [-7.23, 5.5, -38.8],
+    rotation: [0, -1.65, 0],
+    scale: [20, 25, 19]
+  },
+  {
+    position: [-5.17, 5.5, -38.48],
+    rotation: [0, -1.8, 0],
+    scale: [20, 25, 19]
+  },
+  {
+    position: [-3.17, 5.5, -37.85],
+    rotation: [0, -1.95, 0],
+    scale: [20, 25, 19]
+  },
+  {
+    position: [-1.29, 5.5, -36.93],
+    rotation: [0, -2.1, 0],
+    scale: [20, 25, 19]
+  },
+  {
+    position: [0.44, 5.5, -35.75],
+    rotation: [0, -2.25, 0],
+    scale: [20, 25, 19]
+  },
+  {
+    position: [1.9, 5.5, -34.4],
+    rotation: [0, -2.4, 0],
+    scale: [20, 25, 18.5]
+  }
+];
 
 interface OfficeShelfProps{
   position?: [number,number,number],
@@ -175,10 +389,10 @@ export function OfficeScene() {
             <RigidBody type="fixed" key={i}>
                     <WallObject 
                       rotation={wall.rotation}
-                      color={wall.color}
-                      widthSize={wall.size[0]}
-                      heightSize={wall.size[2]}
-                      depthSize={wall.size[1]}
+                      color={wall.color || '#FFFFFF'}
+                      widthSize={wall.size?.[0] || 1}
+                      heightSize={wall.size?.[2] || 1}
+                      depthSize={wall.size?.[1] || 1}
                       position={wall.position}
                       receiveShadow={true}
                     />
@@ -186,6 +400,21 @@ export function OfficeScene() {
       )),
     []
   )
+
+
+  const windowCircle = useMemo(
+    () =>
+      WINDOW_POSITIONS.map((window, i) => (
+        <RigidBody key={i} type="fixed">
+          <WindowFrameObject
+            rotation={window.rotation}
+            scale={window.scale}
+            position={window.position}
+          />
+        </RigidBody>
+      )),
+    []
+  );
 
   return (
     <section className="w-full h-screen relative">
@@ -486,9 +715,8 @@ export function OfficeScene() {
                 </mesh>
             </RigidBody>
 
-            <CurveWallObject 
-              radiusX={14}          // Ширина = 40 (широкий овал)
-              radiusZ={14}          // Глубина = 20 (узкий овал)
+             <CurveWallObject 
+              radius={14}          // Глубина = 20 (узкий овал)
               depth={0}
               height={2.5}
               arcAngle={Math.PI / 1}
@@ -498,9 +726,22 @@ export function OfficeScene() {
               color="#FFFFFF"
             />
 
+            <group>
+                <WindowFrameObject scale={[20,25, 19]} position={[-19,1.6,-8.3]}/>
+                <WindowFrameObject scale={[20,25, 19]} position={[-19,1.6,-10.3]}/>
+                <WindowFrameObject scale={[20,25, 19]} position={[-19,1.6,-12.3]}/>
+                <WindowFrameObject scale={[20,25, 19]} position={[-19,1.6,-14.3]}/>
+
+                <WindowFrameObject scale={[20,25, 19]} position={[-19,5.5,-8.3]}/>
+                <WindowFrameObject scale={[20,25, 19]} position={[-19,5.5,-10.3]}/>
+                <WindowFrameObject scale={[20,25, 19]} position={[-19,5.5,-12.3]}/>
+                <WindowFrameObject scale={[20,25, 19]} position={[-19,5.5,-14.3]}/>
+            </group>
+            
+            {windowCircle}
 
             <LobbyNPC path="lobby-npc" scale={1.15} position={[13,-1,16]} rotation={[0,Math.PI / -1.5,0]} npcId={1} npcName="Никита" playerPosition={playerPosition} onInteract={(id,name) => setActiveNPC({id,name})}/>
-            <CharacterController position={[0,0,0]} rotationY={0} onPositionChange={setPlayerPosition} />
+            {/* <CharacterController position={[0,0,0]} rotationY={0} onPositionChange={setPlayerPosition} /> */}
             <OrbitControls />
           </Physics>
         </Suspense>
