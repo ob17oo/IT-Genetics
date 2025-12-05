@@ -13,12 +13,12 @@ import SceneLoader from "@/shared/ui/Loader/scene-loader";
 import WallObject from "@/entities/objects/ui/wall-object";
 import { Clone, OrbitControls, RoundedBox, useGLTF } from "@react-three/drei";
 import { LobbyNPC } from "@/entities/characters/lobby-npc/lobby-npc";
-import { Vector3 } from "three";
 import MissionHud from "@/widgets/game-hud/ui/mission-hud";
 import { TableObject } from "@/entities/objects/ui/table-object";
 import OfficeDoorObject from "@/entities/objects/ui/officeDoor-object";
 import { WindowFrameObject } from "@/entities/objects/ui/windowFrame-object";
 import CurveWallObject from "@/entities/objects/ui/curve-wall-object";
+import { Vector3 } from "three";
 
 
 
@@ -85,17 +85,18 @@ const WALL_POSITION: MapItemProps[] = [
   {position: [28.4, 4.2, 20], size: [1.5, 0.3, 10.5], color: '#EFB100', rotation: [0,0, 0] },
   {position: [29, 4.2, 20.45], size: [1.2, 0.3, 10.5], color: '#EFB100', rotation: [0, Math.PI / 2, 0] },
   {position: [30.5, 4.2, 20.9], size: [3, 0.3, 10.5], color: '#EFB100', rotation: [0,0, 0] },
-
+  
   {position: [31.75 , 4.2, 19.7], size: [2.2, 0.5, 10.5], color: '#EFB100', rotation: [0, Math.PI / 2, 0] },
   {position: [31.75, 4.2, 11.2], size: [2, 0.5, 10.5], color: '#EFB100', rotation: [0, Math.PI / 2, 0] },
   {position: [31.75, 0.3, 15.4], size: [2.5, 0.5, 6.5], color: '#EFB100', rotation: [Math.PI / 2, Math.PI / 2, 0] },
   {position: [31.75,7.85,15.4], size: [3.2,0.5,6.5], color: '#EFB100', rotation: [Math.PI / 2,Math.PI /2, 0]},
-
+  
   {position: [30.3, 4.2, 10.1], size: [3.4, 0.3, 10.5], color: '#EFB100', rotation: [0, 0, 0] },
-
+  
   {position: [28.5, 4.2, 2], size: [16.5, 0.3, 10.5], color: '#EFB100', rotation: [0, Math.PI / 2, 0] },
-
+  
   {position: [23.05, 4.2, -6.3], size: [11.2, 0.3, 10.5], color: '#EFB100', rotation: [0, 0, 0] },
+  {position: [23, 4.2, -6.6], size: [11.3,0.3,10.5], color: '#FFFFFF', rotation:[0,0,0]},
   {position: [17.58, 4.2, -2.95], size: [7, 0.15, 10.5], color: '#EFB100', rotation: [0, Math.PI / 2, 0] },
   {position: [17.428, 4.2, -2.95], size: [7, 0.15, 10.5], color: '#FFFFFF', rotation: [0, Math.PI / 2, 0] },
   
@@ -128,12 +129,19 @@ const WALL_POSITION: MapItemProps[] = [
   
   {position: [11.4, 0.3, -36.65], size: [6,0.3, 2.5], color: '#FFFFFF', rotation: [0,Math.PI / 2, 0]},
   {position: [18.7, 0.3, -39.75], size: [14.9,0.3, 2.5], color: '#FFFFFF', rotation: [0,0, 0]},
-  {position: [26, 0.3, -36.65], size: [6,0.3, 2.5], color: '#FFFFFF', rotation: [0,Math.PI / 2, 0]},
+  {position: [26, 4.2, -36.65], size: [6,0.3, 10.5], color: '#FFFFFF', rotation: [0,Math.PI / 2, 0]},
 
 
 
   {position: [26, 4.2, -25.05], size: [17.8,0.3, 10.5], color: '#FFFFFF', rotation: [0,Math.PI / 2, 0]},
 
+  // Кабинет Олега
+
+  {position: [40.5, 0.3, -39.8], size: [30,0.3, 2.5], color: '#FFFFFF', rotation: [0, 0, 0]},
+  {position: [36.3, 4.2, -18.3], size: [4.5,0.3, 10.5], color: '#FFFFFF', rotation: [0, Math.PI / 2, 0]},
+  {position: [36.3, 4.2, -36.15], size: [7.5,0.3, 10.5], color: '#FFFFFF', rotation: [0, Math.PI / 2, 0]},
+
+  {position: [55.5, 4.2, -28], size: [24,0.3, 10.5], color: '#FFFFFF', rotation: [0, Math.PI / 2, 0]},
 ]
 
 const WINDOW_POSITIONS: MapItemProps[] = [
@@ -549,7 +557,7 @@ export function OfficeScene() {
                 <ItemRender itemName="trashBucket" scale={0.35} position={[3.4,-0.9,14]} rotation={[0,Math.PI / 2,0]}/>
             </RigidBody>
             <RigidBody type="fixed">
-                {/* <ItemRender itemName="trashBucket" scale={0.35} position={[3.4,-0.9,1-6.7]} rotation={[0,Math.PI / 2,0]}/> */}
+                <ItemRender itemName="trashBucket" scale={0.35} position={[3.4,-0.9,1-8.8]} rotation={[0,Math.PI / 2,0]}/>
             </RigidBody>
             <RigidBody type="fixed">
                 <ItemRender itemName="SurpriseGlassWall" scale={[7,8,8]} position={[-17.5, -1, 12.4]} rotation={[0,Math.PI / -2, 0]}/>
@@ -776,14 +784,6 @@ export function OfficeScene() {
               <WindowFrameObject color="White" scale={[20,27.5,19]} position={[22.5,6,-39.75]} rotation={[0, Math.PI / 2, Math.PI / 5]}/>
               <WindowFrameObject color="Black" scale={[20,27.5,21.5]} position={[24.72,6,-39.75]} rotation={[0, Math.PI / 2, Math.PI / 5]}/>
 
-              <WindowFrameObject color="White" scale={[20,25,19]} position={[26,1.6,-34.8]} rotation={[0, 0, 0]}/>
-              <WindowFrameObject color="White" scale={[20,25,19]} position={[26,1.6,-36.8]} rotation={[0, 0, 0]}/>
-              <WindowFrameObject color="White" scale={[20,25,19]} position={[26,1.6,-38.8]} rotation={[0, 0, 0]}/>
-              <WindowFrameObject color="White" scale={[20,25,19]} position={[26,5.5,-34.8]} rotation={[0, 0, 0]}/>
-              <WindowFrameObject color="White" scale={[20,25,19]} position={[26,5.5,-36.8]} rotation={[0, 0, 0]}/>
-              <WindowFrameObject color="White" scale={[20,25,19]} position={[26,5.5,-38.8]} rotation={[0, 0, 0]}/>
-
-              
               <WindowFrameObject color="Black" scale={[20,25,19]} position={[4.5,5.5,-33.8]} rotation={[0, Math.PI / 2, 0]}/>
               <WindowFrameObject color="Black" scale={[20,25,19]} position={[6.5,5.5,-33.8]} rotation={[0, Math.PI / 2, 0]}/>
               <WindowFrameObject color="Black" scale={[20,25,19]} position={[8.5,5.5,-33.8]} rotation={[0, Math.PI / 2, 0]}/>
@@ -797,6 +797,69 @@ export function OfficeScene() {
                       <meshStandardMaterial color="#E7E2BA"/>
                   </mesh>
             </RigidBody>
+
+            {/* Коридор */}
+
+            <RigidBody type="fixed" position={[46.5,-1,-11.5]}>
+                <mesh>
+                    <boxGeometry args={[42,0.1, 9.5]}/>
+                    <meshStandardMaterial color="#E7E2BA"/>
+                </mesh>
+            </RigidBody>
+
+            {/* Кабинет Олега */}
+
+            <mesh position={[46,-1,-28]}>
+                <boxGeometry args={[43,0.1,23.9]}/>
+                <meshStandardMaterial color="#E7E2BA"/>
+            </mesh>
+    
+            <ItemRender itemName="OlegGlassWall" scale={[11.2,11,10]} rotation={[0,Math.PI / 1,0]} position={[36.4, -1, -16.3]}/>
+
+            <mesh position={[36.3, 4.2,-26.5]} rotation={[Math.PI / 1,0, Math.PI / 2]}>
+                <boxGeometry args={[10.5, 0.1,12]}/>
+                <meshPhysicalMaterial color="#F0F0F0" transmission={0.7} roughness={0.05} side={2}/>
+            </mesh>
+
+            <group>
+                <WindowFrameObject color="White" scale={[20,28,19]} rotation={[0,Math.PI /2,0]} position={[27.15,1.6,-39.7]}/>
+                <WindowFrameObject color="White" scale={[20,28,19]} rotation={[0,Math.PI /2,0]} position={[29.15,1.6,-39.7]}/>
+                <WindowFrameObject color="White" scale={[20,28,19]} rotation={[0,Math.PI /2,0]} position={[31.15,1.6,-39.7]}/>
+                <WindowFrameObject color="White" scale={[20,28,19]} rotation={[0,Math.PI /2,0]} position={[33.15,1.6,-39.7]}/>
+                <WindowFrameObject color="White" scale={[20,28,19]} rotation={[0,Math.PI /2,0]} position={[35.15,1.6,-39.7]}/>
+
+                <WindowFrameObject color="White" scale={[20,27.5,19]} rotation={[0,Math.PI /2,Math.PI / 5]} position={[27.15,6,-39.7]}/>
+                <WindowFrameObject color="White" scale={[20,27.5,19]} rotation={[0,Math.PI /2,Math.PI / 5]} position={[29.15,6,-39.7]}/>
+                <WindowFrameObject color="White" scale={[20,27.5,19]} rotation={[0,Math.PI /2,Math.PI / 5]} position={[31.15,6,-39.7]}/>
+                <WindowFrameObject color="White" scale={[20,27.5,19]} rotation={[0,Math.PI /2,Math.PI / 5]} position={[33.15,6,-39.7]}/>
+                <WindowFrameObject color="White" scale={[20,27.5,19]} rotation={[0,Math.PI /2,Math.PI / 5]} position={[35.15,6,-39.7]}/>
+
+                <WindowFrameObject color="White" scale={[20,28,19]} rotation={[0,Math.PI /2,0]} position={[37.5,1.6,-39.7]}/>
+                <WindowFrameObject color="White" scale={[20,28,19]} rotation={[0,Math.PI /2,0]} position={[39.5,1.6,-39.7]}/>
+                <WindowFrameObject color="White" scale={[20,28,19]} rotation={[0,Math.PI /2,0]} position={[41.5,1.6,-39.7]}/>
+                <WindowFrameObject color="White" scale={[20,28,19]} rotation={[0,Math.PI /2,0]} position={[43.5,1.6,-39.7]}/>
+                <WindowFrameObject color="White" scale={[20,28,19]} rotation={[0,Math.PI /2,0]} position={[45.5,1.6,-39.7]}/>
+                <WindowFrameObject color="White" scale={[20,28,19]} rotation={[0,Math.PI /2,0]} position={[47.5,1.6,-39.7]}/>
+                <WindowFrameObject color="White" scale={[20,28,19]} rotation={[0,Math.PI /2,0]} position={[49.5,1.6,-39.7]}/>
+                <WindowFrameObject color="White" scale={[20,28,19]} rotation={[0,Math.PI /2,0]} position={[51.5,1.6,-39.7]}/>
+                <WindowFrameObject color="White" scale={[20,28,19]} rotation={[0,Math.PI /2,0]} position={[53.5,1.6,-39.7]}/>
+                <WindowFrameObject color="White" scale={[20,28,9.8]} rotation={[0,Math.PI /2,0]} position={[55,1.6,-39.7]}/>
+
+                <WindowFrameObject color="White" scale={[20,27.5,19]} rotation={[0,Math.PI /2,Math.PI / 5]} position={[37.5,6,-39.7]}/>
+                <WindowFrameObject color="White" scale={[20,27.5,19]} rotation={[0,Math.PI /2,Math.PI / 5]} position={[39.5,6,-39.7]}/>
+                <WindowFrameObject color="White" scale={[20,27.5,19]} rotation={[0,Math.PI /2,Math.PI / 5]} position={[41.5,6,-39.7]}/>
+                <WindowFrameObject color="White" scale={[20,27.5,19]} rotation={[0,Math.PI /2,Math.PI / 5]} position={[43.5,6,-39.7]}/>
+                <WindowFrameObject color="White" scale={[20,27.5,19]} rotation={[0,Math.PI /2,Math.PI / 5]} position={[45.5,6,-39.7]}/>
+                <WindowFrameObject color="White" scale={[20,27.5,19]} rotation={[0,Math.PI /2,Math.PI / 5]} position={[47.5,6,-39.7]}/>
+                <WindowFrameObject color="White" scale={[20,27.5,19]} rotation={[0,Math.PI /2,Math.PI / 5]} position={[49.5,6,-39.7]}/>
+                <WindowFrameObject color="White" scale={[20,27.5,19]} rotation={[0,Math.PI /2,Math.PI / 5]} position={[51.5,6,-39.7]}/>
+                <WindowFrameObject color="White" scale={[20,27.5,19]} rotation={[0,Math.PI /2,Math.PI / 5]} position={[53.5,6,-39.7]}/>
+                <WindowFrameObject color="White" scale={[20,27.5,9.8]} rotation={[0,Math.PI /2,Math.PI / 5]} position={[55,6,-39.7]}/>
+            </group>
+
+            {/*Большая переговорная*/}
+
+            <ItemRender itemName="OrangeGlassWall" scale={[11,11,11]} rotation={[0,Math.PI / 1,0]} position={[38.4,-1,-16.3]}/>
 
             <LobbyNPC path="lobby-npc" scale={1.15} position={[13,-1,16]} rotation={[0,Math.PI / -1.5,0]} npcId={1} npcName="Никита" playerPosition={playerPosition} onInteract={(id,name) => setActiveNPC({id,name})}/>
             {/* <CharacterController position={[0,0,0]} rotationY={0} onPositionChange={setPlayerPosition} /> */}
