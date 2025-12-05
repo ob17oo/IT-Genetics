@@ -70,48 +70,48 @@ const TABLE_POSITIONS: MapItemProps[] = [
 ];
 
 const WALL_POSITION: MapItemProps[] = [
-  { position: [-4.35, 4, 20], size: [21.5, 0.3, 10], collider: [12.5, 4, 0.15], color: '#FFFFFF'},
-  {position: [11.88, 4, 20], size: [10.95,0.3,10], collider: [0,0,0], color: '#000000'},
-  {position: [-17.4, 4 ,19.7], size: [0.5, 0.3, 10], collider: [0,0,0], color: '#FFFFFF', rotation: [0,Math.PI / 2,0]},
-  {position: [17.5, 4 ,19.4], size: [1.4, 0.3, 10], collider: [0,0,0], color: '#FFFFFF', rotation: [0,Math.PI / 2,0]},
-  {position: [-17.4, 7.2 , 7], size: [3.6, 0.3, 26], collider: [0,0,0], color: '#FFFFFF', rotation: [Math.PI / 2,Math.PI / 2,0]},
-  {position: [17.5, 7.2 , 9.8], size: [3.6, 0.3, 18.52], collider: [0,0,0], color: '#FFFFFF', rotation: [Math.PI / 2,Math.PI / 2,0]},
-  {position: [-20.15, 4, 20], size: [10.3, 0.3, 10], color: '#FFFFFF', rotation: [0, 0, 0] },
+  { position: [-4.35, 4.2, 20], size: [21.5, 0.3, 10.5], collider: [12.5, 4, 0.15], color: '#FFFFFF'},
+  {position: [11.88, 4.2, 20], size: [10.95,0.3,10.5], collider: [0,0,0], color: '#000000'},
+  {position: [-17.4, 4.2 ,19.7], size: [0.5, 0.3, 10.5], collider: [0,0,0], color: '#FFFFFF', rotation: [0,Math.PI / 2,0]},
+  {position: [17.5, 4.2 ,19.4], size: [1.4, 0.3, 10.5], collider: [0,0,0], color: '#FFFFFF', rotation: [0,Math.PI / 2,0]},
+  {position: [-17.4, 7.45 , 7], size: [4.05, 0.3, 26], collider: [0,0,0], color: '#FFFFFF', rotation: [Math.PI / 2,Math.PI / 2,0]},
+  {position: [17.5, 7.4 , 9.8], size: [4.1, 0.3, 18.52], collider: [0,0,0], color: '#FFFFFF', rotation: [Math.PI / 2,Math.PI / 2,0]},
+  {position: [-20.15, 4.2, 20], size: [10.3, 0.3, 10.5], color: '#FFFFFF', rotation: [0, 0, 0] },
 
-  {position: [19.4, 4, 20], size: [4, 0.3, 10], color: '#EFB100', rotation: [0, 0, 0] },
-  {position: [24.5, 4, 20.9], size: [6, 0.3, 10], color: '#EFB100', rotation: [0, 0, 0] },
-  {position: [21.5, 4, 20.45], size: [1.2, 0.3, 10], color: '#EFB100', rotation: [0, Math.PI / 2, 0] },
-  {position: [27.5, 4, 20.45], size: [1.2, 0.3, 10], color: '#EFB100', rotation: [0, Math.PI / 2, 0] },
-  {position: [28.4, 4, 20], size: [1.5, 0.3, 10], color: '#EFB100', rotation: [0,0, 0] },
-  {position: [29, 4, 20.45], size: [1.2, 0.3, 10], color: '#EFB100', rotation: [0, Math.PI / 2, 0] },
-  {position: [30.5, 4, 20.9], size: [3, 0.3, 10], color: '#EFB100', rotation: [0,0, 0] },
+  {position: [19.4, 4.2, 20], size: [4, 0.3, 10.5], color: '#EFB100', rotation: [0, 0, 0] },
+  {position: [24.5, 4.2, 20.9], size: [6, 0.3, 10.5], color: '#EFB100', rotation: [0, 0, 0] },
+  {position: [21.5, 4.2, 20.45], size: [1.2, 0.3, 10.5], color: '#EFB100', rotation: [0, Math.PI / 2, 0] },
+  {position: [27.5, 4.2, 20.45], size: [1.2, 0.3, 10.5], color: '#EFB100', rotation: [0, Math.PI / 2, 0] },
+  {position: [28.4, 4.2, 20], size: [1.5, 0.3, 10.5], color: '#EFB100', rotation: [0,0, 0] },
+  {position: [29, 4.2, 20.45], size: [1.2, 0.3, 10.5], color: '#EFB100', rotation: [0, Math.PI / 2, 0] },
+  {position: [30.5, 4.2, 20.9], size: [3, 0.3, 10.5], color: '#EFB100', rotation: [0,0, 0] },
 
-  {position: [31.75 , 4, 19.7], size: [2.2, 0.5, 10], color: '#EFB100', rotation: [0, Math.PI / 2, 0] },
-  {position: [31.75, 4, 11.2], size: [2, 0.5, 10], color: '#EFB100', rotation: [0, Math.PI / 2, 0] },
+  {position: [31.75 , 4.2, 19.7], size: [2.2, 0.5, 10.5], color: '#EFB100', rotation: [0, Math.PI / 2, 0] },
+  {position: [31.75, 4.2, 11.2], size: [2, 0.5, 10.5], color: '#EFB100', rotation: [0, Math.PI / 2, 0] },
   {position: [31.75, 0.3, 15.4], size: [2.5, 0.5, 6.5], color: '#EFB100', rotation: [Math.PI / 2, Math.PI / 2, 0] },
-  {position: [31.75,7.65,15.4], size: [2.7,0.5,6.5], color: '#EFB100', rotation: [Math.PI / 2,Math.PI /2, 0]},
+  {position: [31.75,7.85,15.4], size: [3.2,0.5,6.5], color: '#EFB100', rotation: [Math.PI / 2,Math.PI /2, 0]},
 
-  {position: [30.3, 4, 10.1], size: [3.4, 0.3, 10], color: '#EFB100', rotation: [0, 0, 0] },
+  {position: [30.3, 4.2, 10.1], size: [3.4, 0.3, 10.5], color: '#EFB100', rotation: [0, 0, 0] },
 
-  {position: [28.5, 4, 2], size: [16.5, 0.3, 10], color: '#EFB100', rotation: [0, Math.PI / 2, 0] },
+  {position: [28.5, 4.2, 2], size: [16.5, 0.3, 10.5], color: '#EFB100', rotation: [0, Math.PI / 2, 0] },
 
-  {position: [23.05, 4, -6.3], size: [11.2, 0.3, 10], color: '#EFB100', rotation: [0, 0, 0] },
-  {position: [17.58, 4, -2.95], size: [7, 0.15, 10], color: '#EFB100', rotation: [0, Math.PI / 2, 0] },
-  {position: [17.428, 4, -2.95], size: [7, 0.15, 10], color: '#FFFFFF', rotation: [0, Math.PI / 2, 0] },
+  {position: [23.05, 4.2, -6.3], size: [11.2, 0.3, 10.5], color: '#EFB100', rotation: [0, 0, 0] },
+  {position: [17.58, 4.2, -2.95], size: [7, 0.15, 10.5], color: '#EFB100', rotation: [0, Math.PI / 2, 0] },
+  {position: [17.428, 4.2, -2.95], size: [7, 0.15, 10.5], color: '#FFFFFF', rotation: [0, Math.PI / 2, 0] },
   
   
   // Переговорные
 
   // Стенки между переговорными
-  {position: [-22, 4, -6.95], size: [6.5, 0.2, 10], collider: [0,0,0], color: '#72de8b', rotation: [0,0,0]},
-  {position: [-21.25, 4, -7.15], size: [8, 0.2, 10], collider: [0,0,0], color: '#FFFFFF', rotation: [0,0,0]},
+  {position: [-22, 4.2, -6.95], size: [6.5, 0.2, 10.5], collider: [0,0,0], color: '#72de8b', rotation: [0,0,0]},
+  {position: [-21.25, 4.2, -7.15], size: [8, 0.2, 10.5], collider: [0,0,0], color: '#FFFFFF', rotation: [0,0,0]},
 
-  {position: [-22, 4 ,11.69], size: [6.5, 0.175, 10], collider: [0,0,0], color: '#FFFFFF', rotation: [0,0,0]},
-  {position: [-22, 4 ,11.5], size: [6.5, 0.175, 10], collider: [0,0,0], color: '#193CB8', rotation: [0,0,0]},
+  {position: [-22, 4.2 ,11.69], size: [6.5, 0.175, 10.5], collider: [0,0,0], color: '#FFFFFF', rotation: [0,0,0]},
+  {position: [-22, 4.2 ,11.5], size: [6.5, 0.175, 10.5], collider: [0,0,0], color: '#193CB8', rotation: [0,0,0]},
 
-  {position: [-21.35, 4 ,2.68], size: [7.8, 0.2, 10], collider: [0,0,0], color: '#193CB8', rotation: [0,0,0]},
-  {position: [-21.35, 4 ,2.49], size: [7.8, 0.2, 10], collider: [0,0,0], color: '#72de8b', rotation: [0,0,0]},
-  {position: [-17.4, 4 ,2.59], size: [0.4, 0.2, 10], collider: [0,0,0], color: '#FFFFFF', rotation: [0,Math.PI / 2,0]},
+  {position: [-21.35, 4.2 ,2.68], size: [7.8, 0.2, 10.5], collider: [0,0,0], color: '#193CB8', rotation: [0,0,0]},
+  {position: [-21.35, 4.2,2.49], size: [7.8, 0.2, 10.5], collider: [0,0,0], color: '#72de8b', rotation: [0,0,0]},
+  {position: [-17.4, 4.2 ,2.59], size: [0.4, 0.2, 10.5], collider: [0,0,0], color: '#FFFFFF', rotation: [0,Math.PI / 2,0]},
   
   //Стенки с окнами
   {position: [-25.1, 0.3, 15.8], size: [8.7, 0.3, 2.5], color: '#FFFFFF', rotation: [0, Math.PI / 2, 0] },
@@ -124,9 +124,15 @@ const WALL_POSITION: MapItemProps[] = [
   {position: [-19, 5.5, -15.77], size: [0.85, 0.3, 7.9], color: '#FFFFFF', rotation: [0, Math.PI / 2, 0]},
   {position: [3, 5.5, -33.8], size: [0.85, 0.3, 7.9], color: '#FFFFFF', rotation: [0, 0, 0]},
 
-  {position: [14.2, 0.3, -33.8], size: [23.5,0.3, 2.5], color: '#FFFFFF', rotation: [0,0, 0]},
+  {position: [7, 0.3, -33.8], size: [9,0.3, 2.5], color: '#FFFFFF', rotation: [0,0, 0]},
+  
+  {position: [11.4, 0.3, -36.65], size: [6,0.3, 2.5], color: '#FFFFFF', rotation: [0,Math.PI / 2, 0]},
+  {position: [18.7, 0.3, -39.75], size: [14.9,0.3, 2.5], color: '#FFFFFF', rotation: [0,0, 0]},
+  {position: [26, 0.3, -36.65], size: [6,0.3, 2.5], color: '#FFFFFF', rotation: [0,Math.PI / 2, 0]},
 
-  {position: [26, 4, -25.05], size: [17.8,0.3, 10], color: '#FFFFFF', rotation: [0,Math.PI / 2, 0]},
+
+
+  {position: [26, 4.2, -25.05], size: [17.8,0.3, 10.5], color: '#FFFFFF', rotation: [0,Math.PI / 2, 0]},
 
 ]
 
@@ -429,6 +435,8 @@ export function OfficeScene() {
             <directionalLight
               position={[5, 7, 0]}
               intensity={1.5}
+              shadow-mapSize={[512,512]}
+              shadow-camera-far={50}
               castShadow
             />
 
@@ -443,8 +451,8 @@ export function OfficeScene() {
             </RigidBody>
 
             <RigidBody type="fixed">
-                <mesh position={[0,-1,-28]}>
-                    <boxGeometry args={[43,0.1,16]}/>
+                <mesh position={[0,-1,-26.9]}>
+                    <boxGeometry args={[43,0.1,13.8]}/>
                     <meshStandardMaterial color="#E7E2BA"/>
                 </mesh>
             </RigidBody>
@@ -453,82 +461,82 @@ export function OfficeScene() {
             {tables}
 
             <RigidBody type="fixed">
-                <mesh position={[3.65,4,11.65]}>
-                    <boxGeometry args={[1.5,10,1.5]}/>
+                <mesh position={[3.65,4.2,11.65]}>
+                    <boxGeometry args={[1.5,10.5,1.5]}/>
                     <meshStandardMaterial color="#FFFFFFF"/>
                 </mesh>
             </RigidBody>
             <RigidBody type="fixed">
-                <mesh position={[-18,4,-6.5]}>
-                    <boxGeometry args={[1.5,10,1.5]}/>
+                <mesh position={[-18,4.2,-6.5]}>
+                    <boxGeometry args={[1.5,10.5,1.5]}/>
                     <meshStandardMaterial color="#FFFFFFF"/>
                 </mesh>
             </RigidBody>
             <RigidBody type="fixed">
-                <mesh position={[-18,4,11.65]}>
-                    <boxGeometry args={[1.5,10,1.5]}/>
+                <mesh position={[-18,4.2,11.65]}>
+                    <boxGeometry args={[1.5,10.5,1.5]}/>
                     <meshStandardMaterial color="#FFFFFFF"/>
                 </mesh>
             </RigidBody>
             <RigidBody type="fixed">
-                <mesh position={[3.65,4,-6.5]}>
-                    <boxGeometry args={[1.5,10,1.5]}/>
-                    <meshStandardMaterial color="#FFFFFFF"/>
-                </mesh>
-            </RigidBody>
-
-            <RigidBody type="fixed">
-                <mesh position={[3.65,4,-19]}>
-                    <boxGeometry args={[1.5,10,1.5]}/>
-                    <meshStandardMaterial color="#FFFFFFF"/>
-                </mesh>
-            </RigidBody>
-            <RigidBody type="fixed">
-                <mesh position={[-18,4,-19]}>
-                    <boxGeometry args={[1.5,10,1.5]}/>
+                <mesh position={[3.65,4.2,-6.5]}>
+                    <boxGeometry args={[1.5,10.5,1.5]}/>
                     <meshStandardMaterial color="#FFFFFFF"/>
                 </mesh>
             </RigidBody>
 
             <RigidBody type="fixed">
-                <mesh position={[3.65,4,-30]}>
-                    <boxGeometry args={[1.5,10,1.5]}/>
+                <mesh position={[3.65,4.2,-19]}>
+                    <boxGeometry args={[1.5,10.5,1.5]}/>
+                    <meshStandardMaterial color="#FFFFFFF"/>
+                </mesh>
+            </RigidBody>
+            <RigidBody type="fixed">
+                <mesh position={[-18,4.2,-19]}>
+                    <boxGeometry args={[1.5,10.5,1.5]}/>
                     <meshStandardMaterial color="#FFFFFFF"/>
                 </mesh>
             </RigidBody>
 
             <RigidBody type="fixed">
-                <mesh position={[3.65,4,-32]}>
-                    <boxGeometry args={[1.5,10,1.5]}/>
-                    <meshStandardMaterial color="#FFFFFFF"/>
-                </mesh>
-            </RigidBody>
-            <RigidBody type="fixed">
-                <mesh position={[-18,4,-32]}>
-                    <boxGeometry args={[1.5,10,1.5]}/>
+                <mesh position={[3.65,4.2,-30]}>
+                    <boxGeometry args={[1.5,10.5,1.5]}/>
                     <meshStandardMaterial color="#FFFFFFF"/>
                 </mesh>
             </RigidBody>
 
+            <RigidBody type="fixed">
+                <mesh position={[3.65,4.2,-32]}>
+                    <boxGeometry args={[1.5,10.5,1.5]}/>
+                    <meshStandardMaterial color="#FFFFFFF"/>
+                </mesh>
+            </RigidBody>
+            <RigidBody type="fixed">
+                <mesh position={[-18,4.2,-32]}>
+                    <boxGeometry args={[1.5,10.5,1.5]}/>
+                    <meshStandardMaterial color="#FFFFFFF"/>
+                </mesh>
+            </RigidBody>
+
 
 
             <RigidBody type="fixed">
-                <mesh position={[17,4,2.02]}>
-                    <boxGeometry args={[3,10,3]}/>
+                <mesh position={[17,4.2,2.02]}>
+                    <boxGeometry args={[3,10.5,3]}/>
                     <meshStandardMaterial color="#FFFFFFF"/>
                 </mesh>
             </RigidBody>
 
 
             <RigidBody type="fixed">
-                <mesh position={[26,4,-19]}>
-                    <boxGeometry args={[1.5,10,1.5]}/>
+                <mesh position={[26,4.2,-19]}>
+                    <boxGeometry args={[1.5,10.5,1.5]}/>
                     <meshStandardMaterial color="#FFFFFFF"/>
                 </mesh>
             </RigidBody>
             <RigidBody type="fixed">
-                <mesh position={[26,4,-30]}>
-                    <boxGeometry args={[1.5,10,1.5]}/>
+                <mesh position={[26,4.2,-32]}>
+                    <boxGeometry args={[1.5,10.5,1.5]}/>
                     <meshStandardMaterial color="#FFFFFFF"/>
                 </mesh>
             </RigidBody>
@@ -593,32 +601,32 @@ export function OfficeScene() {
               <ItemRender itemName="MeetingSofa" scale={[5,5,7.4]} rotation={[0,Math.PI / 2,0]} position={[-17.5, -1, 2.3]}/>
 
             <group>
-                <WindowFrameObject scale={[20,25,19]} position={[-25.1,1.6,18.8]}/>
-                <WindowFrameObject scale={[20,25,19]} position={[-25.1,1.6,16.8]}/>
-                <WindowFrameObject scale={[20,25,19]} position={[-25.1,1.6,14.8]}/>
-                <WindowFrameObject scale={[20,25,19]} position={[-25.1,1.6,12.8]}/>
-                <WindowFrameObject scale={[20,25,19]} position={[-25.05,5.65,18.8]} rotation={[0,0,Math.PI / -5]}/>
-                <WindowFrameObject scale={[20,25,19]} position={[-25.05,5.65,16.8]} rotation={[0,0,Math.PI / -5]}/>
-                <WindowFrameObject scale={[20,25,19]} position={[-25.05,5.65,14.8]} rotation={[0,0,Math.PI / -5]}/>
-                <WindowFrameObject scale={[20,25,19]} position={[-25.05,5.65,12.8]} rotation={[0,0,Math.PI / -5]}/>
+                <WindowFrameObject color="Black" scale={[20,28,19]} position={[-25.1,1.6,18.8]}/>
+                <WindowFrameObject scale={[20,28,19]} position={[-25.1,1.6,16.8]}/>
+                <WindowFrameObject scale={[20,28,19]} position={[-25.1,1.6,14.8]}/>
+                <WindowFrameObject scale={[20,28,19]} position={[-25.1,1.6,12.8]}/>
+                <WindowFrameObject color="Black" scale={[20,27.5,19]} position={[-25.05,6,18.8]} rotation={[0,0,Math.PI / -5]}/>
+                <WindowFrameObject scale={[20,27.5,19]} position={[-25.05,6,16.8]} rotation={[0,0,Math.PI / -5]}/>
+                <WindowFrameObject scale={[20,27.5,19]} position={[-25.05,6,14.8]} rotation={[0,0,Math.PI / -5]}/>
+                <WindowFrameObject scale={[20,27.5,19]} position={[-25.05,6,12.8]} rotation={[0,0,Math.PI / -5]}/>
 
-                <WindowFrameObject scale={[20,25,20.5]} position={[-25.1,1.6,10.3]}/>
-                <WindowFrameObject scale={[20,25,20.5]} position={[-25.1,1.6,8.15]}/>
-                <WindowFrameObject scale={[20,25,20.5]} position={[-25.1,1.6,6]}/>
-                <WindowFrameObject scale={[20,25,20.5]} position={[-25.1,1.6,3.85]}/>
-                <WindowFrameObject scale={[20,25,20.5]} position={[-25.05,5.65,10.3]} rotation={[0,0,Math.PI / -5]}/>
-                <WindowFrameObject scale={[20,25,20.6]} position={[-25.05,5.65,8.15]} rotation={[0,0,Math.PI / -5]}/>
-                <WindowFrameObject scale={[20,25,20.5]} position={[-25.05,5.65,6]} rotation={[0,0,Math.PI / -5]}/>
-                <WindowFrameObject scale={[20,25,20.5]} position={[-25.05,5.65,3.85]} rotation={[0,0,Math.PI / -5]}/>
+                <WindowFrameObject color="Black" scale={[20,28,20.5]} position={[-25.1,1.6,10.3]}/>
+                <WindowFrameObject scale={[20,28,20.5]} position={[-25.1,1.6,8.15]}/>
+                <WindowFrameObject scale={[20,28,20.5]} position={[-25.1,1.6,6]}/>
+                <WindowFrameObject scale={[20,28,20.5]} position={[-25.1,1.6,3.85]}/>
+                <WindowFrameObject color="Black" scale={[20,27.5,20.5]} position={[-25.05,6,10.3]} rotation={[0,0,Math.PI / -5]}/>
+                <WindowFrameObject scale={[20,27.5,20.6]} position={[-25.05,6,8.15]} rotation={[0,0,Math.PI / -5]}/>
+                <WindowFrameObject scale={[20,27.5,20.5]} position={[-25.05,6,6]} rotation={[0,0,Math.PI / -5]}/>
+                <WindowFrameObject scale={[20,27.5,20.5]} position={[-25.05,6,3.85]} rotation={[0,0,Math.PI / -5]}/>
     
-                <WindowFrameObject scale={[20,25,21.5]} position={[-25.1,1.6,1.2]}/>
-                <WindowFrameObject scale={[20,25,21.5]} position={[-25.1,1.6,-1.05]}/>
-                <WindowFrameObject scale={[20,25,21.5]} position={[-25.1,1.6,-3.3]}/>
-                <WindowFrameObject scale={[20,25,21.5]} position={[-25.1,1.6, -5.55]}/>
-                <WindowFrameObject scale={[20,25,21.5]} position={[-25.05,5.65,1.2]} rotation={[0,0,Math.PI / -5]}/>
-                <WindowFrameObject scale={[20,25,21.5]} position={[-25.05,5.65,-1.05]} rotation={[0,0,Math.PI / -5]}/>
-                <WindowFrameObject scale={[20,25,21.5]} position={[-25.05,5.65,-3.3]} rotation={[0,0,Math.PI / -5]}/>
-                <WindowFrameObject scale={[20,25,21.5]} position={[-25.05,5.65,-5.55]} rotation={[0,0,Math.PI / -5]}/>
+                <WindowFrameObject color="Black" scale={[20,28,21.5]} position={[-25.1,1.6,1.2]}/>
+                <WindowFrameObject scale={[20,28,21.5]} position={[-25.1,1.6,-1.05]}/>
+                <WindowFrameObject scale={[20,28,21.5]} position={[-25.1,1.6,-3.3]}/>
+                <WindowFrameObject color="Black" scale={[20,28,21.5]} position={[-25.1,1.6, -5.55]}/>
+                <WindowFrameObject color="Black" scale={[20,27.5,21.5]} position={[-25.05,6,1.2]} rotation={[0,0,Math.PI / -5]}/>
+                <WindowFrameObject scale={[20,27.5,21.5]} position={[-25.05,6,-1.05]} rotation={[0,0,Math.PI / -5]}/>
+                <WindowFrameObject scale={[20,27.5,21.5]} position={[-25.05,6,-3.3]} rotation={[0,0,Math.PI / -5]}/>
+                <WindowFrameObject color="Black" scale={[20,27.5,21.5]} position={[-25.05,6,-5.55]} rotation={[0,0,Math.PI / -5]}/>
             </group>
 
             {/* Кухня */}
@@ -694,9 +702,9 @@ export function OfficeScene() {
                 </mesh>
 
             </RigidBody>
-            <RigidBody type="fixed" position={[-8,-1,-37.5]}>
+            <RigidBody type="fixed" position={[-8,-1,-36.3]}>
                 <mesh>
-                    <boxGeometry args={[18,0.1,3]}/>
+                    <boxGeometry args={[22,0.1,5]}/>
                     <meshStandardMaterial color="#E7E2BA"/>
                 </mesh>
             </RigidBody>
@@ -727,18 +735,68 @@ export function OfficeScene() {
             />
 
             <group>
-                <WindowFrameObject scale={[20,25, 19]} position={[-19,1.6,-8.3]}/>
-                <WindowFrameObject scale={[20,25, 19]} position={[-19,1.6,-10.3]}/>
-                <WindowFrameObject scale={[20,25, 19]} position={[-19,1.6,-12.3]}/>
-                <WindowFrameObject scale={[20,25, 19]} position={[-19,1.6,-14.3]}/>
+                <WindowFrameObject color="Black" scale={[20,25, 19]} position={[-19,1.6,-8.3]}/>
+                <WindowFrameObject color="Black" scale={[20,25, 19]} position={[-19,1.6,-10.3]}/>
+                <WindowFrameObject color="Black" scale={[20,25, 19]} position={[-19,1.6,-12.3]}/>
+                <WindowFrameObject color="Black" scale={[20,25, 19]} position={[-19,1.6,-14.3]}/>
 
-                <WindowFrameObject scale={[20,25, 19]} position={[-19,5.5,-8.3]}/>
-                <WindowFrameObject scale={[20,25, 19]} position={[-19,5.5,-10.3]}/>
-                <WindowFrameObject scale={[20,25, 19]} position={[-19,5.5,-12.3]}/>
-                <WindowFrameObject scale={[20,25, 19]} position={[-19,5.5,-14.3]}/>
+                <WindowFrameObject color="Black" scale={[20,25, 19]} position={[-19,5.5,-8.3]}/>
+                <WindowFrameObject color="Black" scale={[20,25, 19]} position={[-19,5.5,-10.3]}/>
+                <WindowFrameObject color="Black" scale={[20,25, 19]} position={[-19,5.5,-12.3]}/>
+                <WindowFrameObject color="Black" scale={[20,25, 19]} position={[-19,5.5,-14.3]}/>
             </group>
             
             {windowCircle}
+
+            <group>
+              <WindowFrameObject color="Black" scale={[20,25,19]} position={[4.5,1.6,-33.8]} rotation={[0, Math.PI / 2, 0]}/>
+              <WindowFrameObject color="Black" scale={[20,25,19]} position={[6.5,1.6,-33.8]} rotation={[0, Math.PI / 2, 0]}/>
+              <WindowFrameObject color="Black" scale={[20,25,19]} position={[8.5,1.6,-33.8]} rotation={[0, Math.PI / 2, 0]}/>
+              <WindowFrameObject color="Black" scale={[20,25,19]} position={[10.5,1.6,-33.8]} rotation={[0, Math.PI / 2, 0]}/>
+
+              <WindowFrameObject color="White" scale={[20,25,19]} position={[11.4,1.6,-34.8]} rotation={[0, 0, 0]}/>
+              <WindowFrameObject color="White" scale={[20,25,19]} position={[11.4,1.6,-36.8]} rotation={[0, 0, 0]}/>
+              <WindowFrameObject color="White" scale={[20,25,19]} position={[11.4,1.6,-38.8]} rotation={[0, 0, 0]}/>
+              <WindowFrameObject color="White" scale={[20,25,19]} position={[11.4,5.5,-34.8]} rotation={[0, 0, 0]}/>
+              <WindowFrameObject color="White" scale={[20,25,19]} position={[11.4,5.5,-36.8]} rotation={[0, 0, 0]}/>
+              <WindowFrameObject color="White" scale={[20,25,19]} position={[11.4,5.5,-38.8]} rotation={[0, 0, 0]}/>
+              
+              <WindowFrameObject color="Black" scale={[20,28,19]} position={[12.5,1.6,-39.75]} rotation={[0, Math.PI / 2, 0]}/>
+              <WindowFrameObject color="White" scale={[20,28,19]} position={[14.5,1.6,-39.75]} rotation={[0, Math.PI / 2, 0]}/>
+              <WindowFrameObject color="White" scale={[20,28,19]} position={[16.5,1.6,-39.75]} rotation={[0, Math.PI / 2, 0]}/>
+              <WindowFrameObject color="White" scale={[20,28,19]} position={[18.5,1.6,-39.75]} rotation={[0, Math.PI / 2, 0]}/>
+              <WindowFrameObject color="White" scale={[20,28,19]} position={[20.5,1.6,-39.75]} rotation={[0, Math.PI / 2, 0]}/>
+              <WindowFrameObject color="White" scale={[20,28,19]} position={[22.5,1.6,-39.75]} rotation={[0, Math.PI / 2, 0]}/>
+              <WindowFrameObject color="Black" scale={[20,28,21.5]} position={[24.72,1.6,-39.75]} rotation={[0, Math.PI / 2, 0]}/>
+              <WindowFrameObject color="Black" scale={[20,27.5,19]} position={[12.5,6,-39.75]} rotation={[0, Math.PI / 2, Math.PI / 5]}/>
+              <WindowFrameObject color="White" scale={[20,27.5,19]} position={[14.5,6,-39.75]} rotation={[0, Math.PI / 2, Math.PI / 5]}/>
+              <WindowFrameObject color="White" scale={[20,27.5,19]} position={[16.5,6,-39.75]} rotation={[0, Math.PI / 2, Math.PI / 5]}/>
+              <WindowFrameObject color="White" scale={[20,27.5,19]} position={[18.5,6,-39.75]} rotation={[0, Math.PI / 2, Math.PI / 5]}/>
+              <WindowFrameObject color="White" scale={[20,27.5,19]} position={[20.5,6,-39.75]} rotation={[0, Math.PI / 2, Math.PI / 5]}/>
+              <WindowFrameObject color="White" scale={[20,27.5,19]} position={[22.5,6,-39.75]} rotation={[0, Math.PI / 2, Math.PI / 5]}/>
+              <WindowFrameObject color="Black" scale={[20,27.5,21.5]} position={[24.72,6,-39.75]} rotation={[0, Math.PI / 2, Math.PI / 5]}/>
+
+              <WindowFrameObject color="White" scale={[20,25,19]} position={[26,1.6,-34.8]} rotation={[0, 0, 0]}/>
+              <WindowFrameObject color="White" scale={[20,25,19]} position={[26,1.6,-36.8]} rotation={[0, 0, 0]}/>
+              <WindowFrameObject color="White" scale={[20,25,19]} position={[26,1.6,-38.8]} rotation={[0, 0, 0]}/>
+              <WindowFrameObject color="White" scale={[20,25,19]} position={[26,5.5,-34.8]} rotation={[0, 0, 0]}/>
+              <WindowFrameObject color="White" scale={[20,25,19]} position={[26,5.5,-36.8]} rotation={[0, 0, 0]}/>
+              <WindowFrameObject color="White" scale={[20,25,19]} position={[26,5.5,-38.8]} rotation={[0, 0, 0]}/>
+
+              
+              <WindowFrameObject color="Black" scale={[20,25,19]} position={[4.5,5.5,-33.8]} rotation={[0, Math.PI / 2, 0]}/>
+              <WindowFrameObject color="Black" scale={[20,25,19]} position={[6.5,5.5,-33.8]} rotation={[0, Math.PI / 2, 0]}/>
+              <WindowFrameObject color="Black" scale={[20,25,19]} position={[8.5,5.5,-33.8]} rotation={[0, Math.PI / 2, 0]}/>
+              <WindowFrameObject color="Black" scale={[20,25,19]} position={[10.5,5.5,-33.8]} rotation={[0, Math.PI / 2, 0]}/>
+
+            </group>
+
+            <RigidBody type="fixed" position={[18.7,-1,-36.8]}>
+                  <mesh>
+                      <boxGeometry args={[15,0.1,6]}/>
+                      <meshStandardMaterial color="#E7E2BA"/>
+                  </mesh>
+            </RigidBody>
 
             <LobbyNPC path="lobby-npc" scale={1.15} position={[13,-1,16]} rotation={[0,Math.PI / -1.5,0]} npcId={1} npcName="Никита" playerPosition={playerPosition} onInteract={(id,name) => setActiveNPC({id,name})}/>
             {/* <CharacterController position={[0,0,0]} rotationY={0} onPositionChange={setPlayerPosition} /> */}
