@@ -12,6 +12,7 @@ export default function SceneLoader() {
     // Когда загрузка начинается впервые
     if (active && !hasShownRef.current) {
       hasShownRef.current = true;
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setIsVisible(true);
     }
 

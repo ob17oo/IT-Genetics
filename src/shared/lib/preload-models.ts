@@ -10,7 +10,6 @@ export const preloadCommonModels = () => {
   useGLTF.preload('/model/furniture/Office-Chair.glb')
   useGLTF.preload('/model/furniture/computer.glb')
   useGLTF.preload('/model/furniture/Office-Door.glb')
-  useGLTF.preload('/model/furniture/windowFrame.glb')
 }
 
 // ============ МОДЕЛИ ЛОББИ ============
@@ -72,6 +71,12 @@ export const ALL_OFFICE_MODELS = [
   '/model/furniture/MeetingChair.glb',
   '/model/furniture/MeetingSofa.glb',
   '/model/furniture/Office-Door.glb',
+  '/model/furniture/MainMeetingTable.glb',
+  '/model/furniture/MainMeetingChair.glb',
+  '/model/furniture/PingPongTable.glb',
+  '/model/furniture/WhiteBoard.glb',
+  '/model/furniture/Egg-Chair.glb',
+  '/model/furniture/Closet.glb',
 ]
 
 export const preloadOfficeModels = () => {

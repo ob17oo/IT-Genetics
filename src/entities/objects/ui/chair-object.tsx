@@ -12,4 +12,4 @@ export function ChairObject({position, scale = 0.1 , rotation}: ChairProps){
     )
 }
 
-useGLTF.preload('/model/furniture/officechair.glb')
+useGLTF.preload('/model/furniture/Office-Chair.glb')

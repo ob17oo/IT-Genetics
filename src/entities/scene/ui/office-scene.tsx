@@ -1,6 +1,6 @@
 "use client";
 import { Canvas } from "@react-three/fiber";
-import { preloadOfficeModels, ALL_OFFICE_MODELS } from "@/shared/lib/preload-models";
+import { preloadOfficeModels } from "@/shared/lib/preload-models";
 import GameHud from "@/widgets/game-hud/ui/game-hud";
 import { CharacterController } from "@/entities/characters/third-person-character/character-controller";
 import {
@@ -16,13 +16,14 @@ import { LobbyNPC } from "@/entities/characters/lobby-npc/lobby-npc";
 import MissionHud from "@/widgets/game-hud/ui/mission-hud";
 import { TableObject } from "@/entities/objects/ui/table-object";
 import OfficeDoorObject from "@/entities/objects/ui/officeDoor-object";
-import { WindowFrameObject } from "@/entities/objects/ui/windowFrame-object";
 import CurveWallObject from "@/entities/objects/ui/curve-wall-object";
 import { Vector3 } from "three";
 import { useCachedModel } from "@/hooks/useCachedModel";
 import { InstancedWindow } from "@/entities/objects/ui/instanced-window";
 
 import { TABLE_POSITIONS,WALL_POSITION,WINDOW_POSITIONS } from "@/shared/config/office-scene-config"
+import OlegChulakovObject from "@/entities/objects/ui/OlegChulakov-object";
+import CurvedCurtainObject from "@/entities/objects/ui/curve-curtains-object";
 
 interface OfficeShelfProps{
   position?: [number,number,number],
@@ -152,58 +153,58 @@ export function OfficeScene() {
             <RigidBody type="fixed">
                 <mesh position={[3.65,4.2,11.65]}>
                     <boxGeometry args={[1.5,10.5,1.5]}/>
-                    <meshStandardMaterial color="#FFFFFFF"/>
+                    <meshStandardMaterial color="#FFFFFF"/>
                 </mesh>
             </RigidBody>
             <RigidBody type="fixed">
                 <mesh position={[-18,4.2,-6.5]}>
                     <boxGeometry args={[1.5,10.5,1.5]}/>
-                    <meshStandardMaterial color="#FFFFFFF"/>
+                    <meshStandardMaterial color="#FFFFFF"/>
                 </mesh>
             </RigidBody>
             <RigidBody type="fixed">
                 <mesh position={[-18,4.2,11.65]}>
                     <boxGeometry args={[1.5,10.5,1.5]}/>
-                    <meshStandardMaterial color="#FFFFFFF"/>
+                    <meshStandardMaterial color="#FFFFFF"/>
                 </mesh>
             </RigidBody>
             <RigidBody type="fixed">
                 <mesh position={[3.65,4.2,-6.5]}>
                     <boxGeometry args={[1.5,10.5,1.5]}/>
-                    <meshStandardMaterial color="#FFFFFFF"/>
+                    <meshStandardMaterial color="#FFFFFF"/>
                 </mesh>
             </RigidBody>
 
             <RigidBody type="fixed">
                 <mesh position={[3.65,4.2,-19]}>
                     <boxGeometry args={[1.5,10.5,1.5]}/>
-                    <meshStandardMaterial color="#FFFFFFF"/>
+                    <meshStandardMaterial color="#FFFFFF"/>
                 </mesh>
             </RigidBody>
             <RigidBody type="fixed">
                 <mesh position={[-18,4.2,-19]}>
                     <boxGeometry args={[1.5,10.5,1.5]}/>
-                    <meshStandardMaterial color="#FFFFFFF"/>
+                    <meshStandardMaterial color="#FFFFFF"/>
                 </mesh>
             </RigidBody>
 
             <RigidBody type="fixed">
                 <mesh position={[3.65,4.2,-30]}>
                     <boxGeometry args={[1.5,10.5,1.5]}/>
-                    <meshStandardMaterial color="#FFFFFFF"/>
+                    <meshStandardMaterial color="#FFFFFF"/>
                 </mesh>
             </RigidBody>
 
             <RigidBody type="fixed">
                 <mesh position={[3.65,4.2,-32]}>
                     <boxGeometry args={[1.5,10.5,1.5]}/>
-                    <meshStandardMaterial color="#FFFFFFF"/>
+                    <meshStandardMaterial color="#FFFFFF"/>
                 </mesh>
             </RigidBody>
             <RigidBody type="fixed">
                 <mesh position={[-18,4.2,-32]}>
                     <boxGeometry args={[1.5,10.5,1.5]}/>
-                    <meshStandardMaterial color="#FFFFFFF"/>
+                    <meshStandardMaterial color="#FFFFFF"/>
                 </mesh>
             </RigidBody>
 
@@ -212,7 +213,7 @@ export function OfficeScene() {
             <RigidBody type="fixed">
                 <mesh position={[17,4.2,2.02]}>
                     <boxGeometry args={[3,10.5,3]}/>
-                    <meshStandardMaterial color="#FFFFFFF"/>
+                    <meshStandardMaterial color="#FFFFFF"/>
                 </mesh>
             </RigidBody>
 
@@ -220,13 +221,13 @@ export function OfficeScene() {
             <RigidBody type="fixed">
                 <mesh position={[26,4.2,-19]}>
                     <boxGeometry args={[1.5,10.5,1.5]}/>
-                    <meshStandardMaterial color="#FFFFFFF"/>
+                    <meshStandardMaterial color="#FFFFFF"/>
                 </mesh>
             </RigidBody>
             <RigidBody type="fixed">
                 <mesh position={[26,4.2,-32]}>
                     <boxGeometry args={[1.5,10.5,1.5]}/>
-                    <meshStandardMaterial color="#FFFFFFF"/>
+                    <meshStandardMaterial color="#FFFFFF"/>
                 </mesh>
             </RigidBody>
             
@@ -348,6 +349,8 @@ export function OfficeScene() {
 
             {/* Задняя часть */}
 
+            <ItemRender itemName="WhiteBoard" position={[-5,-0.8,-35]} scale={1.2} rotation={[0,Math.PI / 2,0]}/>
+
             <RigidBody type="fixed" position={[-19.5,-1,-9.8]}>
                 <mesh>
                     <boxGeometry args={[4,0.1,20.4]}/>
@@ -364,7 +367,7 @@ export function OfficeScene() {
             </RigidBody>
             <RigidBody type="fixed" position={[-8,-1,-36.3]}>
                 <mesh>
-                    <boxGeometry args={[22,0.1,5]}/>
+                    <boxGeometry args={[22,0.1,5.2]}/>
                     <meshStandardMaterial color="#E7E2BA"/>
                 </mesh>
             </RigidBody>
@@ -394,6 +397,16 @@ export function OfficeScene() {
               color="#FFFFFF"
             />
 
+            <CurvedCurtainObject
+              radius={13}
+              height={10}
+              position={[-8.2,4.2,-24.9]}
+              rotation={[0,Math.PI / 1.4, 0]}
+              color="Yellow"
+              textureUrl="/textures/curtainsTexture.avif"
+              foldCount={6}
+            />
+
             
             <InstancedWindow instances={WINDOW_POSITIONS.map((window) => ({
               position: window.position,
@@ -401,6 +414,8 @@ export function OfficeScene() {
               scale: window.scale,
               color: window.color
             }))}/>
+
+            <ItemRender itemName="Closet" scale={[2,3,2]} position={[25,2,-35]} rotation={[0,Math.PI / 1,0]}/>
 
             <RigidBody type="fixed" position={[18.7,-1,-36.8]}>
                   <mesh>
@@ -431,8 +446,19 @@ export function OfficeScene() {
                 <boxGeometry args={[43,0.1,23.9]}/>
                 <meshStandardMaterial color="#E7E2BA"/>
             </mesh>
+
     
             <ItemRender itemName="OlegGlassWall" scale={[11.2,11,10]} rotation={[0,Math.PI / 1,0]} position={[28.8, -1, -16.3]}/>
+          
+            <ItemRender itemName="Office-Chair" scale={0.025} position={[27.5,-0.9,-25.7]} rotation={[0,Math.PI / 2,0]}/>
+            <ItemRender itemName="Office-Gray-Chair" scale={2} position={[29.5,-0.9,-29.5]} rotation={[0,0,0]}/>
+            <ItemRender itemName="Office-Gray-Chair" scale={2} position={[32,-0.9,-25.7]} rotation={[0,Math.PI / -2,0]}/>
+            <ItemRender itemName="Office-Gray-Chair" scale={2} position={[29.5,-0.9,-22.5]} rotation={[0,Math.PI / -1,0]}/>
+            <ItemRender itemName="Egg-Chair" scale={2.5} position={[35,-1.5,-18]} rotation={[0,Math.PI  / -1.5,0]}/>
+
+            <ItemRender itemName="OlegTable" scale={4} position={[29,-0.9,-15]} rotation={[0,Math.PI / 2,0]}/>
+
+            <OlegChulakovObject />
 
             <mesh position={[36.3, 4.2,-26.5]} rotation={[Math.PI / 1,0, Math.PI / 2]}>
                 <boxGeometry args={[10.5, 0.1,12]}/>
@@ -444,7 +470,28 @@ export function OfficeScene() {
 
             <ItemRender itemName="OrangeGlassWall" scale={[11,11,11]} rotation={[0,Math.PI / 1,0]} position={[38.4,-1,-16.3]}/>
             
-            <ItemRender itemName="MainMeetingRoom" scale={[3,4,4]} rotation={[0,0,0]} position={[44.8,-1,-26]}/>
+
+
+            <ItemRender itemName="MainMeetingTable" scale={[3,4,4]} rotation={[0,0,0]} position={[44.8,-1,-26]}/>
+
+            <ItemRender itemName="Office-Gray-Chair" scale={2} rotation={[0,Math.PI / 1,0]} position={[54,-0.9,-24]}/>
+            <ItemRender itemName="Office-Gray-Chair" scale={2} rotation={[0,Math.PI / 1,0]} position={[52,-0.9,-24]}/>
+            <ItemRender itemName="Office-Gray-Chair" scale={2} rotation={[0,Math.PI / 1,0]} position={[49.2,-0.9,-24]}/>
+            <ItemRender itemName="Office-Gray-Chair" scale={2} rotation={[0,Math.PI / 1,0]} position={[46.5,-0.9,-24]}/>
+            <ItemRender itemName="Office-Gray-Chair" scale={2} rotation={[0,Math.PI / 1,0]} position={[44.5,-0.9,-24]}/>
+
+            <ItemRender itemName="Office-Gray-Chair" scale={2} rotation={[0,Math.PI / 2,0]} position={[42.4,-0.9,-25]}/>
+            <ItemRender itemName="Office-Gray-Chair" scale={2} rotation={[0,Math.PI / 2,0]} position={[42.4,-0.9,-27]}/>
+            <ItemRender itemName="Office-Gray-Chair" scale={2} rotation={[0,Math.PI / 2,0]} position={[42.4,-0.9,-29]}/>
+            <ItemRender itemName="Office-Gray-Chair" scale={2} rotation={[0,Math.PI / 2,0]} position={[42.4,-0.9,-31]}/>
+          
+            <ItemRender itemName="Office-Gray-Chair" scale={2} rotation={[0,0,0]} position={[54,-0.9,-32]}/>
+            <ItemRender itemName="Office-Gray-Chair" scale={2} rotation={[0,0,0]} position={[52,-0.9,-32]}/>
+            <ItemRender itemName="Office-Gray-Chair" scale={2} rotation={[0,0,0]} position={[49.2,-0.9,-32]}/>
+            <ItemRender itemName="Office-Gray-Chair" scale={2} rotation={[0,0,0]} position={[46.5,-0.9,-32]}/>
+            <ItemRender itemName="Office-Gray-Chair" scale={2} rotation={[0,0,0]} position={[44.5,-0.9,-32]}/>
+
+            <ItemRender itemName="wallTV" scale={[4.5,4.5,4.5]} rotation={[0,Math.PI / -2,0]} position={[55,7,-39.4]}/>
 
             {/* Игровая */}
 
