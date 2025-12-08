@@ -1,6 +1,6 @@
 "use client";
 import { Canvas } from "@react-three/fiber";
-import { preloadOfficeModels } from "@/shared/lib/preload-models";
+import { preloadOfficeModels, ALL_OFFICE_MODELS } from "@/shared/lib/preload-models";
 import GameHud from "@/widgets/game-hud/ui/game-hud";
 import { CharacterController } from "@/entities/characters/third-person-character/character-controller";
 import {
@@ -11,7 +11,7 @@ import {
 import { Suspense, useState, useEffect, useMemo } from "react";
 import SceneLoader from "@/shared/ui/Loader/scene-loader";
 import WallObject from "@/entities/objects/ui/wall-object";
-import { Clone, OrbitControls, RoundedBox, useGLTF } from "@react-three/drei";
+import { Clone, OrbitControls, RoundedBox, Stats } from "@react-three/drei";
 import { LobbyNPC } from "@/entities/characters/lobby-npc/lobby-npc";
 import MissionHud from "@/widgets/game-hud/ui/mission-hud";
 import { TableObject } from "@/entities/objects/ui/table-object";
@@ -19,346 +19,10 @@ import OfficeDoorObject from "@/entities/objects/ui/officeDoor-object";
 import { WindowFrameObject } from "@/entities/objects/ui/windowFrame-object";
 import CurveWallObject from "@/entities/objects/ui/curve-wall-object";
 import { Vector3 } from "three";
+import { useCachedModel } from "@/hooks/useCachedModel";
+import { InstancedWindow } from "@/entities/objects/ui/instanced-window";
 
-
-
-interface MapItemProps {
-  position: [number, number, number];
-  size?: [number, number, number];
-  collider?: [number, number, number];
-  color?: string,
-  rotation?: [number,number,number]
-  scale?: number | [number,number,number]
-}
-
-const TABLE_POSITIONS: MapItemProps[] = [
-  {
-    position: [-11, -1, 13] as [number, number, number],
-    scale: 4 as number,
-    rotation: [0, 0, 0] as [number, number, number],
-  },
-  {
-    position: [-11, -1, 2.5] as [number, number, number],
-    scale: 4 as number,
-    rotation: [0, 0, 0] as [number, number, number],
-  },
-  {
-    position: [-11, -1, -7.5] as [number, number, number],
-    scale: 4 as number,
-    rotation: [0, 0, 0] as [number, number, number],
-  },
-  {
-    position: [-11, -1, -19] as [number, number, number],
-    scale: 4 as number,
-    rotation: [0, 0, 0] as [number, number, number],
-  },
-  {
-    position: [6.8, -1, -19] as [number, number, number],
-    scale: 4 as number,
-    rotation: [0, 0, 0] as [number, number, number],
-  },
-  {
-    position: [-11, -1, -29] as [number, number, number],
-    scale: 4 as number,
-    rotation: [0, 0, 0] as [number, number, number],
-  },
-  {
-    position: [6.8, -1, -29] as [number, number, number],
-    scale: 4 as number,
-    rotation: [0, 0, 0] as [number, number, number],
-  },
-];
-
-const WALL_POSITION: MapItemProps[] = [
-  { position: [-4.35, 4.2, 20], size: [21.5, 0.3, 10.5], collider: [12.5, 4, 0.15], color: '#FFFFFF'},
-  {position: [11.88, 4.2, 20], size: [10.95,0.3,10.5], collider: [0,0,0], color: '#000000'},
-  {position: [-17.4, 4.2 ,19.7], size: [0.5, 0.3, 10.5], collider: [0,0,0], color: '#FFFFFF', rotation: [0,Math.PI / 2,0]},
-  {position: [17.5, 4.2 ,19.4], size: [1.4, 0.3, 10.5], collider: [0,0,0], color: '#FFFFFF', rotation: [0,Math.PI / 2,0]},
-  {position: [-17.4, 7.45 , 7], size: [4.05, 0.3, 26], collider: [0,0,0], color: '#FFFFFF', rotation: [Math.PI / 2,Math.PI / 2,0]},
-  {position: [17.5, 7.4 , 9.8], size: [4.1, 0.3, 18.52], collider: [0,0,0], color: '#FFFFFF', rotation: [Math.PI / 2,Math.PI / 2,0]},
-  {position: [-20.15, 4.2, 20], size: [10.3, 0.3, 10.5], color: '#FFFFFF', rotation: [0, 0, 0] },
-
-  {position: [19.4, 4.2, 20], size: [4, 0.3, 10.5], color: '#EFB100', rotation: [0, 0, 0] },
-  {position: [24.5, 4.2, 20.9], size: [6, 0.3, 10.5], color: '#EFB100', rotation: [0, 0, 0] },
-  {position: [21.5, 4.2, 20.45], size: [1.2, 0.3, 10.5], color: '#EFB100', rotation: [0, Math.PI / 2, 0] },
-  {position: [27.5, 4.2, 20.45], size: [1.2, 0.3, 10.5], color: '#EFB100', rotation: [0, Math.PI / 2, 0] },
-  {position: [28.4, 4.2, 20], size: [1.5, 0.3, 10.5], color: '#EFB100', rotation: [0,0, 0] },
-  {position: [29, 4.2, 20.45], size: [1.2, 0.3, 10.5], color: '#EFB100', rotation: [0, Math.PI / 2, 0] },
-  {position: [30.5, 4.2, 20.9], size: [3, 0.3, 10.5], color: '#EFB100', rotation: [0,0, 0] },
-  
-  {position: [31.75 , 4.2, 19.7], size: [2.2, 0.5, 10.5], color: '#EFB100', rotation: [0, Math.PI / 2, 0] },
-  {position: [31.75, 4.2, 11.2], size: [2, 0.5, 10.5], color: '#EFB100', rotation: [0, Math.PI / 2, 0] },
-  {position: [31.75, 0.3, 15.4], size: [2.5, 0.5, 6.5], color: '#EFB100', rotation: [Math.PI / 2, Math.PI / 2, 0] },
-  {position: [31.75,7.85,15.4], size: [3.2,0.5,6.5], color: '#EFB100', rotation: [Math.PI / 2,Math.PI /2, 0]},
-  
-  {position: [30.3, 4.2, 10.1], size: [3.4, 0.3, 10.5], color: '#EFB100', rotation: [0, 0, 0] },
-  
-  {position: [28.5, 4.2, 2], size: [16.5, 0.3, 10.5], color: '#EFB100', rotation: [0, Math.PI / 2, 0] },
-  
-  {position: [23.05, 4.2, -6.3], size: [11.2, 0.3, 10.5], color: '#EFB100', rotation: [0, 0, 0] },
-  {position: [23, 4.2, -6.6], size: [11.3,0.3,10.5], color: '#FFFFFF', rotation:[0,0,0]},
-  {position: [17.58, 4.2, -2.95], size: [7, 0.15, 10.5], color: '#EFB100', rotation: [0, Math.PI / 2, 0] },
-  {position: [17.428, 4.2, -2.95], size: [7, 0.15, 10.5], color: '#FFFFFF', rotation: [0, Math.PI / 2, 0] },
-  
-  
-  // Переговорные
-
-  // Стенки между переговорными
-  {position: [-22, 4.2, -6.95], size: [6.5, 0.2, 10.5], collider: [0,0,0], color: '#72de8b', rotation: [0,0,0]},
-  {position: [-21.25, 4.2, -7.15], size: [8, 0.2, 10.5], collider: [0,0,0], color: '#FFFFFF', rotation: [0,0,0]},
-
-  {position: [-22, 4.2 ,11.69], size: [6.5, 0.175, 10.5], collider: [0,0,0], color: '#FFFFFF', rotation: [0,0,0]},
-  {position: [-22, 4.2 ,11.5], size: [6.5, 0.175, 10.5], collider: [0,0,0], color: '#193CB8', rotation: [0,0,0]},
-
-  {position: [-21.35, 4.2 ,2.68], size: [7.8, 0.2, 10.5], collider: [0,0,0], color: '#193CB8', rotation: [0,0,0]},
-  {position: [-21.35, 4.2,2.49], size: [7.8, 0.2, 10.5], collider: [0,0,0], color: '#72de8b', rotation: [0,0,0]},
-  {position: [-17.4, 4.2 ,2.59], size: [0.4, 0.2, 10.5], collider: [0,0,0], color: '#FFFFFF', rotation: [0,Math.PI / 2,0]},
-  
-  //Стенки с окнами
-  {position: [-25.1, 0.3, 15.8], size: [8.7, 0.3, 2.5], color: '#FFFFFF', rotation: [0, Math.PI / 2, 0] },
-  {position: [-25.1, 0.3, 7], size: [9, 0.3, 2.5], color: '#193cb8', rotation: [0, Math.PI / 2, 0] },
-  {position: [-25.1, 0.3, -2.26], size: [10, 0.3, 2.5], color: '#72de8b', rotation: [0, Math.PI / 2, 0] },
-
-  //Задняяя часть
-
-  {position: [-19, 0.3, -11.7], size: [9,0.3, 2.5], color: '#FFFFFF', rotation: [0,Math.PI / 2, 0]},
-  {position: [-19, 5.5, -15.77], size: [0.85, 0.3, 7.9], color: '#FFFFFF', rotation: [0, Math.PI / 2, 0]},
-  {position: [3, 5.5, -33.8], size: [0.85, 0.3, 7.9], color: '#FFFFFF', rotation: [0, 0, 0]},
-
-  {position: [7, 0.3, -33.8], size: [9,0.3, 2.5], color: '#FFFFFF', rotation: [0,0, 0]},
-  
-  {position: [11.4, 0.3, -36.65], size: [6,0.3, 2.5], color: '#FFFFFF', rotation: [0,Math.PI / 2, 0]},
-  {position: [18.7, 0.3, -39.75], size: [14.9,0.3, 2.5], color: '#FFFFFF', rotation: [0,0, 0]},
-  {position: [26, 4.2, -36.65], size: [6,0.3, 10.5], color: '#FFFFFF', rotation: [0,Math.PI / 2, 0]},
-
-
-
-  {position: [26, 4.2, -25.05], size: [17.8,0.3, 10.5], color: '#FFFFFF', rotation: [0,Math.PI / 2, 0]},
-
-  // Кабинет Олега
-
-  {position: [40.5, 0.3, -39.8], size: [30,0.3, 2.5], color: '#FFFFFF', rotation: [0, 0, 0]},
-  {position: [36.3, 4.2, -18.3], size: [4.5,0.3, 10.5], color: '#FFFFFF', rotation: [0, Math.PI / 2, 0]},
-  {position: [36.3, 4.2, -36.15], size: [7.5,0.3, 10.5], color: '#FFFFFF', rotation: [0, Math.PI / 2, 0]},
-
-  {position: [55.5, 4.2, -28], size: [24,0.3, 10.5], color: '#FFFFFF', rotation: [0, Math.PI / 2, 0]},
-]
-
-const WINDOW_POSITIONS: MapItemProps[] = [
-  {
-    position: [-19.8, 1.6, -17],
-    rotation: [0, 0.6, 0],
-    scale: [20, 25, 19]
-  },
-  {
-    position: [-20.84, 1.6, -18.8],
-    rotation: [0, 0.45, 0],
-    scale: [20, 25, 19]
-  },
-  {
-    position: [-21.61, 1.6, -20.75],
-    rotation: [0, 0.30, 0],
-    scale: [20, 25, 19]
-  },
-  {
-    position: [-22.07, 1.6, -22.79],
-    rotation: [0, 0.15, 0],
-    scale: [20, 25, 19]
-  },
-  {
-    position: [-22.23, 1.6, -24.87],
-    rotation: [0, 0, 0],
-    scale: [20, 25, 19]
-  },
-  {
-    position: [-22.08, 1.6, -26.95],
-    rotation: [0, -0.15, 0],
-    scale: [20, 25, 19]
-  },
-  {
-    position: [-21.62, 1.6, -28.99],
-    rotation: [0, -0.3, 0],
-    scale: [20, 25, 19]
-  },
-  {
-    position: [-20.85, 1.6, -30.94],
-    rotation: [0, -0.45, 0],
-    scale: [20, 25, 19]
-  },
-  {
-    position: [-19.8, 1.6, -32.75],
-    rotation: [0, -0.6, 0],
-    scale: [20, 25, 19]
-  },
-  {
-    position: [-18.5, 1.6, -34.38],
-    rotation: [0, -0.75, 0],
-    scale: [20, 25, 19]
-  },
-  {
-    position: [-16.98, 1.6, -35.79],
-    rotation: [0, -0.9, 0],
-    scale: [20, 25, 19]
-  },
-  {
-    position: [-15.26, 1.6, -36.97],
-    rotation: [0, -1.05, 0],
-    scale: [20, 25, 19]
-  },
-  {
-    position: [-13.37, 1.6, -37.87],
-    rotation: [0, -1.2, 0],
-    scale: [20, 25, 19]
-  },
-  {
-    position: [-11.37, 1.6, -38.48],
-    rotation: [0, -1.35, 0],
-    scale: [20, 25, 19]
-  },
-  {
-    position: [-9.31, 1.6, -38.79],
-    rotation: [0, -1.5, 0],
-    scale: [20, 25, 19]
-  },
-  {
-    position: [-7.23, 1.6, -38.8],
-    rotation: [0, -1.65, 0],
-    scale: [20, 25, 19]
-  },
-  {
-    position: [-5.17, 1.6, -38.48],
-    rotation: [0, -1.8, 0],
-    scale: [20, 25, 19]
-  },
-  {
-    position: [-3.17, 1.6, -37.85],
-    rotation: [0, -1.95, 0],
-    scale: [20, 25, 19]
-  },
-  {
-    position: [-1.29, 1.6, -36.93],
-    rotation: [0, -2.1, 0],
-    scale: [20, 25, 19]
-  },
-  {
-    position: [0.44, 1.6, -35.75],
-    rotation: [0, -2.25, 0],
-    scale: [20, 25, 19]
-  },
-  {
-    position: [1.9, 1.6, -34.4],
-    rotation: [0, -2.4, 0],
-    scale: [20, 25, 18.5]
-  },
-  
-  //Верхняя часть
-
-  {
-    position: [-19.8, 5.5, -17],
-    rotation: [0, 0.6, 0],
-    scale: [20, 25, 19]
-  },
-  {
-    position: [-20.84, 5.5, -18.8],
-    rotation: [0, 0.45, 0],
-    scale: [20, 25, 19]
-  },
-  {
-    position: [-21.61, 5.5, -20.75],
-    rotation: [0, 0.30, 0],
-    scale: [20, 25, 19]
-  },
-  {
-    position: [-22.07, 5.5, -22.79],
-    rotation: [0, 0.15, 0],
-    scale: [20, 25, 19]
-  },
-  {
-    position: [-22.23, 5.5, -24.87],
-    rotation: [0, 0, 0],
-    scale: [20, 25, 19]
-  },
-  {
-    position: [-22.08, 5.5, -26.95],
-    rotation: [0, -0.15, 0],
-    scale: [20, 25, 19]
-  },
-  {
-    position: [-21.62, 5.5, -28.99],
-    rotation: [0, -0.3, 0],
-    scale: [20, 25, 19]
-  },
-  {
-    position: [-20.85, 5.5, -30.94],
-    rotation: [0, -0.45, 0],
-    scale: [20, 25, 19]
-  },
-  {
-    position: [-19.8, 5.5, -32.75],
-    rotation: [0, -0.6, 0],
-    scale: [20, 25, 19]
-  },
-  {
-    position: [-18.5, 5.5, -34.38],
-    rotation: [0, -0.75, 0],
-    scale: [20, 25, 19]
-  },
-  {
-    position: [-16.98, 5.5, -35.79],
-    rotation: [0, -0.9, 0],
-    scale: [20, 25, 19]
-  },
-  {
-    position: [-15.26, 5.5, -36.97],
-    rotation: [0, -1.05, 0],
-    scale: [20, 25, 19]
-  },
-  {
-    position: [-13.37, 5.5, -37.87],
-    rotation: [0, -1.2, 0],
-    scale: [20, 25, 19]
-  },
-  {
-    position: [-11.37, 5.5, -38.48],
-    rotation: [0, -1.35, 0],
-    scale: [20, 25, 19]
-  },
-  {
-    position: [-9.31, 5.5, -38.79],
-    rotation: [0, -1.5, 0],
-    scale: [20, 25, 19]
-  },
-  {
-    position: [-7.23, 5.5, -38.8],
-    rotation: [0, -1.65, 0],
-    scale: [20, 25, 19]
-  },
-  {
-    position: [-5.17, 5.5, -38.48],
-    rotation: [0, -1.8, 0],
-    scale: [20, 25, 19]
-  },
-  {
-    position: [-3.17, 5.5, -37.85],
-    rotation: [0, -1.95, 0],
-    scale: [20, 25, 19]
-  },
-  {
-    position: [-1.29, 5.5, -36.93],
-    rotation: [0, -2.1, 0],
-    scale: [20, 25, 19]
-  },
-  {
-    position: [0.44, 5.5, -35.75],
-    rotation: [0, -2.25, 0],
-    scale: [20, 25, 19]
-  },
-  {
-    position: [1.9, 5.5, -34.4],
-    rotation: [0, -2.4, 0],
-    scale: [20, 25, 18.5]
-  }
-];
+import { TABLE_POSITIONS,WALL_POSITION,WINDOW_POSITIONS } from "@/shared/config/office-scene-config"
 
 interface OfficeShelfProps{
   position?: [number,number,number],
@@ -368,7 +32,7 @@ interface OfficeShelfProps{
 }
 
 const ItemRender = ({position, scale = 0.1, rotation, itemName}:OfficeShelfProps) => {
-  const { scene } = useGLTF(`/model/furniture/${itemName}.glb`) 
+  const scene = useCachedModel(`/model/furniture/${itemName}.glb`) 
   return (
     <group position={position}>
       <Clone object={scene} scale={scale} rotation={rotation} />
@@ -384,58 +48,70 @@ export function OfficeScene() {
     preloadOfficeModels()
   }, [])
   
-  const tables = useMemo(
-    () =>
-      TABLE_POSITIONS.map((table, i) => (
-        <RigidBody key={i} type="fixed">
-          <TableObject
-            scale={table.scale}
-            rotation={table.rotation}
-            position={table.position}
-          />
+   const walls = useMemo(() => (
+        <RigidBody type="fixed">
+            {WALL_POSITION.map((wall,i) => (
+              <group key={i}>
+                <WallObject 
+                    rotation={wall.rotation}
+                    color={wall.color || '#FFFFFF'}
+                    widthSize={wall.size?.[0] || 1}
+                    heightSize={wall.size?.[2] || 1}
+                    depthSize={wall.size?.[1] || 1}
+                    position={wall.position}
+                    receiveShadow={true}
+                />
+              </group>
+            ))}
         </RigidBody>
-      )),
-    []
-  );
+      ),[]
+   );
 
-  const walls = useMemo(() => 
-      WALL_POSITION.map((wall, i) => (
-            <RigidBody type="fixed" key={i}>
-                    <WallObject 
-                      rotation={wall.rotation}
-                      color={wall.color || '#FFFFFF'}
-                      widthSize={wall.size?.[0] || 1}
-                      heightSize={wall.size?.[2] || 1}
-                      depthSize={wall.size?.[1] || 1}
-                      position={wall.position}
-                      receiveShadow={true}
-                    />
-          </RigidBody>
-      )),
-    []
-  )
+  const tables = useMemo(() => (
+    <RigidBody type="fixed">
+        {TABLE_POSITIONS.map((table,i) => (
+          <group key={i}>
+              <TableObject 
+                position={table.position}
+                rotation={table.rotation}
+                scale={table.scale}
+              />
+              <CuboidCollider 
+                args={[2,0.1,1]}
+                position={table.position}
+              />
+          </group>
+        ))}
+    </RigidBody>
+  ),[])
 
-
-  const windowCircle = useMemo(
-    () =>
-      WINDOW_POSITIONS.map((window, i) => (
-        <RigidBody key={i} type="fixed">
-          <WindowFrameObject
-            rotation={window.rotation}
-            scale={window.scale}
-            position={window.position}
-          />
-        </RigidBody>
-      )),
-    []
-  );
 
   return (
     <section className="w-full h-screen relative">
       <SceneLoader />
-      <Canvas shadows camera={{ position: [0, 1.7, 10], fov: 75 }}>
+      <Canvas shadows camera={{ position: [0, 1.7, 10], fov: 75 }}
+        gl={{
+          antialias: false,
+          powerPreference: 'high-performance',
+          stencil: false,
+          depth: true,
+          alpha: false
+        }}
+        dpr={[1,1.5]}
+        performance={{
+          min: 0.5,
+          max: 1,
+          debounce: 200
+        }}
+        frameloop="demand"
+      >
+        <Stats />
         <Suspense fallback={null}>
-          <Physics gravity={[0, -20, 0]}>
+          <Physics 
+          gravity={[0, -20, 0]}
+          timeStep={1/60}
+          maxCcdSubsteps={1}
+          >
             <color attach="background" args={["#1E1E1E"]} />
 
             <ambientLight intensity={0.8} />
@@ -443,8 +119,13 @@ export function OfficeScene() {
             <directionalLight
               position={[5, 7, 0]}
               intensity={1.5}
-              shadow-mapSize={[512,512]}
+              shadow-mapSize={[2048,2048]}
               shadow-camera-far={50}
+              shadow-camera-left={-30}
+              shadow-camera-right={30}
+              shadow-camera-top={30}
+              shadow-camera-bottom={-30}
+              shadow-bias={-0.0001}
               castShadow
             />
 
@@ -548,7 +229,6 @@ export function OfficeScene() {
                     <meshStandardMaterial color="#FFFFFFF"/>
                 </mesh>
             </RigidBody>
-
             
             <RigidBody type="fixed">
                 <ItemRender itemName="Office-Shelf" scale={3.5} position={[3,-1,9.7]} rotation={[0,Math.PI / 2,0]}/>
@@ -608,34 +288,6 @@ export function OfficeScene() {
 
               <ItemRender itemName="MeetingSofa" scale={[5,5,7.4]} rotation={[0,Math.PI / 2,0]} position={[-17.5, -1, 2.3]}/>
 
-            <group>
-                <WindowFrameObject color="Black" scale={[20,28,19]} position={[-25.1,1.6,18.8]}/>
-                <WindowFrameObject scale={[20,28,19]} position={[-25.1,1.6,16.8]}/>
-                <WindowFrameObject scale={[20,28,19]} position={[-25.1,1.6,14.8]}/>
-                <WindowFrameObject scale={[20,28,19]} position={[-25.1,1.6,12.8]}/>
-                <WindowFrameObject color="Black" scale={[20,27.5,19]} position={[-25.05,6,18.8]} rotation={[0,0,Math.PI / -5]}/>
-                <WindowFrameObject scale={[20,27.5,19]} position={[-25.05,6,16.8]} rotation={[0,0,Math.PI / -5]}/>
-                <WindowFrameObject scale={[20,27.5,19]} position={[-25.05,6,14.8]} rotation={[0,0,Math.PI / -5]}/>
-                <WindowFrameObject scale={[20,27.5,19]} position={[-25.05,6,12.8]} rotation={[0,0,Math.PI / -5]}/>
-
-                <WindowFrameObject color="Black" scale={[20,28,20.5]} position={[-25.1,1.6,10.3]}/>
-                <WindowFrameObject scale={[20,28,20.5]} position={[-25.1,1.6,8.15]}/>
-                <WindowFrameObject scale={[20,28,20.5]} position={[-25.1,1.6,6]}/>
-                <WindowFrameObject scale={[20,28,20.5]} position={[-25.1,1.6,3.85]}/>
-                <WindowFrameObject color="Black" scale={[20,27.5,20.5]} position={[-25.05,6,10.3]} rotation={[0,0,Math.PI / -5]}/>
-                <WindowFrameObject scale={[20,27.5,20.6]} position={[-25.05,6,8.15]} rotation={[0,0,Math.PI / -5]}/>
-                <WindowFrameObject scale={[20,27.5,20.5]} position={[-25.05,6,6]} rotation={[0,0,Math.PI / -5]}/>
-                <WindowFrameObject scale={[20,27.5,20.5]} position={[-25.05,6,3.85]} rotation={[0,0,Math.PI / -5]}/>
-    
-                <WindowFrameObject color="Black" scale={[20,28,21.5]} position={[-25.1,1.6,1.2]}/>
-                <WindowFrameObject scale={[20,28,21.5]} position={[-25.1,1.6,-1.05]}/>
-                <WindowFrameObject scale={[20,28,21.5]} position={[-25.1,1.6,-3.3]}/>
-                <WindowFrameObject color="Black" scale={[20,28,21.5]} position={[-25.1,1.6, -5.55]}/>
-                <WindowFrameObject color="Black" scale={[20,27.5,21.5]} position={[-25.05,6,1.2]} rotation={[0,0,Math.PI / -5]}/>
-                <WindowFrameObject scale={[20,27.5,21.5]} position={[-25.05,6,-1.05]} rotation={[0,0,Math.PI / -5]}/>
-                <WindowFrameObject scale={[20,27.5,21.5]} position={[-25.05,6,-3.3]} rotation={[0,0,Math.PI / -5]}/>
-                <WindowFrameObject color="Black" scale={[20,27.5,21.5]} position={[-25.05,6,-5.55]} rotation={[0,0,Math.PI / -5]}/>
-            </group>
 
             {/* Кухня */}
 
@@ -742,54 +394,13 @@ export function OfficeScene() {
               color="#FFFFFF"
             />
 
-            <group>
-                <WindowFrameObject color="Black" scale={[20,25, 19]} position={[-19,1.6,-8.3]}/>
-                <WindowFrameObject color="Black" scale={[20,25, 19]} position={[-19,1.6,-10.3]}/>
-                <WindowFrameObject color="Black" scale={[20,25, 19]} position={[-19,1.6,-12.3]}/>
-                <WindowFrameObject color="Black" scale={[20,25, 19]} position={[-19,1.6,-14.3]}/>
-
-                <WindowFrameObject color="Black" scale={[20,25, 19]} position={[-19,5.5,-8.3]}/>
-                <WindowFrameObject color="Black" scale={[20,25, 19]} position={[-19,5.5,-10.3]}/>
-                <WindowFrameObject color="Black" scale={[20,25, 19]} position={[-19,5.5,-12.3]}/>
-                <WindowFrameObject color="Black" scale={[20,25, 19]} position={[-19,5.5,-14.3]}/>
-            </group>
             
-            {windowCircle}
-
-            <group>
-              <WindowFrameObject color="Black" scale={[20,25,19]} position={[4.5,1.6,-33.8]} rotation={[0, Math.PI / 2, 0]}/>
-              <WindowFrameObject color="Black" scale={[20,25,19]} position={[6.5,1.6,-33.8]} rotation={[0, Math.PI / 2, 0]}/>
-              <WindowFrameObject color="Black" scale={[20,25,19]} position={[8.5,1.6,-33.8]} rotation={[0, Math.PI / 2, 0]}/>
-              <WindowFrameObject color="Black" scale={[20,25,19]} position={[10.5,1.6,-33.8]} rotation={[0, Math.PI / 2, 0]}/>
-
-              <WindowFrameObject color="White" scale={[20,25,19]} position={[11.4,1.6,-34.8]} rotation={[0, 0, 0]}/>
-              <WindowFrameObject color="White" scale={[20,25,19]} position={[11.4,1.6,-36.8]} rotation={[0, 0, 0]}/>
-              <WindowFrameObject color="White" scale={[20,25,19]} position={[11.4,1.6,-38.8]} rotation={[0, 0, 0]}/>
-              <WindowFrameObject color="White" scale={[20,25,19]} position={[11.4,5.5,-34.8]} rotation={[0, 0, 0]}/>
-              <WindowFrameObject color="White" scale={[20,25,19]} position={[11.4,5.5,-36.8]} rotation={[0, 0, 0]}/>
-              <WindowFrameObject color="White" scale={[20,25,19]} position={[11.4,5.5,-38.8]} rotation={[0, 0, 0]}/>
-              
-              <WindowFrameObject color="Black" scale={[20,28,19]} position={[12.5,1.6,-39.75]} rotation={[0, Math.PI / 2, 0]}/>
-              <WindowFrameObject color="White" scale={[20,28,19]} position={[14.5,1.6,-39.75]} rotation={[0, Math.PI / 2, 0]}/>
-              <WindowFrameObject color="White" scale={[20,28,19]} position={[16.5,1.6,-39.75]} rotation={[0, Math.PI / 2, 0]}/>
-              <WindowFrameObject color="White" scale={[20,28,19]} position={[18.5,1.6,-39.75]} rotation={[0, Math.PI / 2, 0]}/>
-              <WindowFrameObject color="White" scale={[20,28,19]} position={[20.5,1.6,-39.75]} rotation={[0, Math.PI / 2, 0]}/>
-              <WindowFrameObject color="White" scale={[20,28,19]} position={[22.5,1.6,-39.75]} rotation={[0, Math.PI / 2, 0]}/>
-              <WindowFrameObject color="Black" scale={[20,28,21.5]} position={[24.72,1.6,-39.75]} rotation={[0, Math.PI / 2, 0]}/>
-              <WindowFrameObject color="Black" scale={[20,27.5,19]} position={[12.5,6,-39.75]} rotation={[0, Math.PI / 2, Math.PI / 5]}/>
-              <WindowFrameObject color="White" scale={[20,27.5,19]} position={[14.5,6,-39.75]} rotation={[0, Math.PI / 2, Math.PI / 5]}/>
-              <WindowFrameObject color="White" scale={[20,27.5,19]} position={[16.5,6,-39.75]} rotation={[0, Math.PI / 2, Math.PI / 5]}/>
-              <WindowFrameObject color="White" scale={[20,27.5,19]} position={[18.5,6,-39.75]} rotation={[0, Math.PI / 2, Math.PI / 5]}/>
-              <WindowFrameObject color="White" scale={[20,27.5,19]} position={[20.5,6,-39.75]} rotation={[0, Math.PI / 2, Math.PI / 5]}/>
-              <WindowFrameObject color="White" scale={[20,27.5,19]} position={[22.5,6,-39.75]} rotation={[0, Math.PI / 2, Math.PI / 5]}/>
-              <WindowFrameObject color="Black" scale={[20,27.5,21.5]} position={[24.72,6,-39.75]} rotation={[0, Math.PI / 2, Math.PI / 5]}/>
-
-              <WindowFrameObject color="Black" scale={[20,25,19]} position={[4.5,5.5,-33.8]} rotation={[0, Math.PI / 2, 0]}/>
-              <WindowFrameObject color="Black" scale={[20,25,19]} position={[6.5,5.5,-33.8]} rotation={[0, Math.PI / 2, 0]}/>
-              <WindowFrameObject color="Black" scale={[20,25,19]} position={[8.5,5.5,-33.8]} rotation={[0, Math.PI / 2, 0]}/>
-              <WindowFrameObject color="Black" scale={[20,25,19]} position={[10.5,5.5,-33.8]} rotation={[0, Math.PI / 2, 0]}/>
-
-            </group>
+            <InstancedWindow instances={WINDOW_POSITIONS.map((window) => ({
+              position: window.position,
+              rotation: window.rotation,
+              scale: window.scale,
+              color: window.color
+            }))}/>
 
             <RigidBody type="fixed" position={[18.7,-1,-36.8]}>
                   <mesh>
@@ -807,6 +418,13 @@ export function OfficeScene() {
                 </mesh>
             </RigidBody>
 
+            <RigidBody type="fixed" position={[42,-1, -4.7]}>
+                <mesh>
+                    <boxGeometry args={[27,0.1, 4.2]}/>
+                    <meshStandardMaterial color="#E7E2BA"/>
+                </mesh>
+            </RigidBody>
+
             {/* Кабинет Олега */}
 
             <mesh position={[46,-1,-28]}>
@@ -814,52 +432,25 @@ export function OfficeScene() {
                 <meshStandardMaterial color="#E7E2BA"/>
             </mesh>
     
-            <ItemRender itemName="OlegGlassWall" scale={[11.2,11,10]} rotation={[0,Math.PI / 1,0]} position={[36.4, -1, -16.3]}/>
+            <ItemRender itemName="OlegGlassWall" scale={[11.2,11,10]} rotation={[0,Math.PI / 1,0]} position={[28.8, -1, -16.3]}/>
 
             <mesh position={[36.3, 4.2,-26.5]} rotation={[Math.PI / 1,0, Math.PI / 2]}>
                 <boxGeometry args={[10.5, 0.1,12]}/>
                 <meshPhysicalMaterial color="#F0F0F0" transmission={0.7} roughness={0.05} side={2}/>
             </mesh>
 
-            <group>
-                <WindowFrameObject color="White" scale={[20,28,19]} rotation={[0,Math.PI /2,0]} position={[27.15,1.6,-39.7]}/>
-                <WindowFrameObject color="White" scale={[20,28,19]} rotation={[0,Math.PI /2,0]} position={[29.15,1.6,-39.7]}/>
-                <WindowFrameObject color="White" scale={[20,28,19]} rotation={[0,Math.PI /2,0]} position={[31.15,1.6,-39.7]}/>
-                <WindowFrameObject color="White" scale={[20,28,19]} rotation={[0,Math.PI /2,0]} position={[33.15,1.6,-39.7]}/>
-                <WindowFrameObject color="White" scale={[20,28,19]} rotation={[0,Math.PI /2,0]} position={[35.15,1.6,-39.7]}/>
-
-                <WindowFrameObject color="White" scale={[20,27.5,19]} rotation={[0,Math.PI /2,Math.PI / 5]} position={[27.15,6,-39.7]}/>
-                <WindowFrameObject color="White" scale={[20,27.5,19]} rotation={[0,Math.PI /2,Math.PI / 5]} position={[29.15,6,-39.7]}/>
-                <WindowFrameObject color="White" scale={[20,27.5,19]} rotation={[0,Math.PI /2,Math.PI / 5]} position={[31.15,6,-39.7]}/>
-                <WindowFrameObject color="White" scale={[20,27.5,19]} rotation={[0,Math.PI /2,Math.PI / 5]} position={[33.15,6,-39.7]}/>
-                <WindowFrameObject color="White" scale={[20,27.5,19]} rotation={[0,Math.PI /2,Math.PI / 5]} position={[35.15,6,-39.7]}/>
-
-                <WindowFrameObject color="White" scale={[20,28,19]} rotation={[0,Math.PI /2,0]} position={[37.5,1.6,-39.7]}/>
-                <WindowFrameObject color="White" scale={[20,28,19]} rotation={[0,Math.PI /2,0]} position={[39.5,1.6,-39.7]}/>
-                <WindowFrameObject color="White" scale={[20,28,19]} rotation={[0,Math.PI /2,0]} position={[41.5,1.6,-39.7]}/>
-                <WindowFrameObject color="White" scale={[20,28,19]} rotation={[0,Math.PI /2,0]} position={[43.5,1.6,-39.7]}/>
-                <WindowFrameObject color="White" scale={[20,28,19]} rotation={[0,Math.PI /2,0]} position={[45.5,1.6,-39.7]}/>
-                <WindowFrameObject color="White" scale={[20,28,19]} rotation={[0,Math.PI /2,0]} position={[47.5,1.6,-39.7]}/>
-                <WindowFrameObject color="White" scale={[20,28,19]} rotation={[0,Math.PI /2,0]} position={[49.5,1.6,-39.7]}/>
-                <WindowFrameObject color="White" scale={[20,28,19]} rotation={[0,Math.PI /2,0]} position={[51.5,1.6,-39.7]}/>
-                <WindowFrameObject color="White" scale={[20,28,19]} rotation={[0,Math.PI /2,0]} position={[53.5,1.6,-39.7]}/>
-                <WindowFrameObject color="White" scale={[20,28,9.8]} rotation={[0,Math.PI /2,0]} position={[55,1.6,-39.7]}/>
-
-                <WindowFrameObject color="White" scale={[20,27.5,19]} rotation={[0,Math.PI /2,Math.PI / 5]} position={[37.5,6,-39.7]}/>
-                <WindowFrameObject color="White" scale={[20,27.5,19]} rotation={[0,Math.PI /2,Math.PI / 5]} position={[39.5,6,-39.7]}/>
-                <WindowFrameObject color="White" scale={[20,27.5,19]} rotation={[0,Math.PI /2,Math.PI / 5]} position={[41.5,6,-39.7]}/>
-                <WindowFrameObject color="White" scale={[20,27.5,19]} rotation={[0,Math.PI /2,Math.PI / 5]} position={[43.5,6,-39.7]}/>
-                <WindowFrameObject color="White" scale={[20,27.5,19]} rotation={[0,Math.PI /2,Math.PI / 5]} position={[45.5,6,-39.7]}/>
-                <WindowFrameObject color="White" scale={[20,27.5,19]} rotation={[0,Math.PI /2,Math.PI / 5]} position={[47.5,6,-39.7]}/>
-                <WindowFrameObject color="White" scale={[20,27.5,19]} rotation={[0,Math.PI /2,Math.PI / 5]} position={[49.5,6,-39.7]}/>
-                <WindowFrameObject color="White" scale={[20,27.5,19]} rotation={[0,Math.PI /2,Math.PI / 5]} position={[51.5,6,-39.7]}/>
-                <WindowFrameObject color="White" scale={[20,27.5,19]} rotation={[0,Math.PI /2,Math.PI / 5]} position={[53.5,6,-39.7]}/>
-                <WindowFrameObject color="White" scale={[20,27.5,9.8]} rotation={[0,Math.PI /2,Math.PI / 5]} position={[55,6,-39.7]}/>
-            </group>
 
             {/*Большая переговорная*/}
 
             <ItemRender itemName="OrangeGlassWall" scale={[11,11,11]} rotation={[0,Math.PI / 1,0]} position={[38.4,-1,-16.3]}/>
+            
+            <ItemRender itemName="MainMeetingRoom" scale={[3,4,4]} rotation={[0,0,0]} position={[44.8,-1,-26]}/>
+
+            {/* Игровая */}
+
+            <ItemRender itemName="RageGlassWall" scale={[11,11,11]} rotation={[0, Math.PI / 2, 0]} position={[55.5, -1, -5.7]}/>
+
+            <ItemRender itemName="PingPongTable" scale={[3,2.5,3]} rotation={[0, Math.PI /2, 0]} position={[61.5,-1,-30]}/>
 
             <LobbyNPC path="lobby-npc" scale={1.15} position={[13,-1,16]} rotation={[0,Math.PI / -1.5,0]} npcId={1} npcName="Никита" playerPosition={playerPosition} onInteract={(id,name) => setActiveNPC({id,name})}/>
             {/* <CharacterController position={[0,0,0]} rotationY={0} onPositionChange={setPlayerPosition} /> */}
