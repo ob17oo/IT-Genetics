@@ -81,6 +81,11 @@ export const ALL_OFFICE_MODELS = [
   '/model/furniture/flower/flowerFicus.glb',
   '/model/furniture/flower/flowerRhyzome.glb',
   '/model/furniture/flower/flowerPalm.glb',
+  '/model/furniture/flower/flowerTall.glb',
+  '/model/furniture/armchair.glb',
+  '/model/furniture/bagchair.glb',
+  '/model/furniture/PoengChair.glb',
+  '/model/furniture/KitchenCabinets.glb',
 ]
 
 export const preloadOfficeModels = () => {

@@ -11,7 +11,7 @@ import {
 import { Suspense, useState, useEffect, useMemo } from "react";
 import SceneLoader from "@/shared/ui/Loader/scene-loader";
 import WallObject from "@/entities/objects/ui/wall-object";
-import { Clone, OrbitControls, RoundedBox, Stats } from "@react-three/drei";
+import { Clone, OrbitControls, RoundedBox, Stats, useTexture } from "@react-three/drei";
 import { LobbyNPC } from "@/entities/characters/lobby-npc/lobby-npc";
 import MissionHud from "@/widgets/game-hud/ui/mission-hud";
 import { TableObject } from "@/entities/objects/ui/table-object";
@@ -39,6 +39,28 @@ const ItemRender = ({position, scale = 0.1, rotation, itemName}:OfficeShelfProps
       <Clone object={scene} scale={scale} rotation={rotation} />
     </group>
   );
+}
+
+interface WallStickerProps {
+  position: [number,number,number],
+  args: [number,number],
+  stickerURL: string,
+  rotation: [number,number,number],
+  opacity: number
+}
+
+const WallSticker = ({position,rotation,stickerURL,args, opacity}: WallStickerProps) => {
+  const texture = useTexture(stickerURL)
+  return (
+    <mesh position={position} rotation={rotation}>
+        <planeGeometry args={args}/>
+        <meshStandardMaterial 
+          map={texture}
+          opacity={opacity}
+          transparent
+        />
+    </mesh>
+  )
 }
 
 export function OfficeScene() {
@@ -246,9 +268,15 @@ export function OfficeScene() {
             <RigidBody type="fixed">
                 <ItemRender itemName="ShockGlassWall" scale={[8.1,8,8]} position={[-17.5, -1, 2.75]} rotation={[0,Math.PI / -2, 0]}/>
             </RigidBody>
+            
+            <WallSticker position={[-17.2,5.4,7]} rotation={[0,Math.PI / 2,0]} args={[8,8]} stickerURL="/textures/flashTexture.png" opacity={1}/>
+
             <RigidBody type="fixed">
                 <ItemRender itemName="GlassWall" scale={[8.1,8,8]} position={[-17.5, -1, -5.75]} rotation={[0,Math.PI / -2, 0]}/>
             </RigidBody>
+
+            <WallSticker position={[-17.2,5.2,-2.5]} rotation={[Math.PI / -1.1,Math.PI / 2,0]} args={[8,8]} stickerURL="/textures/bubbleTexture.png" opacity={0.7}/>
+
             <RigidBody type="fixed">
                 <ItemRender itemName="DinnerGlassWall" scale={[6.57,6.4,8]} position={[17.6, -1, 16]} rotation={[0,Math.PI / 2, 0]}/>
             </RigidBody>
@@ -294,6 +322,8 @@ export function OfficeScene() {
             <ItemRender itemName="wallTV" scale={3.5} position={[17.1,8,-12]} rotation={[0,Math.PI / -2, 0]}/>
             <ItemRender itemName="FourFireCase" scale={[120,120,30]} position={[17.4,0,-3.5]} rotation={[0,Math.PI / -2, 0]}/>
             <ItemRender itemName="flower/flowerTall" scale={0.009} position={[16,-0.5,-0.3]} rotation={[0,0,0]}/>
+            <ItemRender itemName="flower/flowerPalm" scale={2} position={[16.4,-0.92,5]} rotation={[0,0,0]}/>
+            <ItemRender itemName="flower/flowerRhyzome" scale={1.5} position={[16,-0.9,7]} rotation={[0,0,0]}/>
 
 
             <ItemRender itemName="HangingLamp" scale={10} position={[22.7, 3, 17]} rotation={[0,Math.PI / -2, 0]}/>
@@ -346,7 +376,8 @@ export function OfficeScene() {
             </group>
 
 
-            <ItemRender itemName="Fridge" scale={[0.3,0.3,0.3]} rotation={[0,0,0]} position={[18.7,-1,-5]}/>
+            <ItemRender itemName="Fridge" scale={[0.4,0.3,0.4]} rotation={[0,0,0]} position={[19,-1,-5]}/>
+            <ItemRender itemName="KitchenCabinets" scale={[3.6,2.8,3]} rotation={[0,0,0]} position={[23.4,-1,-5]}/>
 
             {/* Задняя часть */}
 
@@ -388,6 +419,10 @@ export function OfficeScene() {
             </RigidBody>
 
             <ItemRender itemName="WaterCooler" scale={0.3} position={[-17.5,-1,-17]} rotation={[0,Math.PI / -2,0]}/>
+
+            <ItemRender itemName="armChair" scale={5} position={[-18,-1,-21]} rotation={[0,Math.PI / 1.5,0]}/>
+            <ItemRender itemName="poengChair" scale={0.05} position={[-20,-0.5,-27]} rotation={[0,Math.PI / 0.55,0]}/>
+            <ItemRender itemName="bagChair" scale={2.5} position={[-18,-1,-29.5]} rotation={[0,Math.PI / 2,0]}/>
 
              <CurveWallObject 
               radius={14}          // Глубина = 20 (узкий овал)
