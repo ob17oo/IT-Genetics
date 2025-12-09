@@ -77,6 +77,10 @@ export const ALL_OFFICE_MODELS = [
   '/model/furniture/WhiteBoard.glb',
   '/model/furniture/Egg-Chair.glb',
   '/model/furniture/Closet.glb',
+  '/model/furniture/WaterCooler.glb',
+  '/model/furniture/flower/flowerFicus.glb',
+  '/model/furniture/flower/flowerRhyzome.glb',
+  '/model/furniture/flower/flowerPalm.glb',
 ]
 
 export const preloadOfficeModels = () => {

@@ -291,9 +291,10 @@ export function OfficeScene() {
 
 
             {/* Кухня */}
+            <ItemRender itemName="wallTV" scale={3.5} position={[17.1,8,-12]} rotation={[0,Math.PI / -2, 0]}/>
+            <ItemRender itemName="FourFireCase" scale={[120,120,30]} position={[17.4,0,-3.5]} rotation={[0,Math.PI / -2, 0]}/>
+            <ItemRender itemName="flower/flowerTall" scale={0.009} position={[16,-0.5,-0.3]} rotation={[0,0,0]}/>
 
-            <ItemRender itemName="wallTV" scale={3.5} position={[17.1,8,-12.3]} rotation={[0,Math.PI / -2, 0]}/>
-            <ItemRender itemName="FourFirecase" scale={[120,120,30]} position={[17.4,0,-3.5]} rotation={[0,Math.PI / -2, 0]}/>
 
             <ItemRender itemName="HangingLamp" scale={10} position={[22.7, 3, 17]} rotation={[0,Math.PI / -2, 0]}/>
             <ItemRender itemName="HangingLamp" scale={10} position={[23.8, 3, 17]} rotation={[0,Math.PI / -2, 0]}/>
@@ -386,6 +387,8 @@ export function OfficeScene() {
                 </mesh>
             </RigidBody>
 
+            <ItemRender itemName="WaterCooler" scale={0.3} position={[-17.5,-1,-17]} rotation={[0,Math.PI / -2,0]}/>
+
              <CurveWallObject 
               radius={14}          // Глубина = 20 (узкий овал)
               depth={0}
@@ -400,10 +403,10 @@ export function OfficeScene() {
             <CurvedCurtainObject
               radius={13}
               height={10}
-              position={[-8.2,4.2,-24.9]}
+              position={[-8.2,4.3,-24.9]}
               rotation={[0,Math.PI / 1.4, 0]}
-              color="Yellow"
-              textureUrl="/textures/curtainsTexture.avif"
+              color="#FCD12A"
+              segments={64}
               foldCount={6}
             />
 

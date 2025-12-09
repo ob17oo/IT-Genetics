@@ -1,12 +1,7 @@
 "use client";
 import { RigidBody } from "@react-three/rapier";
 import { useMemo } from "react";
-import {
-  CylinderGeometry,
-  DoubleSide,
-  RepeatWrapping
-} from "three";
-import { useTexture } from "@react-three/drei";
+import { CylinderGeometry, DoubleSide } from "three";
 
 interface CurvedCurtainProps {
   radius?: number;
@@ -17,7 +12,6 @@ interface CurvedCurtainProps {
   position: [number, number, number];
   rotation?: [number, number, number];
   color?: string;
-  textureUrl?: string;
   segments?: number;
   foldCount?: number;
   material?: "cloth" | "velvet" | "silk";
@@ -35,7 +29,6 @@ export default function CurvedCurtainObject({
   position,
   rotation,
   color = "#FFFFFF",
-  textureUrl = "/textures/fabric/fabric_01.jpg",
   segments = 64,
   foldCount = 8,
   material = "cloth",
@@ -43,14 +36,7 @@ export default function CurvedCurtainObject({
   showRod = false,
   showHem = false,
 }: CurvedCurtainProps) {
-  // Загружаем и настраиваем текстуру
-  const texture = useTexture(textureUrl, (loadedTexture) => {
-    loadedTexture.wrapS = RepeatWrapping;
-    loadedTexture.wrapT = RepeatWrapping;
-    loadedTexture.repeat.set(foldCount * 2, height / 2);
-  });
-
-  // Геометрия шторы - ПРАВИЛЬНЫЙ конструктор CylinderGeometry
+  // Геометрия шторы
   const curtainGeometry = useMemo(() => {
     // CylinderGeometry(radiusTop, radiusBottom, height, radialSegments, heightSegments, openEnded, thetaStart, thetaLength)
     return new CylinderGeometry(
@@ -98,45 +84,44 @@ export default function CurvedCurtainObject({
     return geometry;
   }, [curtainGeometry, radius, height, foldCount]);
 
-  // Материал для шторы (полностью непрозрачный)
+  // Материал для шторы (полностью непрозрачный, без текстуры)
   const curtainMaterial = useMemo(() => {
     const baseProps = {
       side: DoubleSide,
       transparent: false,
       opacity: 1.0,
       depthWrite: true,
-    };
-
-    const materialProps: any = {
-      ...baseProps,
-      map: texture,
       color: color,
     };
 
+    // Настройки для разных типов ткани
     switch (material) {
       case "velvet":
-        materialProps.roughness = 0.8;
-        materialProps.metalness = 0.1;
-        materialProps.bumpScale = 0.05;
-        break;
+        return {
+          ...baseProps,
+          roughness: 0.8,
+          metalness: 0.1,
+        };
       case "silk":
-        materialProps.roughness = 0.2;
-        materialProps.metalness = 0.1;
-        materialProps.sheen = 0.5;
-        materialProps.sheenRoughness = 0.3;
-        materialProps.sheenColor = "#ffffff";
-        break;
+        return {
+          ...baseProps,
+          roughness: 0.2,
+          metalness: 0.1,
+          sheen: 0.5,
+          sheenRoughness: 0.3,
+          sheenColor: "#ffffff",
+        };
       case "cloth":
       default:
-        materialProps.roughness = 0.7;
-        materialProps.metalness = 0;
-        break;
+        return {
+          ...baseProps,
+          roughness: 0.7,
+          metalness: 0,
+        };
     }
+  }, [color, material]);
 
-    return materialProps;
-  }, [texture, color, material]);
-
-  // Карниз - исправлено условие вызова useMemo
+  // Карниз
   const curtainRod = useMemo(() => {
     if (!showRod) return null;
 
@@ -148,7 +133,7 @@ export default function CurvedCurtainObject({
     );
   }, [showRod, radius, height]);
 
-  // Утяжеленная часть - исправлено условие вызова useMemo
+  // Утяжеленная часть
   const curtainHem = useMemo(() => {
     if (!showHem) return null;
 
