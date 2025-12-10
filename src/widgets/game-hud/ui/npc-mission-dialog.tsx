@@ -1,4 +1,5 @@
 import { useMissionStore } from "@/widgets/store/mission-store";
+import { useMemo } from "react";
 
 interface NPCDialogProps {
   npcId: number;
@@ -6,13 +7,17 @@ interface NPCDialogProps {
   onClose: () => void;
 }
 export function NPCMissionDialog({ npcId, npcName, onClose }: NPCDialogProps) {
-  const missions = useMissionStore((state) => state.missions.filter(elem => !elem.completed))
+  const missions = useMissionStore((state) => state.missions)
   const assignMission = useMissionStore((state) => state.assignMission)
   const completeMission = useMissionStore((state) => state.completeMission)
   const availableMission = useMissionStore((state) => state.availableMission)
   const npcMission = availableMission.filter(
     (elem) => elem.relatedNPC === npcId
   );
+
+  const incomplited = useMemo(() => {
+    missions.filter((elem) => !elem.completed);
+  },[])
 
   const handleAcceptMission = (missionId: number) => {
     assignMission(missionId);

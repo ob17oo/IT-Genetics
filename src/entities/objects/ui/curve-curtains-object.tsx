@@ -156,9 +156,9 @@ export default function CurvedCurtainObject({
   );
 
   return withPhysics ? (
-    <RigidBody type="fixed" position={position} rotation={rotation}>
+    <mesh position={position} rotation={rotation}>
       {curtainContent}
-    </RigidBody>
+    </mesh>
   ) : (
     <group position={position} rotation={rotation}>
       {curtainContent}

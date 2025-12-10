@@ -28,7 +28,7 @@ export const MOCK_MISSIONS: Mission[] = [
     type: 'main',
     difficulty: 'easy',
     requires: 1,
-    relatedNPC: 1
+    relatedNPC: 2
   },
   {
     id: 3,

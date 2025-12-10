@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { Group } from "three";
 import { Vector3 } from "three";
 import { useNPCInteractionStore } from "@/widgets/store/npc-interaction-store";
+import { CapsuleCollider, RigidBody } from "@react-three/rapier";
 interface LobbyNPCProps {
   scale: number | [number, number, number];
   path: string;
@@ -65,7 +66,7 @@ export function LobbyNPC({
   }, [actions, names]);
 
   return (
-    <>
+    <RigidBody type="fixed">
       <group
         ref={groupRef}
         position={position}
@@ -74,6 +75,6 @@ export function LobbyNPC({
       >
         <primitive object={scene} />
       </group>
-    </>
+    </RigidBody>
   );
 }

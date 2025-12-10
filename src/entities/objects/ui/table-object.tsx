@@ -2,6 +2,7 @@ import { Clone, useGLTF } from "@react-three/drei";
 import { ChairObject } from "./chair-object";
 import { ComputerObject } from "./computer-object";
 import { FlowerObject } from "./flower-object";
+import { CuboidCollider, RigidBody } from "@react-three/rapier";
 
 interface TableProps{
     position?: [number,number,number],
@@ -54,6 +55,18 @@ export function TableObject({position, scale, rotation}: TableProps){
         <FlowerObject modelName="flowerPalm" scale={1} position={[8.3,2,0]}/>
         <FlowerObject modelName="flowerRhyzome" scale={0.6} position={[9,2,0]}/>
       </group>
+      <CuboidCollider  args={[8,0.1,2]} position={[6,1.85,0]}/>
+
+      <CuboidCollider args={[0.7,2,0.7]} position={[12.5, 1.5, 2.5]}/>
+      <CuboidCollider args={[0.7,2,0.7]} position={[12.5, 1.5, -2.5]}/>
+      <CuboidCollider args={[0.7,2,0.7]} position={[9, 1.5, 2.5]}/>
+      <CuboidCollider args={[0.7,2,0.7]} position={[9, 1.5, -2.5]}/>
+      <CuboidCollider args={[0.7,2,0.7]} position={[6, 1.5, 2.5]}/>
+      <CuboidCollider args={[0.7,2,0.7]} position={[6, 1.5, -2.5]}/>
+      <CuboidCollider args={[0.7,2,0.7]} position={[2.5, 1.5, 2.5]}/>
+      <CuboidCollider args={[0.7,2,0.7]} position={[2.5, 1.5, -2.5]}/>
+      <CuboidCollider args={[0.7,2,0.7]} position={[-1, 1.5, 2.5]}/>
+      <CuboidCollider args={[0.7,2,0.7]} position={[-1, 1.5, -2.5]}/>
     </mesh>
   );
 }

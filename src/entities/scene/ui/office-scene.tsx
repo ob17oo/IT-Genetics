@@ -24,6 +24,9 @@ import { InstancedWindow } from "@/entities/objects/ui/instanced-window";
 import { TABLE_POSITIONS,WALL_POSITION,WINDOW_POSITIONS } from "@/shared/config/office-scene-config"
 import OlegChulakovObject from "@/entities/objects/ui/OlegChulakov-object";
 import CurvedCurtainObject from "@/entities/objects/ui/curve-curtains-object";
+import { positionGeometry } from "three/tsl";
+import { DebugNode } from "three/webgpu";
+import MissionIndicator from "@/widgets/game-hud/ui/mission-indicator";
 
 interface OfficeShelfProps{
   position?: [number,number,number],
@@ -91,21 +94,23 @@ export function OfficeScene() {
    );
 
   const tables = useMemo(() => (
-    <RigidBody type="fixed">
+    // <RigidBody type="fixed">
+    <>
         {TABLE_POSITIONS.map((table,i) => (
           <group key={i}>
               <TableObject 
                 position={table.position}
                 rotation={table.rotation}
                 scale={table.scale}
-              />
+                />
               <CuboidCollider 
-                args={[2,0.1,1]}
-                position={table.position}
-              />
+                args={[8,0.1,2]}
+                position={[-5.2,0.8,2.5]}
+                />
           </group>
         ))}
-    </RigidBody>
+      </>
+    // {/* </RigidBody> */}
   ),[])
 
 
@@ -130,7 +135,7 @@ export function OfficeScene() {
       >
         <Stats />
         <Suspense fallback={null}>
-          <Physics 
+          <Physics
           gravity={[0, -20, 0]}
           timeStep={1/60}
           maxCcdSubsteps={1}
@@ -159,7 +164,6 @@ export function OfficeScene() {
                 <boxGeometry args={[35,0.1,40]}/>
                 <meshStandardMaterial color="#E7E2BA"/>
               </mesh>
-              <CuboidCollider args={[15, 0.5, 20]} position={[0, -1.05, 0]} />
             </RigidBody>
 
             <RigidBody type="fixed">
@@ -256,30 +260,33 @@ export function OfficeScene() {
             <RigidBody type="fixed">
                 <ItemRender itemName="Office-Shelf" scale={3.5} position={[3,-1,9.7]} rotation={[0,Math.PI / 2,0]}/>
             </RigidBody>
+
+
             <RigidBody type="fixed">
                 <ItemRender itemName="trashBucket" scale={0.35} position={[3.4,-0.9,14]} rotation={[0,Math.PI / 2,0]}/>
             </RigidBody>
             <RigidBody type="fixed">
                 <ItemRender itemName="trashBucket" scale={0.35} position={[3.4,-0.9,1-8.8]} rotation={[0,Math.PI / 2,0]}/>
             </RigidBody>
-            <RigidBody type="fixed">
-                <ItemRender itemName="SurpriseGlassWall" scale={[7,8,8]} position={[-17.5, -1, 12.4]} rotation={[0,Math.PI / -2, 0]}/>
-            </RigidBody>
-            <RigidBody type="fixed">
-                <ItemRender itemName="ShockGlassWall" scale={[8.1,8,8]} position={[-17.5, -1, 2.75]} rotation={[0,Math.PI / -2, 0]}/>
-            </RigidBody>
+
+            <ItemRender itemName="SurpriseGlassWall" scale={[7,8,8]} position={[-17.5, -1, 12.4]} rotation={[0,Math.PI / -2, 0]}/>
+            <CuboidCollider args={[3.5,3,0.1]} position={[-17.5,2,15.9]} rotation={[0,Math.PI / 2, 0]}/>
+
+  
+            <ItemRender itemName="ShockGlassWall" scale={[8.1,8,8]} position={[-17.5, -1, 2.75]} rotation={[0,Math.PI / -2, 0]}/>
+            <CuboidCollider args={[4.3,3,0.1]} position={[-17.5,2,7]} rotation={[0,Math.PI / 2, 0]}/>
             
             <WallSticker position={[-17.2,5.4,7]} rotation={[0,Math.PI / 2,0]} args={[8,8]} stickerURL="/textures/flashTexture.png" opacity={1}/>
 
-            <RigidBody type="fixed">
-                <ItemRender itemName="GlassWall" scale={[8.1,8,8]} position={[-17.5, -1, -5.75]} rotation={[0,Math.PI / -2, 0]}/>
-            </RigidBody>
+
+            <ItemRender itemName="GlassWall" scale={[8.1,8,8]} position={[-17.5, -1, -5.75]} rotation={[0,Math.PI / -2, 0]}/>
+            <CuboidCollider args={[4.3,3,0.1]} position={[-17.5,2,-2]} rotation={[0,Math.PI / 2, 0]}/>
 
             <WallSticker position={[-17.2,5.2,-2.5]} rotation={[Math.PI / -1.1,Math.PI / 2,0]} args={[8,8]} stickerURL="/textures/bubbleTexture.png" opacity={0.7}/>
 
-            <RigidBody type="fixed">
-                <ItemRender itemName="DinnerGlassWall" scale={[6.57,6.4,8]} position={[17.6, -1, 16]} rotation={[0,Math.PI / 2, 0]}/>
-            </RigidBody>
+
+            <ItemRender itemName="DinnerGlassWall" scale={[6.57,6.4,8]} position={[17.6, -1, 16]} rotation={[0,Math.PI / 2, 0]}/>
+            <CuboidCollider args={[7.5,3,0.1]} position={[17.5,2,11.1]} rotation={[0,Math.PI / 2, 0]}/>
 
             {/* Переговорные */}
 
@@ -376,7 +383,7 @@ export function OfficeScene() {
             </group>
 
 
-            <ItemRender itemName="Fridge" scale={[0.4,0.3,0.4]} rotation={[0,0,0]} position={[19,-1,-5]}/>
+            <ItemRender itemName="Fridge" scale={[0.4,0.3,0.4]} rotation={[0,0,0]} position={[19,-1,-4.5]}/>
             <ItemRender itemName="KitchenCabinets" scale={[3.6,2.8,3]} rotation={[0,0,0]} position={[23.4,-1,-5]}/>
 
             {/* Задняя часть */}
@@ -485,9 +492,9 @@ export function OfficeScene() {
                 <meshStandardMaterial color="#E7E2BA"/>
             </mesh>
 
-    
             <ItemRender itemName="OlegGlassWall" scale={[11.2,11,10]} rotation={[0,Math.PI / 1,0]} position={[28.8, -1, -16.3]}/>
-          
+            <CuboidCollider args={[5,3,0.1]} position={[31.1,2,-16.3]} rotation={[0, 0, 0]}/>
+
             <ItemRender itemName="Office-Chair" scale={0.025} position={[27.5,-0.9,-25.7]} rotation={[0,Math.PI / 2,0]}/>
             <ItemRender itemName="Office-Gray-Chair" scale={2} position={[29.5,-0.9,-29.5]} rotation={[0,0,0]}/>
             <ItemRender itemName="Office-Gray-Chair" scale={2} position={[32,-0.9,-25.7]} rotation={[0,Math.PI / -2,0]}/>
@@ -507,7 +514,7 @@ export function OfficeScene() {
             {/*Большая переговорная*/}
 
             <ItemRender itemName="OrangeGlassWall" scale={[11,11,11]} rotation={[0,Math.PI / 1,0]} position={[38.4,-1,-16.3]}/>
-            
+            <CuboidCollider args={[9.5,3,0.1]} position={[46,2,-16.3]} rotation={[0, 0, 0]}/>            
 
 
             <ItemRender itemName="MainMeetingTable" scale={[3,4,4]} rotation={[0,0,0]} position={[44.8,-1,-26]}/>
@@ -534,12 +541,14 @@ export function OfficeScene() {
             {/* Игровая */}
 
             <ItemRender itemName="RageGlassWall" scale={[11,11,11]} rotation={[0, Math.PI / 2, 0]} position={[55.5, -1, -5.7]}/>
+            <CuboidCollider args={[3,3,0.1]} position={[55.5,2,-12.7]} rotation={[0, Math.PI / 2, 0]}/>
 
             <ItemRender itemName="PingPongTable" scale={[3,2.5,3]} rotation={[0, Math.PI /2, 0]} position={[61.5,-1,-30]}/>
 
-            <LobbyNPC path="lobby-npc" scale={1.15} position={[13,-1,16]} rotation={[0,Math.PI / -1.5,0]} npcId={1} npcName="Никита" playerPosition={playerPosition} onInteract={(id,name) => setActiveNPC({id,name})}/>
-            {/* <CharacterController position={[0,0,0]} rotationY={0} onPositionChange={setPlayerPosition} /> */}
+            {/* <LobbyNPC path="lobby-npc" scale={1.25} position={[13,-1,16]} rotation={[0,Math.PI / -1.5,0]} npcId={1} npcName="Никита" playerPosition={playerPosition} onInteract={(id,name) => setActiveNPC({id,name})}/> */}
+            <CharacterController position={[10,0,15]} rotationY={Math.PI / 1} onPositionChange={setPlayerPosition} />
             <OrbitControls />
+            <MissionIndicator key="mission-1" playerPosition={playerPosition} missionId={1} missionPosition={[10,1.5,15]}/>
           </Physics>
         </Suspense>
       </Canvas>

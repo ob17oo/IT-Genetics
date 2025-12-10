@@ -261,7 +261,7 @@ export default function LobbyScene() {
           <Physics gravity={[0, -20, 0]}>
           <color attach="background" args={["#1E1E1E"]} />
           <ambientLight intensity={1} />
-          <directionalLight position={[10, 10, 5]} intensity={1.5} castShadow />
+          <directionalLight position={[0, 10, 0]} intensity={1.3} castShadow />
 
           {/*Основной пол*/}
           <RigidBody type="fixed" colliders={false}>
@@ -295,6 +295,10 @@ export default function LobbyScene() {
                 </mesh>
                 <mesh position={[4.5, 9,11]}>
                   <boxGeometry args={[9,0.1,7]}/>
+                  <meshStandardMaterial color="#FFFFFF"/>
+                </mesh>
+                <mesh position={[-7, 9,8.5]}>
+                  <boxGeometry args={[14,0.1,2.5]}/>
                   <meshStandardMaterial color="#FFFFFF"/>
                 </mesh>
                 {/* Коллайдеры потолка */}
@@ -362,7 +366,7 @@ export default function LobbyScene() {
           </RigidBody>
 
           <LobbyNPC
-            scale={1}
+            scale={1.25}
             path="lobby-npc"
             position={[-2.5, -1, -3.5]}
             rotation={[0, Math.PI / -4, 0]}

@@ -41,8 +41,8 @@ export function CharacterController({
 
   const [, get] = useKeyboardControls();
   // Настройки управления — ближе к демо из репозитория
-  const WALK_SPEED = 2;
-  const RUN_SPEED = 4;
+  const WALK_SPEED = 2.5;
+  const RUN_SPEED = 5;
   const ROTATION_SPEED = 0.012; // чуть быстрее поворот контейнера по A/D
   const CAMERA_LERP = 0.25; // камера догоняет быстрее, остаётся позади
   const CHAR_ROT_LERP = 0.2; // персонаж быстрее выравнивается
@@ -187,11 +187,11 @@ export function CharacterController({
         <group ref={cameraBoom} position-y={4} position-z={-3.5} />
         {/* Персонаж */}
         <group ref={character}>
-          <Character scale={1} animation={animation} />
+          <Character scale={1.2} animation={animation} />
         </group>
       </group>
       {/* Капсула персонажа: подгоняй размеры под свою модель */}
-      <CapsuleCollider args={[0.5, 0.3]} position={[0, 0.8, 0]} />
+      <CapsuleCollider args={[0.5, 0.5]} position={[0, 1, 0]} />
     </RigidBody>
   );
 }
