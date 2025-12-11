@@ -24,8 +24,7 @@ import { InstancedWindow } from "@/entities/objects/ui/instanced-window";
 import { TABLE_POSITIONS,WALL_POSITION,WINDOW_POSITIONS } from "@/shared/config/office-scene-config"
 import OlegChulakovObject from "@/entities/objects/ui/OlegChulakov-object";
 import CurvedCurtainObject from "@/entities/objects/ui/curve-curtains-object";
-import { positionGeometry } from "three/tsl";
-import { DebugNode } from "three/webgpu";
+
 import MissionIndicator from "@/widgets/game-hud/ui/mission-indicator";
 
 interface OfficeShelfProps{
@@ -69,6 +68,7 @@ const WallSticker = ({position,rotation,stickerURL,args, opacity}: WallStickerPr
 export function OfficeScene() {
   const [playerPosition , setPlayerPosition] = useState<Vector3 | null>(null)
   const [activeNPC, setActiveNPC] = useState<{id: number, name: string} | null>(null)
+  const [activeMission, setActiveMission] = useState<{missionId: number} | null>(null)
   
   useEffect(() => {
     preloadOfficeModels()
@@ -548,17 +548,24 @@ export function OfficeScene() {
             {/* <LobbyNPC path="lobby-npc" scale={1.25} position={[13,-1,16]} rotation={[0,Math.PI / -1.5,0]} npcId={1} npcName="Никита" playerPosition={playerPosition} onInteract={(id,name) => setActiveNPC({id,name})}/> */}
             <CharacterController position={[10,0,15]} rotationY={Math.PI / 1} onPositionChange={setPlayerPosition} />
             <OrbitControls />
-            <MissionIndicator key="mission-1" playerPosition={playerPosition} missionId={1} missionPosition={[10,1.5,15]}/>
+            <MissionIndicator key="mission-1" playerPosition={playerPosition} missionId={1} missionPosition={[10,1.5,15]} onInteract={(missionId) => setActiveMission({missionId})}/>
+            <MissionIndicator key="mission-2" playerPosition={playerPosition} missionId={2} missionPosition={[10,1.5,10]} onInteract={(missionId) => setActiveMission({missionId})}/>
           </Physics>
         </Suspense>
       </Canvas>
       <GameHud />
       <MissionHud
-        typeOfNPC="Mission"
+        type="NPC-Mission"
         npcId={activeNPC?.id ?? 0} 
         npcName={activeNPC?.name ?? ''} 
         isOpen={!!activeNPC} 
         onClose={() => setActiveNPC(null)} 
+      />
+      <MissionHud
+        type="Mission"
+        missionId={activeMission?.missionId ?? 0}
+        isOpen={!!activeMission} 
+        onClose={() => setActiveMission(null)} 
       />
     </section>
   );

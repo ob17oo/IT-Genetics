@@ -14,7 +14,7 @@ import { LobbyNPC } from "@/entities/characters/lobby-npc/lobby-npc";
 import SceneLoader from "@/shared/ui/Loader/scene-loader";
 import GameHud from "@/widgets/game-hud/ui/game-hud";
 import { preloadLobbyModels } from "@/shared/lib/preload-models";
-import { OrbitControls, useGLTF } from "@react-three/drei";
+import { OrbitControls, Stats, useGLTF } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { CuboidCollider, Physics, RigidBody } from "@react-three/rapier";
 import { Suspense, useMemo, useState, useEffect } from "react";
@@ -256,7 +256,23 @@ export default function LobbyScene() {
   return (
     <section className="w-full h-screen relative">
       <SceneLoader />
-      <Canvas shadows camera={{ position: [0, 1.7, 10], fov: 75 }}>
+      <Canvas shadows camera={{ position: [0, 1.7, 10], fov: 75 }}
+      gl={{
+        antialias: false,
+        powerPreference: 'high-performance',
+        stencil: false,
+        depth: true,
+        alpha: false
+      }}
+      dpr={[1,1.5]}
+      performance={{
+        min: 0.5,
+        max: 1,
+        debounce: 200
+      }}
+      frameloop="demand"
+      >
+        <Stats />
         <Suspense fallback={null}>
           <Physics gravity={[0, -20, 0]}>
           <color attach="background" args={["#1E1E1E"]} />
@@ -386,7 +402,7 @@ export default function LobbyScene() {
       </Canvas>
       <GameHud />
       <MissionHud 
-        typeOfNPC="Start"
+        type="NPC-Start"
         npcId={activeNPC?.id ?? 0} 
         npcName={activeNPC?.name ?? ''} 
         isOpen={!!activeNPC} 

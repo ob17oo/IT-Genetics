@@ -1,21 +1,25 @@
 import { create } from "zustand";
 
 interface MissionInteractionState {
-    showPrompt: boolean,
-    missionId: number | null,
-    promptMessage: string | null,
-    setInteraction: (show: boolean, missionId: number, promptMessage?: string) => void,
-    clearInteraction: () => void
+  showMissionPrompt: boolean;
+  npcId: number | null;
+  missionId: number | null,
+  promptMissionMessage: string | null;
+  setInteraction: (show: boolean, missionId: number | null, promptMissionMessage?: string | null) => void;
+  clearInteraction: () => void;
 }
 
-export const useMissionInteraction = create<MissionInteractionState>((set) => ({
-    showPrompt: false,
-    missionId: null,
-    promptMessage: null,
-    setInteraction: (show,missionId, promptMessage = 'Нажми Е') => set({
-        showPrompt: show,
+export const useMissionInteractionStore = create<MissionInteractionState>((set) => ({
+  showMissionPrompt: false,
+  missionId: null,
+  npcId: null,
+  promptMissionMessage: null,
+  setInteraction: (show, missionId, promptMissionMessage = null) =>
+    set({ 
+      showMissionPrompt: show,
         missionId,
-        promptMessage,
+      promptMissionMessage: promptMissionMessage || `Нажми E`
     }),
-    clearInteraction: () => set({showPrompt: false, missionId: null, promptMessage: null})
-}))
+  clearInteraction: () => set({ showMissionPrompt: false, missionId: null, npcId: null, promptMissionMessage: null }),
+}));
+

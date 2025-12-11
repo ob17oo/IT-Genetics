@@ -8,8 +8,8 @@ export const MAIN_MISSION: Mission[] = [
 export const MOCK_MISSIONS: Mission[] = [
   {
     id: 1,
-    title: "Ответственность: Выбор под давлением",
-    description: "Найди выделенный красным объект — источник ошибки в системе — и нажми E, чтобы взять ответственность за её устранение.",
+    title: "Отвественность: Взять отвественность за ошибку",
+    description: "Выберите по вашему правильный ответы",
     reward: 30,
     progress: 0,
     completed: false,

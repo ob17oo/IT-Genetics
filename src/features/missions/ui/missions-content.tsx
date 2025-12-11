@@ -9,8 +9,11 @@ export default function MissionsContent() {
   const updateMissionProgress = useMissionStore((state) => state.updateMissionProgress);
   const [filter, setFilter] = useState('All');
 
+  const allMissions = useMemo(() => {
+    return [...missions, ...availableMission];
+  }, [missions,availableMission])
+
   const filteredMassive = useMemo(() => {
-    const allMissions = [...missions, ...availableMission];
     switch(filter){
       case 'All':
         return allMissions
@@ -23,7 +26,7 @@ export default function MissionsContent() {
       default:
         return allMissions
     }
-  }, [filter, missions, availableMission])
+  }, [filter, allMissions])
 
 
   return (
@@ -41,7 +44,7 @@ export default function MissionsContent() {
           Все
         </button>
         <button
-          disabled={filteredMassive.filter((item) => item.completed).length <= 0}
+          disabled={allMissions.filter((item) => item.completed).length <= 0}
           onClick={() => setFilter("Completed")}
           className={`text-[14px] text-yellow-200 py-3 px-4 rounded-3xl transition-all duration-300 ease-in-out border ${
             filter === "Completed"
@@ -52,7 +55,7 @@ export default function MissionsContent() {
           Полученные
         </button>
         <button
-          disabled={filteredMassive.filter((item) => item.type === "main").length <= 0}
+          disabled={allMissions.filter((item) => item.type === "main").length <= 0}
           onClick={() => setFilter("Main")}
           className={`text-[14px] text-yellow-200 py-3 px-4 rounded-3xl transition-all duration-300 ease-in-out border ${
             filter === "Main"
@@ -63,7 +66,7 @@ export default function MissionsContent() {
           Основные
         </button>
         <button
-          disabled={filteredMassive.filter((item) => item.type === "side").length <= 0}
+          disabled={allMissions.filter((item) => item.type === "side").length <= 0}
           onClick={() => setFilter("Side")}
           className={`text-[14px] text-yellow-200 py-3 px-4 rounded-3xl transition-all duration-300 ease-in-out border ${
             filter === "Side"

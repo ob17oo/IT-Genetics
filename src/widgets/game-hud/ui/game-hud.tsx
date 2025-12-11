@@ -5,11 +5,14 @@ import Image from "next/image";
 import { useAuthStore } from "@/widgets/store/auth-store";
 import { useMissionStore } from '@/widgets/store/mission-store'
 import { useNPCInteractionStore } from "@/widgets/store/npc-interaction-store";
+import { useMissionInteractionStore } from "@/widgets/store/mission-interaction.store";
+
 
 export default function GameHud(){
     const { user } = useAuthStore()
     const missions = useMissionStore(state => state.missions)
     const { showPrompt, promptMessage } = useNPCInteractionStore()
+    const { showMissionPrompt, promptMissionMessage } = useMissionInteractionStore()
     const [isOpen, setIsOpen] = useState(false);
     const activeMissions = missions.filter(mission => !mission.completed)
 
@@ -62,6 +65,16 @@ export default function GameHud(){
 
         {/* Подсказка взаимодействия с NPC - привязана к viewport */}
         {showPrompt && promptMessage && (
+          <section className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 pointer-events-none">
+            <section className="bg-black/80 py-2 px-4 rounded whitespace-nowrap">
+              <h2 className="text-yellow-200 text-[14px]">
+                {promptMessage}
+              </h2>
+            </section>
+          </section>
+        )}
+
+        {showMissionPrompt && promptMissionMessage && (
           <section className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 pointer-events-none">
             <section className="bg-black/80 py-2 px-4 rounded whitespace-nowrap">
               <h2 className="text-yellow-200 text-[14px]">

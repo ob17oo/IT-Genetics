@@ -1,13 +1,14 @@
+// hooks/useNPCInteraction.tsx
+import { useState, useEffect } from "react";
 import { useFrame } from "@react-three/fiber";
-import { useEffect, useState, useCallback, useRef } from "react";
 import { Vector3 } from "three";
 
-interface InteractionState {
+interface MissionInteractionState {
   isNear: boolean;
   showInteractPrompt: boolean;
 }
 
-interface InteractionProps {
+interface useMissionInteraction {
   missionId: number;
   missionPosition: [number, number, number];
   playerPosition: Vector3 | null;
@@ -17,42 +18,36 @@ interface InteractionProps {
 
 export function useInteraction({
   missionId,
+  missionPosition,
   playerPosition,
   maxDistance = 3,
   onInteract,
-  missionPosition,
-}: InteractionProps) {
-  const [state, setState] = useState<InteractionState>({
+}: useMissionInteraction) {
+  const [state, setState] = useState<MissionInteractionState>({
     isNear: false,
     showInteractPrompt: false,
   });
 
-  // Используем useRef для предотвращения лишних вычислений
-  const missionPosRef = useRef(new Vector3(...missionPosition));
-  const lastIsNearRef = useRef(false);
-  const lastShowPromptRef = useRef(false);
-
-  // Обновляем ref при изменении позиции миссии
-  useEffect(() => {
-    missionPosRef.current.set(...missionPosition);
-  }, [missionPosition]);
-
+  // Проверка расстояния каждый кадр
   useFrame(() => {
     if (!playerPosition) return;
 
-    const distance = playerPosition.distanceTo(missionPosRef.current);
+    const distance = playerPosition.distanceTo(
+      new Vector3(missionPosition[0], missionPosition[1], missionPosition[2])
+    );
+
     const newIsNear = distance <= maxDistance;
 
-    // Обновляем только при изменении состояния
-    if (newIsNear !== lastIsNearRef.current) {
-      setState((prev) => ({
-        isNear: newIsNear,
-        showInteractPrompt: newIsNear ? true : prev.showInteractPrompt,
-      }));
-      lastIsNearRef.current = newIsNear;
-    }
+    setState((prev) => ({
+      isNear: newIsNear,
+      showInteractPrompt:
+        newIsNear && !prev.showInteractPrompt
+          ? true
+          : prev.showInteractPrompt,
+    }));
   });
 
+  // Обработчик клавиши E
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
       if (
@@ -65,6 +60,7 @@ export function useInteraction({
         event.preventDefault();
         setState((prev) => ({ ...prev, showInteractPrompt: false }));
         onInteract?.();
+        console.log('Окно миссий открыто')
       }
     };
 
@@ -72,6 +68,7 @@ export function useInteraction({
     return () => window.removeEventListener("keydown", handleKeyPress);
   }, [state.isNear, onInteract]);
 
+  // Авто-скрытие подсказки
   useEffect(() => {
     if (!state.isNear || !state.showInteractPrompt) return;
 
@@ -81,17 +78,6 @@ export function useInteraction({
 
     return () => clearTimeout(timer);
   }, [state.isNear, state.showInteractPrompt]);
-
-  // Логируем только при изменении
-  useEffect(() => {
-    if (
-      state.isNear !== lastIsNearRef.current ||
-      state.showInteractPrompt !== lastShowPromptRef.current
-    ) {
-      console.log("Interaction state changed:", state);
-      lastShowPromptRef.current = state.showInteractPrompt;
-    }
-  }, [state]);
 
   return state;
 }
