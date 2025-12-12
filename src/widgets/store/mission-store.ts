@@ -38,18 +38,26 @@ export const useMissionStore = create<MissionStore>()(
             },
 
             completeMission: (missionId) => {
-                set(state => ({
-                missions: state.missions.map(mission =>
-                    mission.id === missionId
-                    ? { ...mission, progress: 100, completed: true }
-                    : mission
-                )
-                }));
-                
-                const mission = get().missions.find(m => m.id === missionId);
-                if (mission) {
-                console.log(`✅ Миссия завершена: ${mission.title}`);
-                }
+                set(state => {
+                    const missionIndex = state.missions.findIndex(m => m.id === missionId);
+                    
+                    if (missionIndex === -1) {
+                        console.log(`Миссия ${missionId} не найдена в назначенных`);
+                        return state; 
+                    }
+
+                    const updatedMissions = [...state.missions];
+                    updatedMissions[missionIndex] = {
+                        ...updatedMissions[missionIndex],
+                        progress: 100,
+                        completed: true
+                    };
+                    
+                    return {
+                        ...state,
+                        missions: updatedMissions
+                    };
+                });
             },
             getActiveMissions: () => get().missions.filter(elem => !elem.completed),
             resetCookie: () => {

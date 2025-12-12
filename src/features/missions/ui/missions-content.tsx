@@ -28,7 +28,6 @@ export default function MissionsContent() {
     }
   }, [filter, allMissions])
 
-
   return (
     <section className="flex flex-col gap-6 scroll-smooth">
       <h2 className="text-2xl text-yellow-200">Миссии</h2>
@@ -137,7 +136,7 @@ export default function MissionsContent() {
               </span>
             </section>
             <section className="flex gap-3">
-              <button
+              {/* <button
                 onClick={() =>{
                   const newProgress = Math.min(mission.progress + 10, 100);
                   updateMissionProgress(mission.id, newProgress)
@@ -146,7 +145,7 @@ export default function MissionsContent() {
                 className="text-yellow-200 text-lg opacity-70 transition-all duration-300 ease-in-out hover:opacity-100"
               >
                 Улучшить
-              </button>
+              </button> */}
               <button
                 onClick={() =>{
                   updateMissionProgress(mission.id, 0)

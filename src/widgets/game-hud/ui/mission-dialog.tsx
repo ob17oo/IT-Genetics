@@ -1,5 +1,4 @@
 import FirstMission from "@/features/missions/ui/first-mission";
-import { useMissionStore } from "@/widgets/store/mission-store";
 import Image from "next/image";
 
 interface MissionDialogProps {
@@ -22,7 +21,7 @@ export default function MissionDialog({missionId, onClose}: MissionDialogProps){
                                 <Image src="/static/Close.svg" alt="Close" width={24} height={24} />
                             </button>
                         </section>
-                        <FirstMission />
+                        <FirstMission missionId={missionId} onClose={onClose} />
                     </section>
                 </section>
             </section>

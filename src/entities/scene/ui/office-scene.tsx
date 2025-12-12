@@ -545,7 +545,7 @@ export function OfficeScene() {
 
             <ItemRender itemName="PingPongTable" scale={[3,2.5,3]} rotation={[0, Math.PI /2, 0]} position={[61.5,-1,-30]}/>
 
-            {/* <LobbyNPC path="lobby-npc" scale={1.25} position={[13,-1,16]} rotation={[0,Math.PI / -1.5,0]} npcId={1} npcName="Никита" playerPosition={playerPosition} onInteract={(id,name) => setActiveNPC({id,name})}/> */}
+            <LobbyNPC path="lobby-npc" scale={1.25} position={[13,-1,16]} rotation={[0,Math.PI / -1.5,0]} npcId={1} npcName="Никита" playerPosition={playerPosition} onInteract={(id,name) => setActiveNPC({id,name})}/>
             <CharacterController position={[10,0,15]} rotationY={Math.PI / 1} onPositionChange={setPlayerPosition} />
             <OrbitControls />
             <MissionIndicator key="mission-1" playerPosition={playerPosition} missionId={1} missionPosition={[10,1.5,15]} onInteract={(missionId) => setActiveMission({missionId})}/>
