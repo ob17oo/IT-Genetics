@@ -5,8 +5,10 @@ interface MissionInteractionState {
   npcId: number | null;
   missionId: number | null,
   promptMissionMessage: string | null;
+  isDialogOpen: boolean;
   setInteraction: (show: boolean, missionId: number | null, promptMissionMessage?: string | null) => void;
   clearInteraction: () => void;
+  setDialogOpen: (isOpen: boolean) => void;
 }
 
 export const useMissionInteractionStore = create<MissionInteractionState>((set) => ({
@@ -14,6 +16,7 @@ export const useMissionInteractionStore = create<MissionInteractionState>((set) 
   missionId: null,
   npcId: null,
   promptMissionMessage: null,
+  isDialogOpen: false,
   setInteraction: (show, missionId, promptMissionMessage = null) =>
     set({ 
       showMissionPrompt: show,
@@ -21,5 +24,6 @@ export const useMissionInteractionStore = create<MissionInteractionState>((set) 
       promptMissionMessage: promptMissionMessage || `Нажми E`
     }),
   clearInteraction: () => set({ showMissionPrompt: false, missionId: null, npcId: null, promptMissionMessage: null }),
+  setDialogOpen: (isOpen) => set({ isDialogOpen: isOpen }),
 }));
 

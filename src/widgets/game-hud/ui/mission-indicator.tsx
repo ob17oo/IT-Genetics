@@ -1,18 +1,20 @@
 import { useInteraction } from "@/hooks/useInteraction"
 import { useMissionInteractionStore } from "@/widgets/store/mission-interaction.store"
 import { Html } from "@react-three/drei"
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 import { Vector3 } from "three"
 
 interface MissionIndicatorProps{
     missionId: number,
     playerPosition: Vector3 | null,
     missionPosition: [number,number,number]
-    onInteract?: (missioId: number) => void,
+    onInteract?: (missionId: number) => void,
 }
 
 export default function MissionIndicator({missionId, missionPosition, playerPosition, onInteract}: MissionIndicatorProps){
-    const { setInteraction, clearInteraction } = useMissionInteractionStore()
+    const { setInteraction, clearInteraction, isDialogOpen } = useMissionInteractionStore()
+    const wasShowingRef = useRef(false)
+    
     const handleInteract = () => {
         onInteract?.(missionId)
         clearInteraction()
@@ -26,20 +28,38 @@ export default function MissionIndicator({missionId, missionPosition, playerPosi
         onInteract: handleInteract
     })
 
+    // Обновляем store только при изменении состояния показа
     useEffect(() => {
-        if(showInteractPrompt && isNear){
+        // Скрываем индикатор, если диалог открыт
+        if (isDialogOpen) {
+            if (wasShowingRef.current) {
+                wasShowingRef.current = false
+                clearInteraction()
+            }
+            return
+        }
+
+        const isShowing = showInteractPrompt && isNear && !isDialogOpen
+        
+        if (isShowing && !wasShowingRef.current) {
+            // Показываем индикатор
+            wasShowingRef.current = true
             setInteraction(true, missionId)
-        } else {
+        } else if (!isShowing && wasShowingRef.current) {
+            // Скрываем индикатор
+            wasShowingRef.current = false
             clearInteraction()
         }
-    }, [showInteractPrompt, isNear,missionId, setInteraction, clearInteraction])
+    }, [showInteractPrompt, isNear, isDialogOpen, missionId, setInteraction, clearInteraction])
+
+    const shouldShow = showInteractPrompt && isNear && !isDialogOpen
 
     return (
       <group position={missionPosition}>
-        {showInteractPrompt && (
+        {shouldShow && (
           <Html center>
             <div className="relative">
-              {/* Красный прямоугольник с ! */}
+              {/* Индикатор с ! */}
               <div className="w-14 h-14 bg-black/80 border border-yellow-200 rounded-md flex items-center justify-center animate-pulse">
                 <span className="text-white text-2xl font-bold">!</span>
               </div>

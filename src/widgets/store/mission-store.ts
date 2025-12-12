@@ -13,7 +13,7 @@ interface MissionStore {
     resetCookie: () => void
     getAvailableMissions: () => Mission[]
     assignMission: (missionid: number) => void,
-    completeMissionWithRewards: (missionId: number) => void
+    completeMissionWithRewards: (missionId: number) => number
 }
 
 const createMissionSeed = () => MOCK_MISSIONS.map(m => ({...m}))

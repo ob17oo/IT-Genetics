@@ -74,11 +74,12 @@ export default function GameHud(){
           </section>
         )}
 
+        {/* Подсказка взаимодействия с миссией - привязана к viewport */}
         {showMissionPrompt && promptMissionMessage && (
           <section className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 pointer-events-none">
             <section className="bg-black/80 py-2 px-4 rounded whitespace-nowrap">
               <h2 className="text-yellow-200 text-[14px]">
-                {promptMessage}
+                {promptMissionMessage}
               </h2>
             </section>
           </section>

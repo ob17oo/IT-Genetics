@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { Group } from "three";
 import { Vector3 } from "three";
 import { useNPCInteractionStore } from "@/widgets/store/npc-interaction-store";
-import { CapsuleCollider, RigidBody } from "@react-three/rapier";
+import { RigidBody } from "@react-three/rapier";
 interface LobbyNPCProps {
   scale: number | [number, number, number];
   path: string;
@@ -29,7 +29,8 @@ export function LobbyNPC({
   const groupRef = useRef<Group>(null);
   const { scene, animations } = useGLTF(`/model/character/${path}.glb`);
   const { actions, names } = useAnimations(animations, groupRef);
-  const { setInteraction, clearInteraction } = useNPCInteractionStore();
+  const { setInteraction, clearInteraction, isDialogOpen } = useNPCInteractionStore();
+  const wasShowingRef = useRef(false);
   
   const handleInteract = () => {
     onInteract?.(npcId, npcName);
@@ -44,14 +45,29 @@ export function LobbyNPC({
     onInteract: handleInteract,
   });
 
-  // Обновляем store при изменении состояния подсказки
+  // Обновляем store только при изменении состояния показа
   useEffect(() => {
-    if (showInteractPrompt && isNearNPC) {
+    // Скрываем индикатор, если диалог открыт
+    if (isDialogOpen) {
+      if (wasShowingRef.current) {
+        wasShowingRef.current = false;
+        clearInteraction();
+      }
+      return;
+    }
+
+    const isShowing = showInteractPrompt && isNearNPC && !isDialogOpen;
+    
+    if (isShowing && !wasShowingRef.current) {
+      // Показываем индикатор
+      wasShowingRef.current = true;
       setInteraction(true, npcName, npcId);
-    } else {
+    } else if (!isShowing && wasShowingRef.current) {
+      // Скрываем индикатор
+      wasShowingRef.current = false;
       clearInteraction();
     }
-  }, [showInteractPrompt, isNearNPC, npcName, npcId, setInteraction, clearInteraction]);
+  }, [showInteractPrompt, isNearNPC, isDialogOpen, npcName, npcId, setInteraction, clearInteraction]);
 
   useEffect(() => {
     if (names.length > 0) {

@@ -15,5 +15,7 @@ export interface ShopType{
 
 export interface EffectType {
     type: string,
-    value: number
+    value: number,
+    skillName?: string,
+    category?: string
 }
