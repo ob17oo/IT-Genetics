@@ -11,9 +11,55 @@ export function NPCMissionDialog({ npcId, npcName, onClose }: NPCDialogProps) {
   const assignMission = useMissionStore((state) => state.assignMission)
   const completeMission = useMissionStore((state) => state.completeMission)
   const availableMission = useMissionStore((state) => state.availableMission)
-  const npcMission = availableMission.filter(
-    (elem) => elem.relatedNPC === npcId
-  );
+  
+  // Фильтруем миссии по NPC и проверяем зависимости
+  const npcMission = useMemo(() => {
+    return availableMission.filter((mission) => {
+      // Для основных миссий (main) - все показываются у NPC с id=1, независимо от relatedNPC
+      // Для остальных миссий - проверяем relatedNPC
+      if (mission.type === 'main') {
+        // Все основные миссии у NPC с id=1
+        if (npcId !== 1) {
+          return false
+        }
+      } else {
+        // Для побочных миссий проверяем relatedNPC
+        if (mission.relatedNPC !== npcId) {
+          return false
+        }
+      }
+      
+      // Проверяем, не взята ли уже миссия
+      const isAlreadyAssigned = missions.some(m => m.id === mission.id)
+      if (isAlreadyAssigned) {
+        return false
+      }
+      
+      // Для основных миссий: первая миссия доступна сразу (requires: null)
+      // Остальные основные миссии доступны только после завершения предыдущей
+      if (mission.type === 'main') {
+        // Первая основная миссия (id: 1) доступна сразу
+        if (mission.requires === null) {
+          return true
+        }
+        // Для остальных основных миссий проверяем, завершена ли предыдущая
+        const requiredMission = missions.find(m => m.id === mission.requires)
+        if (!requiredMission || !requiredMission.completed) {
+          return false
+        }
+      } else {
+        // Для побочных миссий проверяем зависимости как обычно
+        if (mission.requires !== null) {
+          const requiredMission = missions.find(m => m.id === mission.requires)
+          if (!requiredMission || !requiredMission.completed) {
+            return false
+          }
+        }
+      }
+      
+      return true
+    })
+  }, [availableMission, missions, npcId])
 
   const incomplited = useMemo(() => {
     missions.filter((elem) => !elem.completed);

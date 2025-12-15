@@ -1,5 +1,5 @@
 // hooks/useInteraction.tsx
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Vector3 } from "three";
 
@@ -28,9 +28,15 @@ export function useInteraction({
     showInteractPrompt: false,
   });
 
-  // Проверка расстояния каждый кадр
+  // Кэшируем Vector3 для missionPosition, чтобы не создавать его каждый кадр
+  const missionVector = useMemo(
+    () => new Vector3(missionPosition[0], missionPosition[1], missionPosition[2]),
+    [missionPosition[0], missionPosition[1], missionPosition[2]]
+  );
+
+  // Используем useFrame для проверки расстояния
   useFrame(() => {
-    if (!playerPosition) {
+    if (!playerPosition || !onInteract) {
       if (wasNearRef.current) {
         wasNearRef.current = false;
         setState({
@@ -41,10 +47,8 @@ export function useInteraction({
       return;
     }
 
-    const distance = playerPosition.distanceTo(
-      new Vector3(missionPosition[0], missionPosition[1], missionPosition[2])
-    );
-
+    // Используем кэшированный Vector3
+    const distance = playerPosition.distanceTo(missionVector);
     const newIsNear = distance <= maxDistance;
 
     // Обновляем состояние только при изменении статуса "рядом"
@@ -52,7 +56,7 @@ export function useInteraction({
       wasNearRef.current = newIsNear;
       setState({
         isNear: newIsNear,
-        showInteractPrompt: newIsNear, // Показываем подсказку при входе в зону
+        showInteractPrompt: newIsNear,
       });
     }
   });

@@ -38,6 +38,19 @@ export function CharacterController({
   const cameraBoom = useRef<Group | null>(null);
   const [animation, setAnimation] = useState<"idle" | "walk" | "run">("idle");
   const lastReportedPosition = useRef<Vector3 | null>(null);
+  const lastAnimationRef = useRef<"idle" | "walk" | "run">("idle");
+  
+  // Кэшируем Vector3 объекты, чтобы не создавать их каждый кадр
+  const tempVector = useRef(new Vector3());
+  const boomWorldRef = useRef(new Vector3());
+  const lookAtWorldRef = useRef(new Vector3());
+  
+  // Кэшируем Ray и его параметры для проверки контакта с полом
+  const rayOriginRef = useRef({ x: 0, y: 0, z: 0 });
+  const rayDirectionRef = useRef({ x: 0, y: -1, z: 0 });
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const rayRef = useRef<any>(null);
+  const groundCheckCounter = useRef(0);
 
   const [, get] = useKeyboardControls();
   // Настройки управления — ближе к демо из репозитория
@@ -58,18 +71,24 @@ export function CharacterController({
       container.current.rotation.y = rotationY;
     }
     initialized.current = true;
-  }, [rotationY]);
+    
+    // Инициализируем Ray один раз, если rapier доступен
+    if (rapier) {
+      rayRef.current = new rapier.Ray(rayOriginRef.current, rayDirectionRef.current);
+    }
+  }, [rotationY, rapier]);
 
   useFrame(({ camera }) => {
     if (rb.current) {
       const vel = rb.current.linvel();
 
-      // Собираем инпут
-      const forward = get().forward ? 1 : 0;
-      const backward = get().backward ? 1 : 0;
-      const left = get().left ? 1 : 0;
-      const right = get().right ? 1 : 0;
-      const run = get().run;
+      // Собираем инпут - вызываем get() один раз для оптимизации
+      const keys = get();
+      const forward = keys.forward ? 1 : 0;
+      const backward = keys.backward ? 1 : 0;
+      const left = keys.left ? 1 : 0;
+      const right = keys.right ? 1 : 0;
+      const run = keys.run;
 
       const movement = { x: 0, z: 0 };
       movement.z = forward ? 1 : backward ? -1 : 0;
@@ -91,11 +110,20 @@ export function CharacterController({
         vel.z =
           Math.cos(rotationTarget.current + characterRotationTarget.current) *
           speed;
-        setAnimation(run ? "run" : "walk");
+        // Обновляем анимацию только если она изменилась
+        const newAnimation = run ? "run" : "walk";
+        if (newAnimation !== lastAnimationRef.current) {
+          lastAnimationRef.current = newAnimation;
+          setAnimation(newAnimation);
+        }
       } else {
         vel.x = 0;
         vel.z = 0;
+        // Обновляем анимацию только если она изменилась
+        if (lastAnimationRef.current !== "idle") {
+          lastAnimationRef.current = "idle";
         setAnimation("idle");
+        }
       }
 
       // Поворачиваем модель персонажа мягко
@@ -107,36 +135,53 @@ export function CharacterController({
       }
 
       // Разрешаем гравитацию. При контакте с полом убираем отрицательный vy
-      if (rapier && world && rb.current) {
+      // Разрешаем гравитацию. При контакте с полом убираем отрицательный vy
+      // Проверяем контакт с полом только каждые 3 кадра для оптимизации
+      if (rapier && world && rb.current && rayRef.current && vel.y < 0) {
+        groundCheckCounter.current++;
+        if (groundCheckCounter.current >= 3) {
+          groundCheckCounter.current = 0;
         const t = rb.current.translation();
         const halfHeight = 0.6;
         const radius = 0.3;
         const footY = t.y - (halfHeight + radius - 0.01);
-        const ray = new rapier.Ray(
-          { x: t.x, y: footY, z: t.z },
-          { x: 0, y: -1, z: 0 }
-        );
-        const hit = world.castRay(ray, 0.2, true);
+          
+          // Обновляем позицию луча вместо создания нового
+          rayOriginRef.current.x = t.x;
+          rayOriginRef.current.y = footY;
+          rayOriginRef.current.z = t.z;
+          // Обновляем Ray через его свойства (если доступно) или пересоздаем реже
+          if (rayRef.current && rayRef.current.origin) {
+            rayRef.current.origin.x = t.x;
+            rayRef.current.origin.y = footY;
+            rayRef.current.origin.z = t.z;
+          } else if (rapier) {
+            // Пересоздаем только если Ray не инициализирован
+            rayRef.current = new rapier.Ray(rayOriginRef.current, rayDirectionRef.current);
+          }
+          
+          const hit = world.castRay(rayRef.current, 0.2, true);
         if (hit && vel.y < 0) {
           vel.y = 0;
+          }
         }
       }
       rb.current.setLinvel(vel, true);
 
       if (onPositionChange) {
         const translation = rb.current.translation();
-        const currentPosition = new Vector3(
-          translation.x,
-          translation.y,
-          translation.z
-        );
+        // Используем кэшированный Vector3 вместо создания нового
+        tempVector.current.set(translation.x, translation.y, translation.z);
         const previousPosition = lastReportedPosition.current;
         if (
           !previousPosition ||
-          previousPosition.distanceToSquared(currentPosition) > 0.0001
+          previousPosition.distanceToSquared(tempVector.current) > 0.0001
         ) {
-          lastReportedPosition.current = currentPosition;
-          onPositionChange(currentPosition);
+          // Клонируем только когда нужно обновить
+          // Передаем клон, так как handlePositionChange может использовать его асинхронно
+          const positionToReport = tempVector.current.clone();
+          lastReportedPosition.current = positionToReport; // Используем тот же клон, не клонируем дважды
+          onPositionChange(positionToReport);
         }
       }
     }
@@ -152,19 +197,17 @@ export function CharacterController({
 
     // Позиция камеры — берём мировую позицию узла-boom
     if (cameraBoom.current) {
-      const boomWorld = new Vector3();
-      cameraBoom.current.getWorldPosition(boomWorld);
-      camera.position.lerp(boomWorld, CAMERA_LERP);
+      // Используем кэшированный Vector3 вместо создания нового
+      cameraBoom.current.getWorldPosition(boomWorldRef.current);
+      camera.position.lerp(boomWorldRef.current, CAMERA_LERP);
     }
 
     // Точка взгляда — узел-таргет немного впереди
     if (cameraTarget.current) {
-      const lookAtWorld = new Vector3();
-      cameraTarget.current.getWorldPosition(lookAtWorld);
-      const currentLook = new Vector3();
-      camera.getWorldDirection(currentLook);
-      // Можно плавно навести камеру на lookAtWorld
-      camera.lookAt(lookAtWorld);
+      // Используем кэшированный Vector3 вместо создания нового
+      cameraTarget.current.getWorldPosition(lookAtWorldRef.current);
+      // lookAt обновляет матрицу камеры напрямую, это нормально для камеры
+      camera.lookAt(lookAtWorldRef.current);
     }
   });
 

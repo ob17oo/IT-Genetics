@@ -1,4 +1,7 @@
 import FirstMission from "@/features/missions/ui/first-mission";
+import SecondMission from "@/features/missions/ui/second-mission";
+import ThirdMission from "@/features/missions/ui/third-mission";
+import FourthMission from "@/features/missions/ui/fourth-mission";
 import Image from "next/image";
 
 interface MissionDialogProps {
@@ -7,6 +10,21 @@ interface MissionDialogProps {
 }
 
 export default function MissionDialog({missionId, onClose}: MissionDialogProps){
+    const renderMission = () => {
+        switch(missionId) {
+            case 1:
+                return <FirstMission missionId={missionId} onClose={onClose} />
+            case 2:
+                return <SecondMission missionId={missionId} onClose={onClose} />
+            case 3:
+                return <ThirdMission missionId={missionId} onClose={onClose} />
+            case 4:
+                return <FourthMission missionId={missionId} onClose={onClose} />
+            default:
+                return <FirstMission missionId={missionId} onClose={onClose} />
+        }
+    }
+
     return (
         <section className="fixed inset-0 z-50">
             <section className="absolute inset-0 bg-black/80 backdrop-blur-2xl" onClick={onClose}>
@@ -21,7 +39,7 @@ export default function MissionDialog({missionId, onClose}: MissionDialogProps){
                                 <Image src="/static/Close.svg" alt="Close" width={24} height={24} />
                             </button>
                         </section>
-                        <FirstMission missionId={missionId} onClose={onClose} />
+                        {renderMission()}
                     </section>
                 </section>
             </section>

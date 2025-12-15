@@ -8,8 +8,8 @@ export const MAIN_MISSION: Mission[] = [
 export const MOCK_MISSIONS: Mission[] = [
   {
     id: 1,
-    title: "Отвественность: Взять отвественность за ошибку",
-    description: "Выберите по вашему правильный ответы",
+    title: "Ответственность: Ответственность за результат",
+    description: "Основа отношений — ответственность за результат. Продемонстрируй ответственность, не ограниченную инструкциями.",
     reward: 30,
     progress: 0,
     completed: false,
@@ -20,15 +20,15 @@ export const MOCK_MISSIONS: Mission[] = [
   }, 
   {
     id: 2,
-    title: "Прозрачность: Включи статус-панель",
-    description: "Активируй информационную панель, чтобы команда могла видеть статус проекта.",
+    title: "Прозрачность: Открытое обсуждение проблем",
+    description: "Честно и открыто обсуждай проблемы и решения внутри команды, укрепляя доверие и обеспечивая ясность на каждом этапе проекта.",
     reward: 35,
     progress: 0,
     completed: false,
     type: 'main',
     difficulty: 'easy',
     requires: 1,
-    relatedNPC: 2
+    relatedNPC: 1
   },
   {
     id: 3,
@@ -39,18 +39,20 @@ export const MOCK_MISSIONS: Mission[] = [
     completed: false,
     type: 'main',
     difficulty: 'hard',
-    requires: 2
+    requires: 2,
+    relatedNPC: 1
   },
   {
     id: 4,
-    title: "Открытое общение: передай сообщение NPC",
-    description: "Подойди к NPC и нажми E, чтобы передать важное сообщение команде.",
+    title: "Открытое общение: Выбери правильный канал",
+    description: "Эффективная коммуникация — основа успешной команды. Выбери правильный способ общения для каждой ситуации, чтобы показать понимание открытого и эффективного общения.",
     reward: 20,
     progress: 0, 
     completed: false,
     type: 'main',
     difficulty: 'easy',
-    requires: 3
+    requires: 3,
+    relatedNPC: 1
   },
   {
     id: 5,
@@ -61,7 +63,8 @@ export const MOCK_MISSIONS: Mission[] = [
     completed: false,
     type: 'main',
     difficulty: 'hard',
-    requires: 4
+    requires: 4,
+    relatedNPC: 1
   },
   {
     id: 6,

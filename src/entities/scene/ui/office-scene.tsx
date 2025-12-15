@@ -8,10 +8,10 @@ import {
   RigidBody,
   CuboidCollider,
 } from "@react-three/rapier";
-import { Suspense, useState, useEffect, useMemo } from "react";
+import { Suspense, useState, useEffect, useMemo, useRef } from "react";
 import SceneLoader from "@/shared/ui/Loader/scene-loader";
 import WallObject from "@/entities/objects/ui/wall-object";
-import { Clone, OrbitControls, RoundedBox, Stats, useTexture } from "@react-three/drei";
+import { Clone, OrbitControls, RoundedBox, useTexture, Stats } from "@react-three/drei";
 import { LobbyNPC } from "@/entities/characters/lobby-npc/lobby-npc";
 import MissionHud from "@/widgets/game-hud/ui/mission-hud";
 import { TableObject } from "@/entities/objects/ui/table-object";
@@ -67,11 +67,50 @@ const WallSticker = ({position,rotation,stickerURL,args, opacity}: WallStickerPr
 
 export function OfficeScene() {
   const [playerPosition , setPlayerPosition] = useState<Vector3 | null>(null)
+  const lastPositionRef = useRef<Vector3 | null>(null)
+  const positionUpdateTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  
+  // Мемоизируем обработчик с throttling, чтобы избежать избыточных setState
+  // Обновляем позицию максимум 10 раз в секунду (каждые 100ms)
+  const handlePositionChange = useMemo(
+    () => (position: Vector3) => {
+      // Проверяем, изменилась ли позиция значительно
+      if (lastPositionRef.current) {
+        const distance = lastPositionRef.current.distanceToSquared(position)
+        // Если изменение меньше 0.01 единиц, игнорируем
+        if (distance < 0.01) {
+          return
+        }
+      }
+      
+      // Throttle: обновляем максимум раз в 100ms
+      if (positionUpdateTimeoutRef.current) {
+        return
+      }
+      
+      lastPositionRef.current = position.clone()
+      positionUpdateTimeoutRef.current = setTimeout(() => {
+        setPlayerPosition(position.clone())
+        positionUpdateTimeoutRef.current = null
+      }, 100)
+    },
+    []
+  )
   const [activeNPC, setActiveNPC] = useState<{id: number, name: string} | null>(null)
   const [activeMission, setActiveMission] = useState<{missionId: number} | null>(null)
   
   useEffect(() => {
     preloadOfficeModels()
+  }, [])
+
+  // Cleanup для setTimeout в handlePositionChange при размонтировании
+  useEffect(() => {
+    return () => {
+      if (positionUpdateTimeoutRef.current) {
+        clearTimeout(positionUpdateTimeoutRef.current)
+        positionUpdateTimeoutRef.current = null
+      }
+    }
   }, [])
   
    const walls = useMemo(() => (
@@ -131,7 +170,7 @@ export function OfficeScene() {
           max: 1,
           debounce: 200
         }}
-        frameloop="demand"
+        frameloop="always"
       >
         <Stats />
         <Suspense fallback={null}>
@@ -158,19 +197,21 @@ export function OfficeScene() {
             />
 
             {/* Пол (fixed + явный коллайдер) */}
-            <RigidBody type="fixed">
+            <RigidBody type="fixed" colliders={false}>
               {/* <FloorTexture widthSize={30} heightSize={50} /> */}
               <mesh position={[0,-1,0]}>
                 <boxGeometry args={[35,0.1,40]}/>
                 <meshStandardMaterial color="#E7E2BA"/>
               </mesh>
+              <CuboidCollider args={[17.5, 0.05, 20]} position={[0, -1.05, 0]} />
             </RigidBody>
 
-            <RigidBody type="fixed">
+            <RigidBody type="fixed" colliders={false}>
                 <mesh position={[0,-1,-26.9]}>
                     <boxGeometry args={[43,0.1,13.8]}/>
                     <meshStandardMaterial color="#E7E2BA"/>
                 </mesh>
+                <CuboidCollider args={[21.5, 0.05, 6.9]} position={[0, -1.05, -26.9]} />
             </RigidBody>
 
             {walls}
@@ -546,10 +587,12 @@ export function OfficeScene() {
             <ItemRender itemName="PingPongTable" scale={[3,2.5,3]} rotation={[0, Math.PI /2, 0]} position={[61.5,-1,-30]}/>
 
             <LobbyNPC path="lobby-npc" scale={1.25} position={[13,-1,16]} rotation={[0,Math.PI / -1.5,0]} npcId={1} npcName="Никита" playerPosition={playerPosition} onInteract={(id,name) => setActiveNPC({id,name})}/>
-            <CharacterController position={[10,0,15]} rotationY={Math.PI / 1} onPositionChange={setPlayerPosition} />
+            <CharacterController position={[10,1,15]} rotationY={Math.PI / 1} onPositionChange={handlePositionChange} />
             <OrbitControls />
             <MissionIndicator key="mission-1" playerPosition={playerPosition} missionId={1} missionPosition={[10,1.5,15]} onInteract={(missionId) => setActiveMission({missionId})}/>
             <MissionIndicator key="mission-2" playerPosition={playerPosition} missionId={2} missionPosition={[10,1.5,10]} onInteract={(missionId) => setActiveMission({missionId})}/>
+            <MissionIndicator key="mission-3" playerPosition={playerPosition} missionId={3} missionPosition={[10,1.5, 5]} onInteract={(missionId) => setActiveMission({missionId})}/>
+            <MissionIndicator key="mission-4" playerPosition={playerPosition} missionId={4} missionPosition={[10,1.5, 5]} onInteract={(missionId) => setActiveMission({missionId})}/>
           </Physics>
         </Suspense>
       </Canvas>

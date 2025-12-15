@@ -1,5 +1,5 @@
 // hooks/useNPCInteraction.tsx
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Vector3 } from "three";
 
@@ -23,28 +23,43 @@ export function useNPCInteraction({
   maxDistance = 3,
   onInteract,
 }: UseNPCInteractionProps) {
+  const wasNearRef = useRef(false);
   const [state, setState] = useState<NPCInteractionState>({
     isNearNPC: false,
     showInteractPrompt: false,
   });
 
-  // Проверка расстояния каждый кадр
+  // Кэшируем Vector3 для npcPosition, чтобы не создавать его каждый кадр
+  const npcVector = useMemo(
+    () => new Vector3(npcPosition[0], npcPosition[1], npcPosition[2]),
+    [npcPosition[0], npcPosition[1], npcPosition[2]]
+  );
+
+  // Используем useFrame для проверки расстояния
   useFrame(() => {
-    if (!playerPosition) return;
+    if (!playerPosition || !onInteract) {
+      if (wasNearRef.current) {
+        wasNearRef.current = false;
+        setState({
+          isNearNPC: false,
+          showInteractPrompt: false,
+        });
+      }
+      return;
+    }
 
-    const distance = playerPosition.distanceTo(
-      new Vector3(npcPosition[0], npcPosition[1], npcPosition[2])
-    );
-
+    // Используем кэшированный Vector3
+    const distance = playerPosition.distanceTo(npcVector);
     const newIsNearNPC = distance <= maxDistance;
 
-    setState((prev) => ({
-      isNearNPC: newIsNearNPC,
-      showInteractPrompt:
-        newIsNearNPC && !prev.showInteractPrompt
-          ? true
-          : prev.showInteractPrompt,
-    }));
+    // Обновляем состояние только при изменении статуса "рядом"
+    if (newIsNearNPC !== wasNearRef.current) {
+      wasNearRef.current = newIsNearNPC;
+      setState((prev) => ({
+        isNearNPC: newIsNearNPC,
+        showInteractPrompt: newIsNearNPC && !prev.showInteractPrompt ? true : prev.showInteractPrompt,
+      }));
+    }
   });
 
   // Обработчик клавиши E
