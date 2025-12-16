@@ -14,7 +14,7 @@ import { LobbyNPC } from "@/entities/characters/lobby-npc/lobby-npc";
 import SceneLoader from "@/shared/ui/Loader/scene-loader";
 import GameHud from "@/widgets/game-hud/ui/game-hud";
 import { preloadLobbyModels } from "@/shared/lib/preload-models";
-import { OrbitControls, Stats, useGLTF } from "@react-three/drei";
+import { OrbitControls, useGLTF } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { CuboidCollider, Physics, RigidBody } from "@react-three/rapier";
 import { Suspense, useMemo, useState, useEffect } from "react";
@@ -272,7 +272,6 @@ export default function LobbyScene() {
       }}
       frameloop="demand"
       >
-        <Stats />
         <Suspense fallback={null}>
           <Physics gravity={[0, -20, 0]}>
           <color attach="background" args={["#1E1E1E"]} />

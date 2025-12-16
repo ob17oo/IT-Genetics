@@ -1,6 +1,6 @@
 import { useMissionStore } from "@/widgets/store/mission-store"
 import { useAuthStore } from "@/widgets/store/auth-store"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 
 interface FirstMissionProps {
     missionId: number,
@@ -24,6 +24,7 @@ export default function FirstMission({missionId, onClose}: FirstMissionProps){
     const [selectedBug, setSelectedBug] = useState<number | null>(null)
     const [showSuccessMessage, setShowSuccessMessage] = useState(false)
     const [gameOver, setGameOver] = useState(false)
+    const [isMissionCompleted, setIsMissionCompleted] = useState(false)
     const completeMissionWithRewards = useMissionStore((state) => state.completeMissionWithRewards)
     const updateDNA = useAuthStore((state) => state.updateDNA)
 
@@ -58,16 +59,6 @@ export default function FirstMission({missionId, onClose}: FirstMissionProps){
         }
     ]
 
-    useEffect(() => {
-        if (gameStarted && timeLeft > 0 && fixedBugs.length < codeBugs.length) {
-            const timer = setTimeout(() => {
-                setTimeLeft(timeLeft - 1)
-            }, 1000)
-            return () => clearTimeout(timer)
-        } else if (timeLeft === 0 || (gameStarted && fixedBugs.length === codeBugs.length)) {
-            handleGameEnd()
-        }
-    }, [timeLeft, gameStarted, fixedBugs.length])
 
     const startGame = () => {
         setGameStarted(true)
@@ -75,6 +66,9 @@ export default function FirstMission({missionId, onClose}: FirstMissionProps){
         setTimeLeft(60)
         setFixedBugs([])
         setSelectedBug(null)
+        setIsMissionCompleted(false)
+        setShowSuccessMessage(false)
+        setGameOver(false)
     }
 
     const handleBugClick = (bugId: number) => {
@@ -92,18 +86,24 @@ export default function FirstMission({missionId, onClose}: FirstMissionProps){
             b.id === selectedBug ? { ...b, code: b.fixedCode } : b
         )
         setBugs(updatedBugs)
-        setFixedBugs([...fixedBugs, selectedBug])
+        const newFixedBugs = [...fixedBugs, selectedBug]
+        setFixedBugs(newFixedBugs)
         setSelectedBug(null)
 
         // Проверяем, все ли баги исправлены
-        if (fixedBugs.length + 1 === codeBugs.length) {
-            setTimeout(() => handleGameEnd(), 500)
+        if (newFixedBugs.length === codeBugs.length) {
+            setTimeout(() => handleGameEnd(true), 500)
         }
     }
 
-    const handleGameEnd = () => {
+    const handleGameEnd = useCallback((isSuccess: boolean = false) => {
+        // Предотвращаем повторную обработку завершения игры
+        if (isMissionCompleted) return
+        
         setGameStarted(false)
-        if (fixedBugs.length === codeBugs.length || (timeLeft > 0 && fixedBugs.length === codeBugs.length)) {
+        setIsMissionCompleted(true)
+        
+        if (isSuccess || fixedBugs.length === codeBugs.length) {
             const reward: number = completeMissionWithRewards(missionId)
             if (reward > 0) {
                 updateDNA(reward)
@@ -115,7 +115,7 @@ export default function FirstMission({missionId, onClose}: FirstMissionProps){
         } else {
             setGameOver(true)
         }
-    }
+    }, [isMissionCompleted, fixedBugs.length, codeBugs.length, completeMissionWithRewards, missionId, updateDNA, onClose])
 
     const restartGame = () => {
         setGameOver(false)
@@ -123,8 +123,25 @@ export default function FirstMission({missionId, onClose}: FirstMissionProps){
         setSelectedBug(null)
         setBugs([...codeBugs])
         setTimeLeft(60)
+        setIsMissionCompleted(false)
+        setShowSuccessMessage(false)
         setGameStarted(true)
     }
+
+    useEffect(() => {
+      // Если миссия уже завершена, не обрабатываем дальше
+      if (isMissionCompleted) return
+      
+      if (gameStarted && timeLeft > 0 && fixedBugs.length < codeBugs.length) {
+        const timer = setTimeout(() => {
+          setTimeLeft(timeLeft - 1);
+        }, 1000);
+        return () => clearTimeout(timer);
+      } else if (gameStarted && timeLeft === 0 && fixedBugs.length < codeBugs.length) {
+        // Только если время вышло И миссия не выполнена
+        handleGameEnd(false);
+      }
+    }, [timeLeft, gameStarted, fixedBugs.length, isMissionCompleted, codeBugs.length, handleGameEnd]);
 
     const selectedBugData = bugs.find(b => b.id === selectedBug)
 
@@ -143,7 +160,7 @@ export default function FirstMission({missionId, onClose}: FirstMissionProps){
                         <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-xl p-4 mt-2">
                             <p className="text-yellow-200 text-sm font-semibold mb-1">🎯 Цель игры:</p>
                             <p className="text-yellow-200/70 text-xs">
-                                Найди и исправь все 4 ошибки в коде. У тебя есть 60 секунд. Кликай на строки с ошибками, затем нажми "Исправить".
+                                Найди и исправь все 4 ошибки в коде. У тебя есть 60 секунд. Кликай на строки с ошибками, затем нажми &quot;Исправить&quot;.
                             </p>
                         </div>
                     </section>

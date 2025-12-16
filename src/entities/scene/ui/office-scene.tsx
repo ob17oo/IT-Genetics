@@ -11,7 +11,7 @@ import {
 import { Suspense, useState, useEffect, useMemo, useRef } from "react";
 import SceneLoader from "@/shared/ui/Loader/scene-loader";
 import WallObject from "@/entities/objects/ui/wall-object";
-import { Clone, OrbitControls, RoundedBox, useTexture, Stats } from "@react-three/drei";
+import { Clone, OrbitControls, RoundedBox, useTexture } from "@react-three/drei";
 import { LobbyNPC } from "@/entities/characters/lobby-npc/lobby-npc";
 import MissionHud from "@/widgets/game-hud/ui/mission-hud";
 import { TableObject } from "@/entities/objects/ui/table-object";
@@ -172,7 +172,6 @@ export function OfficeScene() {
         }}
         frameloop="always"
       >
-        <Stats />
         <Suspense fallback={null}>
           <Physics
           gravity={[0, -20, 0]}

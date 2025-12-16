@@ -278,7 +278,7 @@ export default function ThirdMission({missionId, onClose}: ThirdMissionProps){
                     </section>
 
                     <section className="relative bg-[#0a0a0a] border-2 border-yellow-500/30 rounded-xl p-8 min-h-[400px] overflow-hidden">
-                        <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/5 to-transparent" />
+                        <div className="absolute inset-0 bg-linear-to-br from-yellow-500/5 to-transparent" />
                         
                         {dataItems.length === 0 && (
                             <div className="absolute inset-0 flex items-center justify-center">

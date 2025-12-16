@@ -1,6 +1,6 @@
 import { useMissionStore } from "@/widgets/store/mission-store"
 import { useAuthStore } from "@/widgets/store/auth-store"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 
 interface FourthMissionProps {
     missionId: number,
@@ -28,6 +28,7 @@ export default function FourthMission({missionId, onClose}: FourthMissionProps){
     const [showFeedback, setShowFeedback] = useState(false)
     const [showSuccessMessage, setShowSuccessMessage] = useState(false)
     const [score, setScore] = useState(0)
+    const scoreRef = useRef(0)
     const [completedScenarios, setCompletedScenarios] = useState<number[]>([])
     const completeMissionWithRewards = useMissionStore((state) => state.completeMissionWithRewards)
     const updateMissionProgress = useMissionStore((state) => state.updateMissionProgress)
@@ -224,7 +225,12 @@ export default function FourthMission({missionId, onClose}: FourthMissionProps){
         const channel = scenario.channels.find(c => c.id === channelId)
         
         if (channel?.isCorrect) {
-            setScore(prev => prev + 1)
+            // Обновляем scoreRef синхронно для использования в handleNext
+            setScore(prev => {
+                const newScore = prev + 1
+                scoreRef.current = newScore
+                return newScore
+            })
             setCompletedScenarios(prev => [...prev, scenario.id])
         }
         
@@ -238,7 +244,8 @@ export default function FourthMission({missionId, onClose}: FourthMissionProps){
             setShowFeedback(false)
         } else {
             // Все сценарии пройдены
-            const finalScore = score + (scenarios[currentScenario].channels.find(c => c.id === selectedChannel)?.isCorrect ? 1 : 0)
+            // Используем актуальное значение score из ref (оно уже включает последний правильный ответ)
+            const finalScore = scoreRef.current
             const progress = Math.round((finalScore / scenarios.length) * 100)
             updateMissionProgress(missionId, progress)
             
@@ -260,6 +267,11 @@ export default function FourthMission({missionId, onClose}: FourthMissionProps){
             }
         }
     }
+
+    // Синхронизируем scoreRef с score
+    useEffect(() => {
+        scoreRef.current = score
+    }, [score])
 
     // Обновляем прогресс при изменении score
     useEffect(() => {
