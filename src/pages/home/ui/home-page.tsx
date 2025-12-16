@@ -30,15 +30,15 @@ export default function HomePage() {
             </section>
             <section className="flex flex-col gap-3">
                 <AccentButton  type="button" onClick={handleRouting}>
-                    <Image src="static/Play.svg" alt="Play" width={26} height={26} /> 
+                    <Image src="/static/play.svg" alt="Play" width={26} height={26} /> 
                     Играть
                 </AccentButton>
                 <DefaultButton type="button" onClick={() => router.push('/setting')}>
-                    <Image src="static/Setting.svg" alt="Setting" width={24} height={24} />
+                    <Image src="/static/setting.svg" alt="Setting" width={24} height={24} />
                     Настройки
                 </DefaultButton>
                 <DefaultButton  type="button" onClick={() => router.push("/about")}>
-                    <Image src="static/Info.svg" alt="Info" width={24} height={24} />
+                    <Image src="/static/info.svg" alt="Info" width={24} height={24} />
                     O нас
                 </DefaultButton>
             </section>

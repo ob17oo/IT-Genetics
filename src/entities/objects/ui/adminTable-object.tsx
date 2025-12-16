@@ -7,7 +7,7 @@ interface AdminTableProps{
 }
 
 export function AdminTableObject({scale , position, rotation}: AdminTableProps){
-    const { scene } = useGLTF('/model/furniture/adminTable.glb')
+    const { scene } = useGLTF('/model/furniture/AdminTable.glb')
     return (
         <primitive object={scene} scale={scale} position={position} rotation={rotation} />
     )

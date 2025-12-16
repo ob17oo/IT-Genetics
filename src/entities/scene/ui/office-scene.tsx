@@ -367,16 +367,16 @@ export function OfficeScene() {
 
             {/* Кухня */}
             <ItemRender itemName="wallTV" scale={3.5} position={[17.1,8,-12]} rotation={[0,Math.PI / -2, 0]}/>
-            <ItemRender itemName="FourFireCase" scale={[120,120,30]} position={[17.4,0,-3.5]} rotation={[0,Math.PI / -2, 0]}/>
+            <ItemRender itemName="FourFirecase" scale={[120,120,30]} position={[17.4,0,-3.5]} rotation={[0,Math.PI / -2, 0]}/>
             <ItemRender itemName="flower/flowerTall" scale={0.009} position={[16,-0.5,-0.3]} rotation={[0,0,0]}/>
             <ItemRender itemName="flower/flowerPalm" scale={2} position={[16.4,-0.92,5]} rotation={[0,0,0]}/>
             <ItemRender itemName="flower/flowerRhyzome" scale={1.5} position={[16,-0.9,7]} rotation={[0,0,0]}/>
 
 
-            <ItemRender itemName="HangingLamp" scale={10} position={[22.7, 3, 17]} rotation={[0,Math.PI / -2, 0]}/>
-            <ItemRender itemName="HangingLamp" scale={10} position={[23.8, 3, 17]} rotation={[0,Math.PI / -2, 0]}/>
-            <ItemRender itemName="HangingLamp" scale={10} position={[24.9, 3, 17]} rotation={[0,Math.PI / -2, 0]}/>
-            <ItemRender itemName="HangingLamp" scale={10} position={[26, 3, 17]} rotation={[0,Math.PI / -2, 0]}/>
+            <ItemRender itemName="hangingLamp" scale={10} position={[22.7, 3, 17]} rotation={[0,Math.PI / -2, 0]}/>
+            <ItemRender itemName="hangingLamp" scale={10} position={[23.8, 3, 17]} rotation={[0,Math.PI / -2, 0]}/>
+            <ItemRender itemName="hangingLamp" scale={10} position={[24.9, 3, 17]} rotation={[0,Math.PI / -2, 0]}/>
+            <ItemRender itemName="hangingLamp" scale={10} position={[26, 3, 17]} rotation={[0,Math.PI / -2, 0]}/>
 
             <ItemRender itemName="DinnerTable" scale={[4.5,4.5,4.5]} position={[22, -1, 18.2]} rotation={[0,Math.PI / 2,0]}/>
 
@@ -397,7 +397,7 @@ export function OfficeScene() {
               </RoundedBox>
               <ItemRender scale={[4,4.2,4.3]} itemName="DinnerWindow" position={[31.8, 1.5, 15.5]} rotation={[0, Math.PI / 1,0]}/>
               <ItemRender itemName="Radiator" scale={[2,2,2]} rotation={[0,Math.PI / -2,0]} position={[31.2,-0.6,15.5]}/>
-              <ItemRender itemName="WaterStand" scale={[1.5,1.5,1.5]} rotation={[0,Math.PI / -1.5,0]} position={[31,-0.85,10.8]}/>
+              <ItemRender itemName="waterStand" scale={[1.5,1.5,1.5]} rotation={[0,Math.PI / -1.5,0]} position={[31,-0.85,10.8]}/>
             </group>
 
             <group>
@@ -423,7 +423,7 @@ export function OfficeScene() {
             </group>
 
 
-            <ItemRender itemName="Fridge" scale={[0.4,0.3,0.4]} rotation={[0,0,0]} position={[19,-1,-4.5]}/>
+            <ItemRender itemName="fridge" scale={[0.4,0.3,0.4]} rotation={[0,0,0]} position={[19,-1,-4.5]}/>
             <ItemRender itemName="KitchenCabinets" scale={[3.6,2.8,3]} rotation={[0,0,0]} position={[23.4,-1,-5]}/>
 
             {/* Задняя часть */}
@@ -467,9 +467,9 @@ export function OfficeScene() {
 
             <ItemRender itemName="WaterCooler" scale={0.3} position={[-17.5,-1,-17]} rotation={[0,Math.PI / -2,0]}/>
 
-            <ItemRender itemName="armChair" scale={5} position={[-18,-1,-21]} rotation={[0,Math.PI / 1.5,0]}/>
-            <ItemRender itemName="poengChair" scale={0.05} position={[-20,-0.5,-27]} rotation={[0,Math.PI / 0.55,0]}/>
-            <ItemRender itemName="bagChair" scale={2.5} position={[-18,-1,-29.5]} rotation={[0,Math.PI / 2,0]}/>
+            <ItemRender itemName="armchair" scale={5} position={[-18,-1,-21]} rotation={[0,Math.PI / 1.5,0]}/>
+            <ItemRender itemName="PoengChair" scale={0.05} position={[-20,-0.5,-27]} rotation={[0,Math.PI / 0.55,0]}/>
+            <ItemRender itemName="BagChair" scale={2.5} position={[-18,-1,-29.5]} rotation={[0,Math.PI / 2,0]}/>
 
              <CurveWallObject 
               radius={14}          // Глубина = 20 (узкий овал)

@@ -56,7 +56,7 @@ export default function GameHud(){
                   </section>
               </section>
               <button className="w-10 h-10 flex items-center justify-center bg-yellow-500 rounded-2xl transition-all duration-300 hover:scale-105" onClick={() => setIsOpen(true)}>
-                  <Image src="/static/Menu.svg"  alt="Menu" width={24} height={24} />
+                  <Image src="/static/menu.svg"  alt="Menu" width={24} height={24} />
               </button>
               <GameDialog isOpen={isOpen} onClose={() => setIsOpen(false)} />
             </section>

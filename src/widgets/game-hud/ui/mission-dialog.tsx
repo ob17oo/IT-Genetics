@@ -36,7 +36,7 @@ export default function MissionDialog({missionId, onClose}: MissionDialogProps){
                                 onClick={onClose}
                                 className="opacity-30 transition-all duration-300 ease-in-out hover:scale-105 hover:opacity-100"
                                 >
-                                <Image src="/static/Close.svg" alt="Close" width={24} height={24} />
+                                <Image src="/static/close.svg" alt="Close" width={24} height={24} />
                             </button>
                         </section>
                         {renderMission()}

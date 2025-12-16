@@ -24,28 +24,28 @@ export default function AboutPage(){
              <section className="w-full grid grid-cols-2 gap-6">
                 <section className="flex flex-col items-start gap-3 p-6 bg-transparent rounded-3xl border border-yellow-500/30 transition-all duration-300 ease-in-out hover:scale-105">
                     <section className="flex items-center justify-center p-4 bg-yellow-500 rounded-3xl">
-                        <Image width={36} height={36} src="/static/Target.svg" alt="Target" />
+                        <Image width={36} height={36} src="/static/target.svg" alt="Target" />
                     </section>
                     <h2 className="text-yellow-200 text-[18px]">Цель игры</h2>
                     <p className="text-[14px] text-yellow-300/70">Собирайте элементы разработчика: Hard Skills, Soft Skills и черты личности, чтобы создавать специалистов различных IT-направлений.</p>
                 </section>
                 <section className="flex flex-col items-start gap-3 p-6 bg-transparent rounded-3xl border border-yellow-500/30 transition-all duration-300 ease-in-out hover:scale-105">
                     <section className="flex items-center justify-center p-4 bg-yellow-500 rounded-3xl">
-                        <Image width={36} height={36} src="/static/Stairs.svg" alt="Stairs" />
+                        <Image width={36} height={36} src="/static/stairs.svg" alt="Stairs" />
                     </section>
                     <h2 className="text-yellow-200 text-[18px]">Развитие</h2>
                     <p className="text-[14px] text-yellow-300/70">Начните как интерн и пройдите путь до опытного специалиста, открывая новые уровни и возможности на каждом этапе.</p>
                 </section>
                 <section className="flex flex-col items-start gap-3 p-6 bg-transparent rounded-3xl border border-yellow-500/30 transition-all duration-300 ease-in-out hover:scale-105">
                     <section className="flex items-center justify-center p-4 bg-yellow-500 rounded-3xl">
-                        <Image width={36} height={36} src="/static/Profile.svg" alt="Profile" />
+                        <Image width={36} height={36} src="/static/profile.svg" alt="Profile" />
                     </section>
                     <h2 className="text-yellow-200 text-[18px]">Специализация</h2>
                     <p className="text-[14px] text-yellow-300/70">Создавайте веб-разработчиков, мобильных разработчиков, DevOps инженеров и других специалистов IT-индустрии.</p>
                 </section>
                 <section className="flex flex-col items-start gap-3 p-6 bg-transparent rounded-3xl border border-yellow-500/30 transition-all duration-300 ease-in-out hover:scale-105">
                     <section className="flex items-center justify-center p-4 bg-yellow-500 rounded-3xl">
-                        <Image width={36} height={36} src="/static/DNA.svg" alt="DNA" />
+                        <Image width={36} height={36} src="/static/dna.svg" alt="DNA" />
                     </section>
                     <h2 className="text-yellow-200 text-[18px]">Крафтинг</h2>
                     <p className="text-[14px] text-yellow-300/70">Каждый специалист требует уникального набора навыков и качеств. Собирайте правильные комбинации для создания идеального работника.</p>
