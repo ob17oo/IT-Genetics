@@ -1149,7 +1149,7 @@ export function OfficeScene() {
               playerPosition={playerPosition}
               onInteract={(id, name) => setActiveNPC({ id, name })}
             />
-            {/* <CharacterController position={[10,1,15]} rotationY={Math.PI / 1} onPositionChange={handlePositionChange} /> */}
+            <CharacterController position={[10,1,15]} rotationY={Math.PI / 1} onPositionChange={handlePositionChange} />
             <OrbitControls />
             <MissionIndicator
               key="mission-1"
