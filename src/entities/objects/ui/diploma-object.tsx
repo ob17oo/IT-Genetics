@@ -6,7 +6,7 @@ interface DiplomaStandProps{
     rotation?: [number,number,number]
 }
 export function DiplomaStand({position,scale,rotation}: DiplomaStandProps){
-    const { scene } = useGLTF('model/furniture/DiplomaStand.glb')
+    const { scene } = useGLTF('/model/furniture/diplomaStand.glb')
     return (
         <Clone object={scene} scale={scale} rotation={rotation} position={position} />
     )

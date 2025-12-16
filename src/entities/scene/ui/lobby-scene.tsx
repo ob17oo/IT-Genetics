@@ -361,8 +361,8 @@ export default function LobbyScene() {
               <ComputerObject scale={0.0025} position={[-7.5, 1.9, -4.9]} rotation={[0, Math.PI / 1, 0]}/>
           </RigidBody>
 
-          <ItemRender name="InterCome" scale={0.03} position={[-7,2,-7.25]}/>
-          <ItemRender name="PaperStack" scale={0.025} position={[-10,0.5,-4.5]} rotation={[0,Math.PI / -4.5,0]}/>
+          <ItemRender name="intercome" scale={0.03} position={[-7,2,-7.25]}/>
+          <ItemRender name="paperStack" scale={0.025} position={[-10,0.5,-4.5]} rotation={[0,Math.PI / -4.5,0]}/>
           <ItemRender name="magazineStack" scale={3.5} position={[15,0.35,0]} rotation={[0,Math.PI / -4.5,0]}/>
           <ItemRender name="penaplastLogotype" scale={0.7} position={[-10.8,1.35,-3.6]} rotation={[0,Math.PI / 6,0]}/>
           <ItemRender name="candyBowl" scale={0.0003} position={[-4.8,1.68,-3.6]} rotation={[0,Math.PI / 6,0]}/>
