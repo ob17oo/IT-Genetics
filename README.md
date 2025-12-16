@@ -5,13 +5,12 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 First, run the development server:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+1. Откройте терминал с нужной директорией
+2. git clone https://github.com/ob17oo/IT-Genetics.git
+3. npm i или npm install(Зависит от вашего пакетного менеджера)
+3. npm run dev(Так же зависит от вашего пакетного менеджера)
+
+Готово, проект запустится на localhost:3000, если он занят то будет использован другой свободный порт
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
