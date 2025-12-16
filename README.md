@@ -36,14 +36,40 @@ src/
 – **Валюта DNA** – Внутриигровая валюта за выполнение миссий, используетя для покупок в магазине
 – **Система прогресса** – Отслеживание прогресса выполнения миссий (0-100%)
 – **3D сцена** – Интерактивные 3D сцены, с физикой
-## Deploy on Vercel
 
 ## Стек проекта:
 
-![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white)
-![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
-![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwind-css&logoColor=white)
-![Three.js](https://img.shields.io/badge/Three.js-000000?style=for-the-badge&logo=three.js&logoColor=white)
-![Zustand](https://img.shields.io/badge/Zustand-764ABC?style=for-the-badge&logo=redux&logoColor=white)
-
+<table>
+  <tr>
+    <td align="center" width="200">
+      <img src="https://img.shields.io/badge/Next.js-000000?style=for-the-bage&logo=next.js&logoColor=white"/>
+      <br>
+      <strog>Next</strog>
+    </td>
+    <td align="center" width="200">
+      <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)"/>
+      <br>
+      <strog>TypeScript</strog>
+    </td>
+    <td align="center" width="200">
+      <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black"/>
+      <br>
+      <strog>React</strog>
+    </td>
+    <td align="center" width="200">
+      <img src="https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwind-css&logoColor=white"/>
+      <br>
+      <strog>TailWindCSS</strog>
+    </td>
+    <td align="center" width="200">
+      <img src="https://img.shields.io/badge/Three.js-000000?style=for-the-badge&logo=three.js&logoColor=white"/>
+      <br>
+      <strog>THREE.JS</strog>
+    </td>
+    <td align="center" width="200">
+      <img src="https://img.shields.io/badge/Zustand-764ABC?style=for-the-badge&logo=redux&logoColor=white"/>
+      <br>
+      <strog>Zustand</strog>
+    </td>
+  </tr>
+</table>
