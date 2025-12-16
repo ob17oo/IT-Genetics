@@ -225,9 +225,9 @@ export function CharacterController({
     >
       <group ref={container}>
         {/* Точка, куда смотрит камера (впереди персонажа) */}
-        <group ref={cameraTarget} position-z={2} />
+        <group ref={cameraTarget} position-z={3} />
         {/* Узел позиции камеры — «штанга»: выше и позади */}
-        <group ref={cameraBoom} position-y={4} position-z={-3.5} />
+        <group ref={cameraBoom} position-y={3.5} position-z={-4} />
         {/* Персонаж */}
         <group ref={character}>
           <Character scale={1.2} animation={animation} />
