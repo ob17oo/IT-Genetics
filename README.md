@@ -2,7 +2,7 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-First, run the development server:
+Установка проекта:
 
 ```bash
 1. Откройте терминал с нужной директорией
@@ -13,23 +13,37 @@ First, run the development server:
 Готово, проект запустится на localhost:3000, если он занят то будет использован другой свободный порт
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Архитектура проекта:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+**FSD** (Feature-Sliced Design) — это методология организации кода во фронтенд-разработке, которая помогает структурировать проект по принципу разделения на фичи и слои (слайсы) для повышения масштабируемости, модульности и удобства поддержки больших приложений, особенно в React-проектах, путем создания четких правил зависимостей между частями кода.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+src/
+├── app/ # Next.js роутинг и конфигурация
+├── pages/ # Компоненты страниц
+├── widgets/ # Композитные UI-блоки (HUD, stores)
+├── features/ # Бизнес-функции (missions, profile, shop)
+├── entities/ # Бизнес-сущности (characters, objects, scenes)
+├── shared/ # Переиспользуемый код (ui, lib, types, constants)
+└── hooks/ # Переиспользуемые React хуки
 
-## Learn More
+```
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
+## Игровые механики:
+– **Управление персонажем** – Third-person с управлением камерой от третьего лица (**WASD** для передвижений, **SHIFT** для бега)
+– **Система миссий** – Основные и побочные миссии с прогрессом выполнения и зависимости между миссиями (Вторую миссию нельзя открыть без завершения первой)
+– **Взаимодействие с NPC(Non-player character)** – Диалоги с NPC, получение миссий, подсказки взаимодействия (Нажать E)
+– **Валюта DNA** – Внутриигровая валюта за выполнение миссий, используетя для покупок в магазине
+– **Система прогресса** – Отслеживание прогресса выполнения миссий (0-100%)
+– **3D сцена** – Интерактивные 3D сцены, с физикой
 ## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Стек проекта:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![Three.js](https://img.shields.io/badge/Three.js-000000?style=for-the-badge&logo=three.js&logoColor=white)
+![Zustand](https://img.shields.io/badge/Zustand-764ABC?style=for-the-badge&logo=redux&logoColor=white)
+
