@@ -362,14 +362,14 @@ const WALL_POSITION: MapItemProps[] = [
   {
     position: [42, 4.2, -2.5],
     size: [27, 0.3, 10.5],
-    color: '#FFFFFF',
-    rotation: [0,0,0],
+    color: "#FFFFFF",
+    rotation: [0, 0, 0],
   },
   {
     position: [28.8, 4.2, -4.55],
     size: [4.4, 0.3, 10.5],
-    color: '#FFFFFF',
-    rotation: [0,Math.PI / 2,0],
+    color: "#FFFFFF",
+    rotation: [0, Math.PI / 2, 0],
   },
 
   //Игровая
@@ -382,9 +382,9 @@ const WALL_POSITION: MapItemProps[] = [
   },
   {
     position: [55.5, 4.2, -5.8],
-    size: [6.5, 0.3,10.5],
-    color: '#FFFFFF',
-    rotation: [0, Math.PI / 2, 0]
+    size: [6.5, 0.3, 10.5],
+    color: "#FFFFFF",
+    rotation: [0, Math.PI / 2, 0],
   },
   {
     position: [67.5, 4.2, -24.5],
