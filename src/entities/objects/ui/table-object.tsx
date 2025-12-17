@@ -2,7 +2,7 @@ import { Clone, useGLTF } from "@react-three/drei";
 import { ChairObject } from "./chair-object";
 import { ComputerObject } from "./computer-object";
 import { FlowerObject } from "./flower-object";
-import { CuboidCollider, RigidBody } from "@react-three/rapier";
+import { CuboidCollider } from "@react-three/rapier";
 
 interface TableProps{
     position?: [number,number,number],

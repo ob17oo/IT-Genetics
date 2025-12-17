@@ -20,7 +20,8 @@ import { CuboidCollider, CylinderCollider, Physics, RigidBody } from "@react-thr
 import { Suspense, useMemo, useState, useEffect } from "react";
 import { Vector3 } from "three";
 import MissionHud from "@/widgets/game-hud/ui/mission-hud";
-
+import { InstancedWindow } from "@/entities/objects/ui/instanced-window";
+import { WINDOW_CONFIG, DOOR_CONFIGS, WALL_CONFIGS, DIPLOMA_CONFIGS } from "@/shared/config/lobby-scene-config";
 interface defaultGLBProps {
   scale?: number | [number, number, number];
   position?: [number, number, number];
@@ -44,168 +45,6 @@ function ItemRender({
     />
   );
 }
-
-const WALL_CONFIGS = [
-  {
-    position: [-7, 3, 7.5] as [number, number, number],
-    size: [14, 8, 0.2],
-    color: "#F2F2F2" as string,
-    rotation: [0, 0, 0] as [number, number, number],
-  },
-  {
-    position: [-20, 4, 0] as [number, number, number],
-    size: [0.2, 10, 15],
-    color: "#F2F2F2" as string,
-    rotation: [0, 0, 0] as [number, number, number],
-  },
-  {
-    position: [-10, 4, -7.5] as [number, number, number],
-    size: [20, 10, 0.2],
-    color: "#F2F2F2" as string,
-    rotation: [0, 0, 0] as [number, number, number],
-  },
-  {
-    position: [14.5, 4, 7.5] as [number, number, number],
-    size: [11, 10, 0.2],
-    color: "#F2F2F2" as string,
-    rotation: [0, 0, 0] as [number, number, number],
-  },
-  {
-    position: [14.5, 4, -7.5] as [number, number, number],
-    size: [11, 10, 0.2],
-    color: "#F2F2F2" as string,
-    rotation: [0, 0, 0] as [number, number, number],
-  },
-  {
-    position: [20, 4, 0] as [number, number, number],
-    size: [0.2, 10, 15],
-    color: "#F2F2F2" as string,
-    rotation: [0, 0, 0] as [number, number, number],
-  },
-  {
-    position: [-20, 4, 8.5] as [number, number, number],
-    size: [0.2, 10, 2.2],
-    color: "#F2F2F2" as string,
-    rotation: [0, 0, 0] as [number, number, number],
-  },
-  {
-    position: [-14, 3, 8.5] as [number, number, number],
-    size: [0.2, 8, 2.2],
-    color: "#F2F2F2" as string,
-    rotation: [0, 0, 0] as [number, number, number],
-  },
-  {
-    position: [-10, 4, 9.7] as [number, number, number],
-    size: [20, 10, 0.2],
-    color: "#F2F2F2" as string,
-    rotation: [0, 0, 0] as [number, number, number],
-  },
-  {
-    position: [0, 4, 12.05] as [number, number, number],
-    size: [4.9, 10, 0.2],
-    color: "#F2F2F2" as string,
-    rotation: [0, Math.PI / 2, 0] as [number, number, number],
-  },
-  {
-    position: [0, 3, 8.5] as [number, number, number],
-    size: [2.2, 8, 0.2],
-    color: "#F2F2F2" as string,
-    rotation: [0, Math.PI / 2, 0] as [number, number, number],
-  },
-  {
-    position: [9, 4, 11] as [number, number, number],
-    size: [7.2, 10, 0.2],
-    color: "#F2F2F2" as string,
-    rotation: [0, Math.PI / 2, 0] as [number, number, number],
-  },
-  {
-    position: [8.7, 4, 8.9] as [number, number, number],
-    size: [3, 10, 0.4],
-    color: "#F2F2F2" as string,
-    rotation: [0, Math.PI / 2, 0] as [number, number, number],
-  },
-  {
-    position: [4.5, 4, 14.5] as [number, number, number],
-    size: [9.2, 10, 0.2],
-    color: "#F2F2F2" as string,
-    rotation: [0, 0, 0] as [number, number, number],
-  },
-  {
-    position: [4.5, 4, -7.5] as [number, number, number],
-    size: [9, 10, 0.2],
-    color: "#0e1111",
-    rotation: [0, 0, 0] as [number, number, number],
-  },
-];
-
-const DOOR_CONFIGS = [
-  {
-    position: [-17, 1, -7.7] as [number, number, number],
-    rotation: [0, 0, 0] as [number, number, number],
-  },
-  {
-    position: [-17, 1, 9.3] as [number, number, number],
-    rotation: [0, 0, 0] as [number, number, number],
-  },
-  {
-    position: [-11, 1, 7.1] as [number, number, number],
-    rotation: [0, 0, 0] as [number, number, number],
-  },
-  {
-    position: [-3, 1, 7.1] as [number, number, number],
-    rotation: [0, 0, 0] as [number, number, number],
-  },
-  {
-    position: [18, 1, 7.1] as [number, number, number],
-    rotation: [0, 0, 0] as [number, number, number],
-  },
-  {
-    position: [19.6, 1, 0] as [number, number, number],
-    rotation: [0, Math.PI / 2, 0] as [number, number, number],
-  },
-  {
-    position: [8.6, 1, 12] as [number, number, number],
-    rotation: [0, Math.PI / 2, 0] as [number, number, number],
-  },
-];
-
-const DIPLOMA_CONFIGS = [
-  {
-    position: [16.9, 4.5, 7.1] as [number, number, number],
-    rotation: [0, Math.PI, 0] as [number, number, number],
-    scale: 8 as number,
-  },
-  {
-    position: [13.7, 4.5, 7.1] as [number, number, number],
-    rotation: [0, Math.PI, 0] as [number, number, number],
-    scale: 8 as number,
-  },
-  {
-    position: [10.5, 4.5, 7.1] as [number, number, number],
-    rotation: [0, Math.PI, 0] as [number, number, number],
-    scale: 8 as number,
-  },
-  {
-    position: [14, 3, 7.1] as [number, number, number],
-    rotation: [0, Math.PI, 0] as [number, number, number],
-    scale: 8 as number,
-  },
-  {
-    position: [10.8, 3, 7.1] as [number, number, number],
-    rotation: [0, Math.PI, 0] as [number, number, number],
-    scale: 8 as number,
-  },
-  {
-    position: [15.5, 1.5, 7.1] as [number, number, number],
-    rotation: [0, Math.PI, 0] as [number, number, number],
-    scale: 8 as number,
-  },
-  {
-    position: [10.5, 1.5, 7.1] as [number, number, number],
-    rotation: [0, Math.PI, 0] as [number, number, number],
-    scale: 8 as number,
-  },
-];
 
 export default function LobbyScene() {
   const [playerPosition, setPlayerPosition] = useState<Vector3 | null>(null);
@@ -330,22 +169,25 @@ export default function LobbyScene() {
             </RigidBody>
 
             {/* ПОТОЛКИ без коллайдеров (только визуал) */}
-            <mesh position={[0, 9, 0]}>
-              <boxGeometry args={[40, 0.1, 15]} />
-              <meshStandardMaterial color="#FFFFFF" />
-            </mesh>
-            <mesh position={[-17, 9, 8.5]}>
-              <boxGeometry args={[6, 0.1, 2.5]} />
+            <mesh position={[1, 9, 0]}>
+              <boxGeometry args={[38, 0.1, 15]} />
               <meshStandardMaterial color="#FFFFFF" />
             </mesh>
             <mesh position={[4.5, 9, 11]}>
               <boxGeometry args={[9, 0.1, 7]} />
               <meshStandardMaterial color="#FFFFFF" />
             </mesh>
-            <mesh position={[-7, 9, 8.5]}>
-              <boxGeometry args={[14, 0.1, 2.5]} />
+            <mesh position={[-9, 9, 8.5]}>
+              <boxGeometry args={[18, 0.1, 2.5]} />
               <meshStandardMaterial color="#FFFFFF" />
             </mesh>
+
+            <InstancedWindow instances={WINDOW_CONFIG.map((window) => ({
+              position: window.position,
+              rotation: window.rotation,
+              scale: window.scale,
+              color: window.color
+            }))}/>
 
             {walls}
             {diplomas}

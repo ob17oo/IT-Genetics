@@ -153,7 +153,6 @@ export function OfficeScene() {
 
   const tables = useMemo(
     () => (
-      // <RigidBody type="fixed">
       <>
         {TABLE_POSITIONS.map((table, i) => (
           <group key={i}>
@@ -166,7 +165,6 @@ export function OfficeScene() {
           </group>
         ))}
       </>
-      // {/* </RigidBody> */}
     ),
     []
   );
@@ -1136,7 +1134,13 @@ export function OfficeScene() {
               itemName="PingPongTable"
               scale={[3, 2.5, 3]}
               rotation={[0, Math.PI / 2, 0]}
-              position={[61.5, -1, -30]}
+              position={[61.5, -1, -25]}
+            />
+
+            <OfficeDoorObject 
+            scale={1.4}
+            position={[55.8,1.7,-4.5]}
+            rotation={[0,Math.PI / -2,0]}
             />
 
             <LobbyNPC
